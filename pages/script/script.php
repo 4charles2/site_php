@@ -328,7 +328,7 @@
 			<p>Voici le deroulement de la première opération : <code>1+2*2 = 5</code> Alors que dans la deuxième opération le déroulement est : <code>(1+2)*2 = 6</code></p>
 			<p>Il n'y à pas de parenthèse placé mais l'opération est éffectué en amont</p>
 			<p><strong>Affectation possible <code> echo $((b=4+2*3))</code></strong></p>
-			<p><strong>Les affectations peuvent aussi se faire avec les raccourcis <code>+= , -= , *= , /= , <<= , >>= , &= , |= , ^= .</code></strong></p>
+			<p><strong>Les affectations peuvent aussi se faire avec les raccourcis <code>+= , -= , *= , /= , &lt;&lt;= , &gt;&gt;= , &= , |= , ^= .</code></strong></p>
 			<p><u>Les conditions avec la structure $(( ))</u></p>
 			<p>La structure $(( )) peut également servir à vérifier des conditions arithmétiques. Les
 opérateurs de comparaison renvoient la valeur 1 pour indiquer qu’une condition est véri-
