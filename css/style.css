@@ -11,7 +11,7 @@ nav{
     text-align: center;
 }
 u{
-    color: #61380B; 
+    color: #61380B;
 }
 article{
     padding: 10px;
@@ -27,6 +27,7 @@ aside{
     float: left;
     padding: 20px;
     margin-top: 100px;
+    position: fixed;
 }
 img{
     border-radius: 20px;
@@ -51,7 +52,6 @@ footer{
 }
 li{
     font-weight: bold;
-    text-decoration: underline;
 }
 ol p{
     color: rgb(230, 230, 255);

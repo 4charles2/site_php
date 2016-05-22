@@ -2,11 +2,11 @@
 <html>
 	<head>
 		<title>Site Memento</title>
-		<meta charset="utf-8" />
+        <meta charset="utf-8" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 	</head>
 	<body>
-         <?php include("nav.php"); ?> 
+         <?php include("nav.php"); ?>
          <section>
                <h1 id="titre_principal"><u>Bienvenue sur mon site de presentation</u></h1>
                 <article>
