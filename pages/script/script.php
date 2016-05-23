@@ -19,6 +19,10 @@
 				<li><a href="#porte_variable">Les portées de variable</a></li>
 				<li><a href="#argument">Utilisation des arguments</a></li>
 				<li><a href="#tableau">Declarer et utiliser des tableaux</a></li>
+				<li><a href="#eval_">La commande eval_</a></li>
+				<li><a href="#espace_disk">Espace disk restant pour le home directory</a></li>
+				<li><a href="#papeline">Les papelines pour les commandes</a></li>
+				<li><a href="#return_false">Retourner une valeur false ou true pour tester des scripts ou ...</a></li>
             </ol>
         </article>
     </section>
@@ -30,7 +34,7 @@
 				<thead>
 					<tr>
 						<th>Symbole pour acceder aux argument</th>
-						<th>Fonctionnilité du symbôle</th>
+						<th>Fonctionnalité du symbôle</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -112,10 +116,22 @@
     <section id="variable">
 		<article>
 		<ol>
+			<li><a href="#affectation_tmp">Affectation d'une variable temporaire</a></li>
 			<li><a href="#variable_arthmetique">Declarer une variable arithmetique</a></li>
 			<li><a href="#variable_lecture_seul">Modifier une variable pour qu'elle ne soit disponible qu'en lecture seul</a></li>
 			<li><a href="#sous_chaine">extraction de sous-chaine</a></li>
 		</ol>
+		</article>
+		<h1 id="affectation_tmp"><u>Affectation temporaire d'une variable pour l'utilisation d'une commande</u></h1>
+		<article>
+			<p>Si une variable GLOBAL ou local reçoit une affectation alors qu'une commande est utilisé sur la même ligne la valeur de la variable n'est valide que jusqu'à la fin de l'éxecution de la ligne</p>
+			<p>Si vous rappelez la variable ultérieurement elle aura gardé sa valeur d'origine</p>
+			<p>Exemple de code : <pre><code>&gt;echo $LANG</br>&gt;fr_FR</br>&gt;date</br>&gt;dim oct 7 08:55:51 CEST 2007</br>&gt;$LANG=en_US date</br>&gt;Sun Oct 7 08:55:54 CEST 2007</br>&gt;echo $LANG</br>&gt;fr_FR</code></pre></p>
+			<p>On verifie la valeur de $LANG et on voit qu'elle est réglé sur fr_FR (Français) on affiche ensuite la date du jour au format français</p>
+			<p>Ensuite on affecte la valeur en_US à la variable GLOBAL $LANG suivi de la commande date. Se qui va afficher la date au format englais</p>
+			<p>On revérifie la valeur de $LANG après l'execution de la commande date et on voit que la valeur n'a pas changé elle toujours sur fr_FR</p>
+			<p><strong>Comme l'affectation est suivie de la commande date la variable $LANG à pris la valeur en_US temprairement le temps de l'execution de date</strong></p>
+			<p>Si elle n'avait pas été suivie d'une commande la variable $LANG aurait gardé la valeur en_US</p>
 		</article>
 		<h1 id="variable_lecture_seul"><u>Modifier le droit d'une variable pour qu'elle soit disponible en lecture seul</u></h1>
 		<article>
@@ -252,8 +268,19 @@
            </article>
     </section>
     <section id="renommer_fichier">
-        <h1><u>Exemple de script qui rennome tous les fichiers portant l'extention .TGZ en .tar.gz</u></h1>
+        <h1><u>Exemple de script qui rennome des fichiers ! Aussi bien le contenu que le nom du fichier</u></h1>
         <article>
+			<p><u>Script qui met le contenu d'un fichier en majuscule ou en minuscule donné en paramètre</u></p>
+			<p>Le script suivant va mettre tous le contenu du fichier en minuscule</p>
+			<p><pre><code>&gt;while [ -n "$1" ]; do</br>	&gt;content=$(tr [a-z] [A-Z]) &lt; $1)</br>	&gt;echo "$content" &gt; $1</br>	&gt;shift</br>&gt;done</code></pre></p>
+			<p>Le script suivant va mettre tous le contenu du fichier en Majuscule</p>
+			<p><pre><code>&gt;while [ -n "$1" ]; do</br>	&gt;content=$(tr [A-Z] [a-z])&lt; $1)</br>	&gt;echo "$content" &gt; $1</br>	&gt;shift</br>&gt;done</code></pre></p>
+			<p><u>Mettre le nom d'un fichier en MAJUSCULE ou minuscule</u></p>
+			<p>Ce script va mettre le nom du fichier transmit en argument en Majuscule sans toucher à l'extention</p>
+			<p><pre><code>&gt;while [ -n "$1" ]; do</br>	&gt;suffixe=${1#*.}</br>	&gt;mv $1 $(echo ${1%%.*} | tr [A-Z] [a-z]).$suffixe</br>	&gt;shift</br>&gt;done</code></pre></p>
+			<p>Ce code va mettre le nom du fichier en minuscule</p>
+			<p><pre><code>&gt;while [ -n "$1" ]; do</br>	&gt;suffixe=${1#*.}</br>	&gt;mv $1 $(echo ${1%%.*} | tr [a-z] [A-Z]).$suffixe</br>	&gt;shift</br>&gt;done</code></pre></p>
+			<p><u>La ligne suivante rennomer tous les fichiers du répertoire courant qui ont l'extention .TGZ en .tar.gz</u></p>
             <p><pre><code>for i in *.TGZ ; do mv $i ${i%.*}tar.gz ; done</code></pre></p>
             <p>Ici on mais dans la variable i les fichier .TGZ et on utilise la commande mv pour la rennomer </br>
             en selectionant la partie du nom de la variable qui nous interesse puis on ajoute tar.gz a la fin</p>
@@ -337,6 +364,8 @@ l’égalité et != pour la différence. Les conditions peuvent être associées
 &amp;&amp; ou un Ou Logique || , ou encore être niées avec ! .</p>
 			<p>Exemple de condition :
             <pre><code>&gt;echo $(((25 + 2) &amp; 28))</br>&gt;1</br>&gt;echo $(((12 + 4) == 17))</br>&gt;0</br>&gt;echo $(((1 == 1) &amp;&amp; (2 &amp; 3)))</br>&gt;1</code></pre></p>
+			<p><u>Voici un petit script qui affiche le calendrier de l'année prochaine</u></p>
+			<p><code>&gt;cal $(($(date +%Y)+1))</code>
 			</article>
     </section>
 	<section id="invocation_commande">
@@ -382,6 +411,77 @@ l’égalité et != pour la différence. Les conditions peuvent être associées
 			<p>Pour avoir la longueur du ie element : <code>&gt;echo ${#tableau[i]}</code></p>
 			<p>Alors que <code>&gt;echo ${#tableau[@]} ou &gt;echo ${tableau[*]}</code></p>
 			<p>Renverra le nombre d'element du tableau</p>
+		</article>
+	</section>
+	<section id="eval_">
+		<h1><u>Utilisation de la commande eval</u></h1>
+		<article>
+			<p>Shell est un langage interpreté, il n'est pas compilé</p>
+			<p>Cela permet de construire une expression de toutes pièce</br>et de l'évaluer comme s'il s'agissait d'un morceau du programme en cours d'execution</p>
+			<p>Exemple : <pre><code>&gt;A="contenu de A"</br>&gt;B="A = \$A"</br>&gt;echo $B</br>&gt;A = $A</br>&gt;eval echo $B</br>&gt;A = contenu de A</code></pre></p>
+			<p>Le contenu de A n'est pas enregistrer dans la variable B</p>
+			<p>Si on modifie la variable A et que l'ont reconsulte la variable B avec eval, c'est alors le contenu modifié de A qui sera visible</p>
+			<p>Exemple on modifie $A : <pre><code>&gt;A="nouveau contenu"</br>&gt;eval echo $B</br>&gt;A = nouveau contenu</code></pre></p>
+		</article>
+	</section>
+	<section id="espace_disck">
+		<h1><u>Script qui indique l'espace encore libre pour le repertoire de home de l'utilisateur connecté</u></h1>
+		<article>
+			<p>On va utiliser la commande df afin d'obtenir des stats sur le disque</p>
+			<p>Puis grâce aux commande sed, cut et tail on affine notre recherche afin d'afficher le résultat voulu</p>
+			<p><code>&gt;df -k . | tail -1 | sed "s/  */ /g" | cut -d " " -f 4</br>&gt;98456678</code></p>
+			<p>L'option -K affiche le resultat en kilo octet tail selectionne une ligne(option -1) en partant de la fin, et sed remplace les double espaces par un simple espace et cut selectionne le champ 4 celui de l'espace restant dans le resultat de la commande de df</p>
+			<p>Si l'on souhaite on peut afficher le résultat en Mo. Il nous suffit de placer l'option --block-size=1000K pour 1000kilo octet (1 bloc = 1Mo) Par default un bloc = 1000ko</p>
+			<p>Pareil pour les Giga octets avec l'option --block-size=1000000K (1 block = 1 Go) ! Option pour la commande <strong>df</strong></p>
+			<p>Exemple qui affiche la place libre sur le disque pour le home en Giga bite : </br><code>&gt;df -block--size=1000000K . | tail -1 | sed "s/  */ /g" | cut -d " " -f 4</br>&gt;98</code></p>
+			<p>Il reste 98 Go de libre pour le répertoire home de l'utilisateur connecté</p>
+		</article>
+	</section>
+	<section id="papeline">
+		<h1><u>La combinaison de commande entre leur sortie et leur entrée standart ce fait via des PIPELINE</u></h1>
+		<article>
+			<p><u>Voici la liste des Pipeline disponible :</u></p>
+			<table>
+				<thead>
+					<tr>
+						<th>Pipeline</th>
+						<th>Connexion</th>
+						<th>Détails</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>;</td>
+						<td>séquencement</td>
+						<td>La seconde opération ne commence qu'a la fin de la première. Le point virgule peut être remplacé par un retour chariot, se qui correspond à la représentation habituellement dans les scripts</td>
+					</tr>
+					<tr>
+						<td>&amp;</td>
+						<td>Parallelisme</td>
+						<td>La première action et lancé en arrière plan en simultané avec la seconde commande. ELle n'ont pas d'interactions entre elles</td>
+					</tr>
+					<tr>
+						<td>&amp;&amp;</td>
+						<td>Dépandence</td>
+						<td>La seconde dépendance ne s'éxecute que si la première renvoie un code de retour null. Se qui par convention signifie un succès de l'execution</td>
+					</tr>
+					<tr>
+						<td>||</td>
+						<td>Alternative</td>
+						<td>La seconde dépendance ne s'éxecute que si la première renvoie un code de retour non null. Se qui par convention signifie un échec de l'execution</td>
+					</tr>
+				</tbody>
+			</table>	
+		</article>
+	</section>
+	<section id="return_false">
+		<h1><u>Commande qui permet de transmetre un retour false sur la sortie standart du shell</u></h1>
+		<article>
+			<p>Très pratique pour tester des scripts la commande false ou true permet de renvoyer une valeur sur la sortie standart</p>
+			<p>Exemple : <code>echo text &amp;&amp; true &amp;&amp; echo deuxiemetxt</code></p>
+			<p>Si la premiere commande renvoie bien true alors la troisieme commande s'executera également puisque le pipeline renverra true grâce à la commande true</p>
+			<p>Si j'écrit la même ligne avec false  <code>&gt;echo txt &amp;&amp; false &amp;&amp; echo txtDeux</code></p>
+			<p>Le premier text sera alors affiché mais jamais le deuxieme puisque le pipeline renvera false. La troisième commande ne s'éxecutera jamais</p>
 		</article>
 	</section>
     </body>
