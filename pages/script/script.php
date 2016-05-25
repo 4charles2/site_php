@@ -23,6 +23,17 @@
 				<li><a href="#espace_disk">Espace disk restant pour le home directory</a></li>
 				<li><a href="#papeline">Les papelines pour les commandes</a></li>
 				<li><a href="#return_false">Retourner une valeur false ou true pour tester des scripts ou ...</a></li>
+				<li><a href="#fg_bg">Mettre en arrière plan background bg et au premier plan fg forgeground </a></li>
+				<li><a href="#commande_compose">Composé des commandes en un seul bloc avec { } ou  ( )</a></li>
+				<li><a href="#redirection_entre_sortie_standart">Le redirection des entrées, sorties standart et sortie d'erreur</a></li>
+				<li><a href="#commande_silencieuse">Rendre une commande silencieuse</a></li>
+				<li><a href="#ftp">Utilisé le protocol ftp</a></li>
+				<li><a href="#condition_if">Utilisation des structures if_then_elif_then_else_fi</a></li>
+				<li><a href="#condition_case">Utilisation des structures case expression in esac</a></li>
+				<li><a href="#uname">La commande uname pour des informations sur la machine</a></li>
+				<li><a href="#boucle">Les boucles de répétition while_do_done et until_do_done</a></li>
+				<li><a href="#for_do">La boucle for_do_done</a></li>
+				<li><a href="#select">La boucle de selection select_do_done</a></li>
             </ol>
         </article>
     </section>
@@ -471,8 +482,31 @@ l’égalité et != pour la différence. Les conditions peuvent être associées
 						<td>La seconde dépendance ne s'éxecute que si la première renvoie un code de retour non null. Se qui par convention signifie un échec de l'execution</td>
 					</tr>
 				</tbody>
-			</table>	
+			</table>
 		</article>
+			<h3><u>Comportement des papelines après une coupure volontaire d'interuption de commande</u></h3>
+		<article>
+			<p>Lorsque qu'il y a un signal d'interuption d'execution avec crtl + C notament le résultat diverge selon les SHELL en cours</p>
+			<p>Un exemple lorsque que l'ont coupe l'execution de sleep dans un papeline</p>
+			<p><code>&gt;echo debut ; sleep 20 ; echo fin</br>&gt;debut</br>&gt;Je coupe l'execution de sleep avec ctrl c</br>&gt;fin</code></p>
+			<p>On voit que dans ce cas la echo echo qui affiche le message fin s'éxecute correctement</p>
+			<p>Se comportement peut varier selon la version du SHELL utilisé</p>
+			<p>Lorsqu'une commande est interompu volontairement avec bash interactif la commande reçoit le signal SIGINT ce qui tue la commande</p>
+			<p>Elle est inihiler et la commande suivante  s'éxecute corectement</p>
+			<p>Exemple : <strong>Sur mon pc si je coupe la commande sleep avec Ctrl C la commande suivante ne s'éxecute pas</strong></p>
+			<p>Si on coupe l'éxecution de commande inscrit dans un script alors c'est l'éxecution du script complet qui est arrêté</p>
+			<p>Avec le pipeline Parallelisme</p>
+			<p>Les commandes étant indépandament lance dans diffèrents processus l'interuption d'une commande n'entraine pas la coupure des autre</p>
+			<p><strong>Ramennez un processus au premier plan avec la commande fg</strong></p>
+		</article>
+			<h3><u>Gerer les processus en arrière plan</u></h3>
+			<article>
+				<p>Pour envoyer le signal SIGTTOU à un processus qui esseye de venir écrire sur le terminal en avant plan</p>
+				<p>Ce signal indique au precessus de ne pas venir écrire et il se met en pause</p>
+				<p>On peut alors le réveiller ultérieurment avec fg</p>
+				<p><em>Pour avoir ce comportement il faut activer l'option avec la commande stty et l'option tostop</em></p>
+				<p>Pour remetre stty dans état d'origine option -tostop</p>
+			</article>
 	</section>
 	<section id="return_false">
 		<h1><u>Commande qui permet de transmetre un retour false sur la sortie standart du shell</u></h1>
@@ -482,6 +516,687 @@ l’égalité et != pour la différence. Les conditions peuvent être associées
 			<p>Si la premiere commande renvoie bien true alors la troisieme commande s'executera également puisque le pipeline renverra true grâce à la commande true</p>
 			<p>Si j'écrit la même ligne avec false  <code>&gt;echo txt &amp;&amp; false &amp;&amp; echo txtDeux</code></p>
 			<p>Le premier text sera alors affiché mais jamais le deuxieme puisque le pipeline renvera false. La troisième commande ne s'éxecutera jamais</p>
+		</article>
+	</section>
+	<section id="fg_bg">
+		<h1><u>Mettre un processus en arrière plan ou au premier plan avec les commandes fg et bg (forgeground et background)</u></h1>
+		<article>
+			<h4><u>La commande <strong>fg : </strong></u></h4>
+			<p>La commande fg ramene un processus au premier plan en lui envoyant le signal SIGCONT qui relance l'éxecution</p>
+			<h4><u>La commande <strong>bg : </strong></u></h4>
+			<p>La commande bg place un processus en arrière plan Utilisé en générale pour les processus suspendu l'execution se relance (en arrière plan)</p>
+		</article>
+	</section>
+	<section id="commande_compose">
+		<h1><u>Afin de gérer les dépandanses et priorité d'éxecution des commandes</u></h1>
+		<article>
+			<p>Il est possible de faire un groupe de commande en un bloc</p>
+			<p>Grâce au accolade { }</p>
+			<p>Exemple de ligne de commande : <code>&gt;ping -c 1 $host || { echo "$host n’est pas accessible" ; exit 1 }</code></p>
+			<p>Dans cette ligne de code on à regrouper les commandes echo et exit 1. SI on ne l'avait pas fait la commande exit 1 s'éxecuterai même si la premier commande avait réussi alors que la elle ne s'éxecute que si la premiere commande à échoué comme echo</p>
+			<p><strong>Les espaces sont obligatoire entre les accolades et les commandes</strong></p>
+			<p>Les accolades permettent également de retourné un code éxecution global pour d'autre pipeline</p>
+		</article>
+		<h1><u>éxecuter un groupe de commande dans un sous-shell </u></h1>
+		<article>
+			<p>Si l'ont souhaite éxecuter un groupe de commande dans un sous-shell on utilise les parenthèses</p>
+			<p>Cette fois les parenthèses peuvent être collé aux commandes</p>
+			<p>Exemple de code : <code>&gt;A=1 ; B=2 ; export A</br>&gt;echo Sh1 $A $B; (echo Sh2 $A $B; A=3; B=4) ; echo Sh1 $A $B</br>&gt;Sh1 1 2</br>&gt;Sh2 1 2</br>&gt;Sh1 1 2</code></p>
+			<p>Ici on peut voir que malgré les initialisations de $A et $B dans les parenthèses leur valeur ne change pas dans la commande suivante qui n'est plus entre parenthèse et donc pas éxecuté par le même shell</p>
+			<p>La partie se lance dans un sous-shell indépandament des autres</p>
+		</article>
+		<h3><u>Utilisation des deux types { } ( ) de commandes composé</u></h3>
+		<article>
+			<p><u>Les deux types de commandes composé retourne le code d'éxecution du groupe de commande</u></p>
+			<p>Code 0 si toutes les commandes se  sont éxecuté correctement</p>
+			<p><u>Portée des variables modifié pendant un processus</u></p>
+			<p>Si l'ont modifie une variable et que l'ont souahite la réutiliser utltérieurement il faut se trouver dans le même shell</p>
+			<p>Toutes les commandes situé entre parenthèse peuvent avoir accès aux même variables puisque éxecuté dans le même processus</p>
+			<p>Exemple de code : <code>&gt;echo "Mon message" | read VAR ; echo "VAR = $VAR"</br>&gt;</code></p>
+			<p>Dans cette ligne le résultat sera vide car la variable $VAR a été initialisé dans un autre processus puisque ; sépare les commandes</p>
+			<p>Alors que avec cette ligne : <code>&gt;echo "Mon message" | (read VAR ; echo "VAR = $VAR")</br>&gt;Mon message</code></p>
+			<p>Maintenant grâce aux parenthèses nous avons accès à la variable puisque les deux commandes read et echo sont éxecuté dans le même Shell</p>
+			<p><strong>Dans certain shell comme Ksh execute la derniere commande d'un pipeline dans le shell père et les variables peuvent être disponible</strong></p>
+		</article>
+	</section>
+	<section id="redirection_entre_sortie_standart">
+		<h1><u>Les redirections des entrées et sorties standart</u></h1>
+		<article>
+			<p>Très utilies les redirections des entrées et sorties standart</p>
+			<p>Il y à le pipe | qui relie directement la sortie standart du premier argument à la l'entré standart du deuxieme argument</p>
+			<p> Pour envoyé le contenu d'un fichier en entré standart d'une commande opérateur </p>
+			<p>Exemple : <code>&gt;read LIGNE &lt; fichier.txt</br>&gt;1er ligne du fichier</code></p>
+			<p>Redirigé la sortie standart d'une commande dans un fichier avec  &gt; ou &gt;&gt;</p>
+			<p>l'opérateur &gt; permet d'envoyez la sortie standart dans le fichier en écrasant le contenu déjà existant et créer le fichier si il n'existe pas</p>
+			<p>l'opérateur &gt;&gt;Permet d'envoyez la sortie standart dans le fichier en ajoutant à la fin du contenu déjà éxistant</p>
+			<p><u>La sortie d'erreur : </u></p>
+			<p>Pour redirigé la sortie standart d'erreur c'est l'opérateur 2&gt;</p>
+			<p>Exemple de code : </br><code>&gt;find / -name passwd 2&gt;/dev/null</br>&gt;Ne renverra que les lignes ok les lignes d'erreur comme acces refusé seront envoyé vers /dev/null</code></p>
+			<p>Sans la redirection de la sortie d'erreur dans /dev/null une multitude de message d'erreur serait venu poluer la sortie standart (Dans le terminal)</p>
+			<p>Pour redirigé les deux sortie erreur et standart dans le même fichier ou sur un pipe</p>
+			<p>Opérateur 2&gt;&amp;1 effectue une copie de la sortie standart sur la sortie d'erreur</p>
+			<p>Attention seul une copie est effectué si une redirection et effectué ultérieurement sur la sortie standart cela ne concernera pas la sortie d'erreur</p>
+			<p>En général en place cette redirection à la fin après toutes les autres redirection</p>
+			<p>Les diffèrentes sortie ne fonctionne pas pareils la sortie standart utilise un buffer fonctionnant ligne par ligne sauf en cas de redirection vers un fichier qui dans ce cas envoie des blocs brute</p>
+			<p><u>Fonctionnement des buffers : </u></p>
+			<p>Exemple avec le code : </br><code>&gt;grep snmp /etc/* &gt; fichier 2&gt;&amp;1 #La sortie standard et la sortie d'erreur sera envoyé dans le fichier</code></p>
+			<p>Dans cette exemple la commande grep en retourne pas beaucoup de résultat et sont donc tous stockés dans le buffer jusqu'à la fin de l'éxécution de la commande</p>
+			<p>La sortie standard ne possède pas de buffer les messages d'erreur sont donc écrit instantanement dans le fichier</p>
+			<p>Le résultat dans le fichier affichera en premier les messages d'erreurs puis à la fin le buffer de sortie standard sera copier</p>
+			<p>Par contre avec cette exemple : <code></br>&gt;grep root /etc/* 2&gt;&amp;1</br>&gt;#La sortie d'erreur et la sortie standard seront envoyé dans le fichier</code></p>
+			<p>Ici le cas est diffèrent car les résultats de la commande seront plus élevés. Le buffer sera rempli à plusieurs reprise</p>
+		</article>
+		<h1 id="commande_silencieuse"><u>Rendre l'éxécution d'une commande silencieuse</u></h1>
+		<article>
+			<p>Envoyer la sortie d'erreur et standard vers /dev/null avec une redirection 2&gt;&amp;1 /dev/null</p>
+			<p><strong>Il existe un raccourci de 2&gt;&amp;1 qui et &amp;&gt;fichier</strong>
+			<p>Exemple de commande : <code></br>&gt;grep root &amp;&gt;/etc/null</code></p>
+			<p>Ne renverra rien car les deux sorties (erreur et standard) sont envoyé vers /dev/null</p>
+			<p><u>Beaucoup plus court que : </u><code></br>&gt;grep root &gt; /etc/null 2&gt;&amp;1	#Pour  les deux sorties vers /dev/null</code></p>
+		</article>
+		<h1 id="redirection_avancee"><u>Les redirections avancées</u></h1>
+		<article>
+			<p>Il faut bien comprendre que les opérateurs de redirection se compose ainsi n&gt;&amp;m</p>
+			<p>n et m représente des files descripteurs représenté par défaut avec 0 entrée standard, 1 sortie standard, 2 sortie d'erreur</p>
+			<p>Il est possible de rediriger tous les files descripteur</p>
+			<p>Exemple pour redirigé (duplique) la sortie standard sur la sortie d'erreur le contraire de 2&gt;&amp;1</p>
+			<p><code>&gt;grep root /etc/* &gt;&amp;2</code></p>
+			<p>Ont peut ouvrir un descripteur en lecture et en écriture grâce aux opérateur &gt; &lt;</p>
+			<p>Mais aussi fermer un file descripteur avec n&gt;&amp;-</p>
+			<p>Le descripteur ainsi fermer ne sera plus disponible</p>
+		</article>
+	</section>
+	<section id="ftp">
+		<h1><u>Utilisé le protocol ftp dans ses scripts</u></h1>
+		<article>
+			<p>Il n'est pas possible de redirigé l' entrée standart de la commande ftp</p>
+			<p>Il faut créer un fichier avec les informations de connexions</p>
+			<p>Se fichier sera .netrc <strong>Atention fichier avec droit restrictif seul le propriétaire doit pouvoir le lire</strong></p>
+			<p>La commande open de ftp ira chercher si un document .netrc existe et s'en servira pour se connecté (Identifiant et Mot de pass)</p>
+			<p>Il ne doit y avoir que ces informations dans le fichiers</p>
+			<p><u>Tableau récapitulatif des commandes de base pour se connecté à un hôte distant via ftp et récupérer des fichiers</u></p>
+			<table>
+				<thead>
+					<tr>
+						<th>Commande</th>
+						<th>Utilisation</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>open</td>
+						<td>Se connecté à une machine distante en vérifiant si fichier .netrc existe pour identifiant et mot de passe</td>
+					</tr>
+					<tr>
+						<td>bin</td>
+						<td>Ne sert que dans rare cas mais très utiles afin de gérer les erreurs avec l'interpretation des \n \t</td>
+					</tr>
+					<tr>
+						<td>prompt</td>
+						<td>Indique à ftp de ne pas demander de confirmation à chaque fichier lors du telechargement</td>
+					</tr>
+					<tr>
+						<td>mget</td>
+						<td>Indique les fichiers à récupérer. Utilisation de caractère générique comme * possible</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>Le fichier .netrc doit être composé de la façon suivante</p>
+			<p>machine adresse de la machone</br>login votre login</br>password votre mot de passe</p>
+			<p><u><strong>Voici un exemple de programme qui prend en argument La liste suivante :</strong></u></p>
+			<ol>
+				<li>Machine à contacter</li>
+				<li>Chemin d'acces sur l'hote distant</li>
+				<li>Fichier à transferer</li>
+				<li>Login (Falcultatif par defaut anonymous</li>
+				<li>Mot de passe (Falcultatif par defaut adresse de l'hote client</li>
+			</ol>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;#PAramétrage du transfert désiré
+&gt;
+&gt;MACHINE=${1:?Pas de machine indiquée}
+&gt;CHEMIN=${2:?Pas de chemin indiqué}
+&gt;FICHIERS=${3:?Pas de fichiers indiqués}
+&gt;
+&gt;LOGIN=${4:-anonymous}
+&gt;PASSWORD=${5:-$USER@$HOSTNAME}
+&gt;
+&gt;#D'abord sauver l'éventuel fichier ~/.netrc
+&gt;
+&gt;if [ -f ~/.netrc ] ;then
+&gt;	mv ~/.netrc ~/.netrc.back
+&gt;fi
+&gt;
+&gt;#Créer un nouveau ~/.netrc
+&gt;#avec uniquement les infos concernant la connexion voulue
+&gt;
+&gt;#ANCIEN_UMASK=$(umask)
+&gt;#umask 0177
+&gt;
+&gt;echo machine $MACHINE &gt; ~/.netrc
+&gt;echo login $LOGIN &gt;&gt; ~/.netrc
+&gt;echo password $PASSWORD &gt;&gt; ~/.netrc
+&gt;#umask $ANCIEN_UMASK
+&gt;
+&gt;#Lancer la connexion
+&gt;ftp &lt;&lt;- FIN
+&gt;	open $MACHINE
+&gt;	bin
+&gt;	prompt
+&gt;	cd $CHEMIN
+&gt;	mget $FICHIERS
+&gt;	quit
+&gt;FIN
+&gt;
+&gt;#Effacer .netrc et récupérer l'ancien
+&gt;
+&gt;rm -f ~/.netrc
+&gt;if [ -f ~/.netrc ]; then
+&gt;	mv ~/.netrc
+&gt;fi
+</code></pre></p>
+			<p>Un exemple d'éxecution avec comme hôte distant : ftp.lip6.fr qui est un serveur de l'universite de paris</p>
+			<p>Elle possede notament des distributions linux ainsi que des commandes</p>
+			<p>Pour se connecte login anonymous et mot passe son adresse $USER@$HOSTNAME du client</p>
+		</article>
+	</section>
+	<section id="condition_if">
+		<h1><u>Les conditions de structure if_then_elif_then_else_fi</u></h1>
+		<article>
+			<p>La structure :<code></br>&gt;if condition1 ; then</br>	&gt;instruction</br>&gt;elif condition2 ; then</br>	&gt;instruction</br>&gt;else</br>	&gt;instruction</br>&gt;fi</code></p>
+			<p>Il est recommandé d'utiliser les [ ] pour entourer les conditions</p>
+			<p>then peut se mettre à la ligne le ; n'est plus necessaire dans ce cas</p>
+			<p><u>LE Shell offre la possibilité de faire certain test avec l'opérateur internet test avec les arguments suivants :</u></p>
+			<table>
+				<thead>
+					<tr>
+						<th>Options :</th>
+						<th>La condition sera vraie si : </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>-a fichier</br>-e fichier</td>
+						<td>Si le fichier indiqué existe. L'option -a n'est pas définie dans Single UNIX version 3 on préfèrera utilisé l'option -e </td>
+					</tr>
+					<tr>
+						<td>-b fichier</td>
+						<td>Le fichier indiqué est un noeud spécial qui décrit un périphérique en mode bloc</td>
+					</tr>
+					<tr>
+						<td>-c fichier</td>
+						<td>Le fichier indiqué est un noeud spécial qui décrit un périphérique en mode caractère</td>
+					</tr>
+					<tr>
+						<td>-d répertoire</td>
+						<td>Le répertoire indiqué existe</td>
+					</tr>
+					<tr>
+						<td>-f fichier</td>
+						<td>Le fichier indiqué et un fichier régulier</td>
+					</tr>
+					<tr>
+						<td>-g fichier</td>
+						<td>Le Set-GID du fichier indiqué et positionné</td>
+					</tr>
+					<tr>
+						<td>-h fichier</br>-L fichier</td>
+						<td>Le fichier indiqué et un lien symbolique</td>
+					</tr>
+					<tr>
+						<td>-G fichier</td>
+						<td>Le fichier indiqué appartient au même groupe que le GID effectif du processus invoquant la commande test</td>
+					</tr>
+					<tr>
+						<td>-k fichier</td>
+						<td>Le bit sticky du fichier indiqué et positionné</td>
+					</tr>
+					<tr>
+						<td>-n chaine</td>
+						<td>La longueur de la chaine renseigné et non null</td>
+					</tr>
+					<tr>
+						<td>-N fichier</td>
+						<td>Le fichier à été modifié depuis le dernier accès en mode lecture</td>
+					</tr>
+					<tr>
+						<td>-O fichier</td>
+						<td>Le fichier indiqué appartient au même utilisateur que l'UID effectif du processus invoquant la commande test</td>
+					</tr>
+					<tr>
+						<td>-p fichier</td>
+						<td>Le fichier indiqué est un tube nommé (file FIFO).</td>
+					</tr>
+					<tr>
+						<td>-r fichier</td>
+						<td>Le fichier indiqué et lisible</td>
+					</tr>
+					<tr>
+						<td>-s fichier</td>
+						<td>La taille du fichier indiqué et non null</td>
+					</tr>
+					<tr>
+						<td>-S fichier</td>
+						<td>Le fichier indiqué est une socket</td>
+					</tr>
+					<tr>
+						<td>-t descripteur</td>
+						<td>Le descripteur de fichier correspond à un terminal</td>
+					</tr>
+					<tr>
+						<td>-u fichier</td>
+						<td>Le bit Set-UID du fichier indiqué est positionné</td>
+					</tr>
+					<tr>
+						<td>-w fichier</td>
+						<td>On peut écrire dans le fichier</td>
+					</tr>
+					<tr>
+						<td>-x fichier</td>
+						<td>Le fichier indiqué est éxecutable</td>
+					</tr>
+					<tr>
+						<td>-z chaine</td>
+						<td>La longueur de la chaine indiquée est nulle</td>
+					</tr>
+					<tr>
+						<td>chaine</td>
+						<td>La chaine est non nulle</td>
+					</tr>
+					<tr>
+						<td>chaine = chaine2</td>
+						<td>Les deux chaines sont identique</td>
+					</tr>
+					<tr>
+						<td>chaine != chaine2</td>
+						<td>Les deux chaînes sont diffèrentes.</td>
+					</tr>
+					<tr>
+						<td>chaine &lt; chaine2</td>
+						<td>La premiere chaine apparaît avant la seconde, dans un tri lexicographique croissant.</td>
+					</tr>
+					<tr>
+						<td>chaine &gt; chaine2</td>
+						<td>La premiere chaine apparait après la seconde, dans un tri lexicographique croissant.</td>
+					</tr>
+					<tr>
+						<td>valeur -eq valeur2</td>
+						<td>Les valeur arithmétiques sont égales</td>
+					</tr>
+					<tr>
+						<td>valeur -ge valeur2</td>
+						<td>La premiere valeur est supérieur ou égale à la seconde.</td>
+					</tr>
+					<tr>
+						<td>valeur -gt valeur2</td>
+						<td>La premiere valeur est strictement supérieure à la seconde</td>
+					</tr>
+					<tr>
+						<td>valeur -le valeur2</td>
+						<td>LA premiere valeur est inférieure ou égal à la seconde</td>
+					</tr>
+					<tr>
+						<td>valeur -lt valeur2</td>
+						<td>LA premiere valeur est strictement inférieur à la seconde</td>
+					</tr>
+					<tr>
+						<td>valeur -ne valeur2</td>
+						<td>Les deux valeur arithmétiques sont diffèrentes</td>
+					</tr>
+					<tr>
+						<td>fichier -ef fichier2</td>
+						<td>Le fichier est le même que le fichier2.Il peut s'agir de deux noms(liens physique) diffèrents dans le système de fichiers, correspondant au même contenu sous-jacent.La comparaison concerne le numéro de périphérique de support et le numéro d'i-noeud.</td>
+					</tr>
+					<tr>
+						<td>fichier -nt fichier2</td>
+						<td>La dte de dernière modification du fichier est plus récente que celle du fichier2.</td>
+					</tr>
+					<tr>
+						<td>fichier -ot fichier2</td>
+						<td>La date de dernière modification du fichier est plus ancienne que celle du fichier2</td>
+					</tr>
+				</tbody>
+			</table>
+			<p><strong>Les mêmes options peuvent être utilisé dans la commande interne [ ] qui est un synonyme de test</strong></p>
+			<p>Si on indique un nom de fichier correspondant à un lien symbolique seul les options -h et -L s'occuperont du lien symbolique. Les autres options traiteront la cible visé pas le lien</p>
+			<p>Voici un script qui donne des informations sur les fichiers passé en arguments</p>
+			<p><pre><code>
+#!/bin/bash
+
+for i in "$@" ; do
+	echo "$i : "
+	if [ -L "$i" ] ; then echo " (lien symbolique) " ; fi
+	if [ -e "$i" ] ; then
+		echo -n " type = "
+		if [ -b "$i" ] ; then echo "special bloc" ; fi
+		if [ -c "$i" ] ; then echo "special caractère " ; fi
+		if [ -d "$i" ] ; then echo "répertoire" ; fi
+		if [ -f "$i" ] ; then echo "fichier regulier" ; fi
+		if [ -p "$i" ] ; then echo "tube nommé " ; fi
+		if [ -S "$i" ] ; then echo "socket " ; fi
+		echo -n " bits = "
+		if [ -g "$i" ] ; then echo -n "Set_GID " ; fi
+		if [ -u "$i" ] ; then echo -n "Set-UID " ; fi
+		if [ -k "$i" ] ; then echo -n "Sticky " ; fi
+		echo ""
+		echo -n " accès = "
+		if [ -r "$i" ] ; then echo -n "lecture "; fi
+		if [ -w "$i" ] ; then echo -n "écriture "; fi
+		if [ -x "$i" ] ; then echo -n "execution "; fi
+		echo ""
+		if [ -G "$i" ] ; then echo " appartient à notre GID"; fi
+		if [ -O "$i" ] ; then echo " appartient à notre UID"; fi
+	else
+		echo " n'existe pas"
+	fi
+done</code></pre></p>
+			<p>Toutes les occurences de $i sont entre "" pour conserver les espaces dans les noms de fichiers passé en argument</p>
+			<p>Passe chaque fichier dans les conditions afin d'obtenir des informations complémentaire</p>
+		</article>
+		<h1><u>Tester plusieurs conditions</u></h1>
+		<article>
+			<p>Pour vérifier plusieurs conditions on peut utiliser la notation suivante : </p>
+			<table>
+				<thead>
+					<tr>
+						<th>Option</th>
+						<th>Alternative</th>
+						<th>Vrai si </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>! condition</td>
+						<td>! condition</td>
+						<td>La condition est Fausse</td>
+					</tr>
+					<tr>
+						<td>condition_1 -a condition_2</td>
+						<td>condition_1 &amp;&amp; condition_2</td>
+						<td>Les deux conditions sont vraie</td>
+					</tr>
+					<tr>
+						<td>condition_1 -o condition_2</td>
+						<td>condition_1 || condition-2</td>
+						<td>si au moins une des conditions est vraie</td>
+					</tr>
+				</tbody>
+			</table>
+		</article>
+	</section>
+	<section id="condition_case">
+		<h1><u>Utilisation des structures de condition case esac</u></h1>
+		<article>
+			<p><u>Voici la structure de case : </u></p>
+			<p><pre><code>&gt;case expression in</br>	&gt;motif 1) commande_1;;</br>	&gt;motif 2) commande_2;;</br>	&gt;motif 3) commande_3;;</br>&gt;esac</code></pre></p>
+			<p>L'expréssion est évalué puis comparé en tant que chaine de caractère aux diffèrents motif</p>
+			<p>Si correspondance avec le motif la commande qui suit et éxecuté et passe la fin de case à la ligne esac</p>
+			<p>Les motifs peuvent être des caractères générique du Shell. Comme l'astérix qui permet de désigner tout caractère ou le point d'interogation qui remplace un unique caractère</p>
+			<p>Un motif peut être une REGEX entre [ ]</p>
+			<p>Un exemple ci-dessous avec la commande uname</p>
+		</article>
+	</section>
+	<section id="uname">
+		<h1><u>Utilisation de la commande uname</u></h1>
+		<article>
+			<p>LA commande uname permet d'avoir des informations sur la machine le noyeau l'architecture</p>
+			<p>La commande : <code>&gt;uname -a</code> Donne en résultat toutes les informations disponible par uname</p>
+			<p>Avec l'option -r <code>&gt;uname -r</code> Retourne le numéro du noyeau kernel en cours d'utilisation</p>
+			<p><u>Un exemple de code avec deux imbrication de case : </u></p>
+			<p><pre><code>
+#!/bin/bash
+
+i=$(uname -r)
+
+case "$i" in
+	3.*) Type_noyau="3" ;;
+	2.6.*) Type_noyau="2.6" ;;
+	2.4.* | 2.5.*) Type_noyau="2.4" ;;
+	2.* | 1.* | 0.*) echo "Trop ancien, impossible de continuer"
+			exit 1 ;;
+	*) Type_noyau="Inconnu"
+		echo "Noyau inconnu ; continuer l'installation ?"
+		read Reponse
+		case "$Reponse" in
+			O* | o* | Y* | y*)
+				echo OK;;
+			*) exit 1;;
+		esac ;;
+esac
+echo "Instalation pour noyau de type $Type_noyau"
+</code></pre></p>
+			<p>Ce code vérifie la version du noyau kernel en cours d'éxecution grâce à la commande uname</p>
+		</article>
+	</section>
+	<section id="boucle">
+		<h1><u>Les boucles de répétition while_do_done et until_do_done</u></h1>
+		<article>
+			<p><u>La boucle while_do_done</u></p>
+			<p>Structure de la boucle : <code></br>&gt;while condition ; do</br>&gt;instruction</br>&gt;done</code>
+			<p>Code d'exemple qui calcul la factorielle d'un nombre :</p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;#n = argument $1 si argument $1 n'est pas défini alors n = 1
+&gt;n=${1:-1}
+&gt;i=1
+&gt;f=1
+&gt;while [ $i -le $n ] ; do
+&gt;	f=$((f * i++))
+&gt;done
+&gt;
+&gt;echo "$n! =$f"
+			</code></pre></p>
+			<p><u>La boucle until_do_done</u></p>
+			<p>Structure de la boucle : <code></br>&gt;until condition ; do</br>&gt;instruction</br>&gt;done</code>
+			<p>Fonctionne sur le même principe que while_do_done</p>
+		</article>
+		<h1><u>Rupture de séquence avec les instructions <code>continue et break</code></u></h1>
+		<article>
+			<p><code>break</code> Sert à sortir immédiatement de la boucle en cours d'éxecution. l'éxecution du processus continue après l'instruction done de la boucle ciblé</p>
+			<p>Exemple : <pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;while true ; do
+&gt;	echo -n "[Commande]&gt;"
+&gt;	if ! read chaine ; then
+&gt;		echo "Saisie invalide"
+&gt;		break;
+&gt;	fi
+&gt;	if [ -z "$chaine" ] ; then
+&gt;		echo "Saisie vide"
+&gt;		break
+&gt;	fi
+&gt;	if [ "$chaine" = "fin" ] ; then
+&gt;		echo "Fin demandée"
+&gt;		break;
+&gt;	fi
+&gt;	eval $chaine
+&gt;done
+&gt;echo "Au revoir"</code></pre></p>
+			<p>Dans ce code Les instructions break met fin à la boucle infinie while true ; do</p>
+			<p>eval execute la commande qui se trouve dans chaine</p>
+			<p>Si on tape fin alors  le script s'arrête (Mini interpreteur)</p>
+			<p><strong>Une option avec break <code>break 2</code> fera sortir des deux boucles imbrique</strong></p>
+			<p>Par defaut break 1 et égal à break seul</p>
+			<p><code>continue</code> Renvoie le contrôle au début de la boucle</p>
+			<p>Sans éxecuter les commandes qui suivent. Effectue un saut au début de la boucle</p>
+			<p>Peut prendre un chiffre en option comme pour break pour indiquer le nombre de boucle que l'on doit remonter</p>
+			<p>Par defaut continue 1 est égal à continue sans option</p>
+		</article>
+	</section>
+	<section id="for_do">
+		<h1><u>La boucle de répétition avec condition for_do_done</u></h1>
+		<article>
+			<p>La structure de la boucle for : <code>&gt;for variable in liste_de_mot ; do</br>&gt;commandes</br>&gt;done</code></p>
+			<p>Son fonctionnement diffèrent de l'utilisation que l'on en fait dans les autre langage courant comme le C</p>
+			<p>La variable va prendre une à une successivement tous les mots qui son contenu dans la liste</p>
+			<p>Le corp de la boucle sera répété pour chaque valeur de variable</p>
+			<p>Exemple de script qui calcule le carré des entiers indiqué</p>
+			<p><pre><code>&gt;for i in 1 2 3 5 7 11 13; do</br>&gt;	echo "${i}2 = $((i * i))"</br>&gt;done</code></pre></p>
+			<p>La boucle for est souvent utilisé avec les listes "$@" et *</p>
+			<p>$@ represente la liste des arguments passé en ligne de commande et * la liste des fichiers présent dans le répertoire courant en cour</p>
+			<p>Par defaut for utilise "$@" comme liste si aucune n'est renseigné</p>
+			<p>Exemple : <code>&gt;for i ; do&gt;echo $i&gt;done</code></p>
+			<p>echo affichera le nom des argumments passé en ligne de commande</p>
+			<p>Exemple d'utilisation de la boucle for en ligne de commande pour rennommer tous les fichier .TGZ en tar</p>
+			<p><code>&gt;for i in *.TGZ ; do mv $i ${i%%.TGZ}.tar ; done</code></p>
+		</article>
+	</section>
+	<section id="select">
+		<h1><u>La boucle de selection select_do_done</u></h1>
+		<article>
+			<p>La structure de condition et assez originale et peut être très utile dans certain script</p>
+			<p>Structure de select : <code>&gt;select variable in liste_de_mot; do</br>&gt;commande</br>&gt;done</code></p>
+			<p>Le shell développe et affiche la liste des mots sur la sortie standard d'erreur</p>
+			<p>Il affiche ensuite le symbole d'invite representer par la variable PS3 et lit une ligne depuis son entrée standard</p>
+			<p>SI elle contient qui représentent l'un des mots affichés, ce dernier et placé dans la variable dont le nom et précisé après select.</p>
+			<p>La boucle s'arrête lorsque la lecture rencontre une fin de fichier ou ctrl-d ou l'instruction break</p>
+			<p>Lorsque la lecture rencontre une ligne vide la liste de mot et à nouveau affiché et la saisie recommence</p>
+			<p>Si la ligne lue ne correspond à aucun mot affiche, la variable reste vide, mais la saisie et envoyé dans la variable spéciale <strong>REPLY</strong></p>
+			<p>Vraiment pratique pour une utilisation avec interaction de l'utilisateur</p>
+			<p>Exemple de menu qui propose diffèrente manipulation sur tous les fichiers du répertoire courant d'utilisation</p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;#Cette fonction reçoit en argument le nom d'un fichier, et
+&gt;#propose les diffèrentes actions possibles.
+&gt;
+&gt;function action_fichier ()
+&gt;{
+&gt;	local reponse
+&gt;	local saisie
+&gt;
+&gt;	echo "*******************************"
+&gt;	PS3="
+&gt;Action sur $1 : "
+&gt;	select reponse in Infos Copier Déplacer Détruire Retour ; do
+&gt;		case $reponse in
+&gt;		Infos )
+&gt;			echo
+&gt;			ls -l $1
+&gt;			echo
+&gt;			;;
+&gt;		Copier )
+&gt;			echo -n "Copier $1 vers ? "
+&gt;			if ! read saisie ; then continue ; fi
+&gt;			cp $1 $saisie
+&gt;			;;
+&gt;		Déplacer )
+&gt;			echo -n "Nouvel emplacement pour $1 ? "
+&gt;			if ! read saisie ; then continue ; fi
+&gt;			mv $1 $saisie
+&gt;			break
+&gt;			;;
+&gt;		Détruire )
+&gt;			if rm -i $1 ; then break; fi
+&gt;			;;
+&gt;		Retour )
+&gt;			break
+&gt;			;;
+&gt;		* ) if [ "$REPLY" = "O" ] ; then break ; fi
+&gt;			echo "$REPLY n'est pas une reponse valide"
+&gt;			echo
+&gt;			;;
+&gt;		esac
+&gt;	done
+&gt;}
+&gt;
+&gt;#Cette routine affiche la liste des fichiers présents dans
+&gt;#le répertoire, et invoque la fonction action_fichier si la
+&gt;#saisie est correcte. Elle se termine si on sélectionne "0"
+&gt;function liste_fichiers ()
+&gt;{
+&gt;	echo "*****************************************"
+&gt;	PS3="Fichier à traiter : "
+&gt;	select fichier in * ; do
+&gt;		if [ ! -z "$fichier" ] ; then
+&gt;			action_fichier $fichier
+&gt;			return 0
+&gt;		fi
+&gt;		if [ "$REPLY" = "0" ] ; then
+&gt;			return 1
+&gt;		fi
+&gt;		echo "==&gt; Entrez 0 pour Quitter"
+&gt;		echo
+&gt;	done
+&gt;}
+&gt;
+&gt;#Exemple de boucle tant qu'une fonction réussit.
+&gt;#Le deux-points dans la boucle signifie "ne rien faire"
+&gt;while liste_fichiers ; do : ; done</code></pre></p>
+			<p>Ce script prend tous les fichiers du repertoire courant et grâce à la boucle de selection select nous demande avec lequel nous voulons interargir</p>
+			<p>Nous passons ensuite la deuxieme fonction si notre choix et correcte et nous demande si l'ont souhaite faire une des commandes préciser sur le fichier</p>
+			<p>Pour sélectionner un choix proposéé par la boucle select il faut entrer un numéro qui iniquer avant le texte corespondant</p>
+			<p><strong>Attention un return dans une boucle de sélection select ne fait pas quitter la fonction mais uniquement la boucle select</strong></p>
+			<p>La boucle while tout à la fin du script ne vérifie qu'une valeur tant que la fonction liste_fichiers renvoie null (pas d'erreur)</p>
+			<p>Les deux points dans la boucle while signifie ne rien faire</p>
+			<p>ici quelque exemple de résultat du script :</br><code>
+&gt;./menu_fichier.sh</br>
+&gt;*********************************************</br>
+&gt;1) doc.tgz</br>
+&gt;3) menu_fichier.sh</br>
+&gt;5) src.tgz</br>
+&gt;2) icones.tgz</br>
+&gt;4) sons.tgz</br>
+<strong>&gt;Fichier à traiter : 2</strong></br>
+&gt;*********************************************</br>
+&gt;1) Infos</br>
+&gt;3) Déplacer</br>
+&gt;5) Retour</br>
+&gt;2) Copier</br>
+&gt;4) Détruire</br>
+<strong>&gt;Action sur icones.tgz : 2</strong></br>
+&gt;Copier icones.tgz vers ? essai</br>
+&gt;*********************************************</br>
+&gt;1) Infos</br>
+&gt;3) Déplacer</br>
+&gt;5) Retour</br>
+&gt;2) Copier</br>
+&gt;4) Détruire</br>
+<strong>&gt;Action sur icones.tgz : 5</strong></br>
+&gt;*********************************************</br>
+&gt;1) doc.tgz</br>
+&gt;3) icones.tgz</br>
+&gt;5) sons.tgz</br>
+&gt;2) essai</br>
+&gt;4) menu_fichier.sh 6) src.tgz</br>
+<strong>&gt;Fichier à traiter : 2</strong></br>
+&gt;*********************************************</br>
+&gt;1) Infos</br>
+&gt;3) Déplacer</br>
+&gt;5) Retour</br>
+&gt;2) Copier</br>
+&gt;4) Détruire</br>
+<strong>&gt;Action sur essai : 4</strong></br>
+&gt;Détruire essai ? o</br>
+&gt;*********************************************</br>
+&gt;1) doc.tgz</br>
+&gt;3) menu_fichier.sh 5) src.tgz</br>
+&gt;2) icones.tgz</br>
+&gt;4) sons.tgz</br>
+<strong>&gt;Fichier à traiter : 5</strong></br>
+&gt;*********************************************</br>
+&gt;1) Infos</br>
+&gt;3) Déplacer</br>
+&gt;5) Retour</br>
+&gt;2) Copier</br>
+&gt;4) Détruire</br>
+&gt;Action sur src.tgz : 3</br>
+&gt;Nouvel emplacement pour src.tgz ? sources.tar.gz</br>
+&gt;*********************************************</br>
+&gt;1) doc.tgz</br>
+&gt;3) menu_fichier.sh 5) sources.tar.gz</br>
+&gt;2) icones.tgz</br>
+&gt;4) sons.tgz</br>
+<strong>&gt;Fichier à traiter : 0</strong></code></pre></p>
+		<p>Les lignes en gras represente les interactions avec l'utilisateur</p>
+		<p>On voit bien que dans cette exemple que l'utilisateur fait son choix en entrant un numéro</p>
+		<p>Le choix des menus et affiché grâce à la sortie d'erreur</p>
+		<p>Donc si la sorite d'erreur est redirigé vers un fichier ou autre les menus n'apparaitrons pas</p>
+		<p>La boucle de selection peut s'averé très utile dans des scripts d'instalation ou l'utilisateur choisi des modules ou des répertoires à copier</p>
 		</article>
 	</section>
     </body>
