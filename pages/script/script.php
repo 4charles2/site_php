@@ -34,6 +34,7 @@
 				<li><a href="#boucle">Les boucles de répétition while_do_done et until_do_done</a></li>
 				<li><a href="#for_do">La boucle for_do_done</a></li>
 				<li><a href="#select">La boucle de selection select_do_done</a></li>
+				<li><a href="#fonction">Les fonctions dans un script</a></li>
             </ol>
         </article>
     </section>
@@ -1197,6 +1198,96 @@ echo "Instalation pour noyau de type $Type_noyau"
 		<p>Le choix des menus et affiché grâce à la sortie d'erreur</p>
 		<p>Donc si la sorite d'erreur est redirigé vers un fichier ou autre les menus n'apparaitrons pas</p>
 		<p>La boucle de selection peut s'averé très utile dans des scripts d'instalation ou l'utilisateur choisi des modules ou des répertoires à copier</p>
+		</article>
+	</section>
+	<section id="fonction">
+		<h1><u>Utilisation des fonctions dans des scripts</u></h1>
+		<article>
+			<p>Il est possible d'utiliser des fonctions dans les scripts</p>
+			<p>D'une manière général les fonctions se déclare de la manière suivante :</p>
+			<p><code>&gt;function nom_de_la_fonction ()</br>&gt;{</br>&gt;Commande</br>&gt;}</code></p>
+			<p>Il possible de prendre des raccourcis par exemple en ne mettant pas function mais juste le nom de la fonction suivi des () ou alors de ne pas mettre de paranthèse mais le mot clé function</p>
+			<p><code>&gt;nom_de_la_fonction ()</br>&gt;{</br>&gt;Commande</br>&gt;}</code> ou <code>&gt;function nom_de_la_fonction</br>&gt;{</br>&gt;Commande</br>&gt;}</code></p>
+			<p>Si l'on souhaite que le script soit portable il vaut mieu prévilègié la méthode avec les parenthèse</p>
+			<p>L'accolade peut être placé juste après les parenthèse</p>
+			<p>Les arguments que l'on passe à une fonction sont placé à la suite de son nom lors de son invocation. Ils ne sont pas indiqué lors de la définition de la fonction</p>
+			<p>Les arguments sont placé dans les paramètres positionnels $1 $2 $3 ... $n ou l'on pourra les consulter dans la fonction</p>
+			<p>Une attitude défensive de programmation voudrai que l'on vérifie au moins que le bon nombre d'arguments à été passé</p>
+			<p>C'est possible grâce aux paramètres spécial $@ qui contient le nombre de paramètre positionnel reçu</p>
+			<p>Exemple de code dans une fonction qui vérife que l'on à bien 3 paramètres positionnel reçu<code>
+			<p><code>&gt;function trois_arg</br>&gt;{</br>&gt;#Cette runtime attend trois arguments</br>&gt;if [ $# -ne  3 ] ; then</br>&gt;echo "Nbr d'arguments erroné dans trois_arg()"</br>&gt;return</br>&gt;fi</br>&gt;echo "Traitement des arguments de trois_arg()"</code></p>
+			<p><u>Exemple de transmition des arguments passé en ligne de commande à une fonction</u></p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;function additionne
+&gt;{
+&gt;	#Cette routine additionne tous ses arguments, et
+&gt;	#affiche le résultat sur la sortie standard
+&gt;	local somme
+&gt;	local i
+&gt;	somme=0
+&gt;	for i in "$@" ; do
+&gt;		somme=$((somme + i))
+&gt;	done
+&gt;	echo $somme
+&gt;}
+&gt;#Appeler la fonction avec les arguments reçus
+&gt;#en ligne de commande.
+&gt;additionne "$@"</code></pre></p>
+			<p> La dernière ligne appel la fonction additionne en lui transmetant tous les arguments grâce au paramètre spécial "$@" entouré des "" pour garder les espaces ou autres caractères spéciaux</p>
+			<p>Le paramètre positionnel $0 conserve la même valeur que dans le reste du script, c'est à dire le nom et le chemin d'accès du fichier contenant le script
+			<p>Le mot clé local permet d'indiquer que la variable déclaré ainsi ne sera visible que dans la fonction déclaré</p>
+			<p>La déclaration local protège la modification de variable externe à la fonction</p>
+			<p>La déclaration  local permet également l'appel récursif de la fonction</p>
+			<p><u>Exemple de code avec un appel récursif :</u></p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;function explore_repertoire
+&gt;{
+&gt;	local f
+&gt;	local i
+&gt;	#Faire précéder le nom du répertoire reçu en premier
+&gt;	#argument par autant de caractères blancs que la 
+&gt;	#valeur du second argument/
+&gt;	i=0
+&gt;	while [ $i -lt $2 ] ; do
+&gt;		echo -n " "
+&gt;		i=$((i+1))
+&gt;	done
+&gt;	echo "$1"
+&gt;	#Se déplacer dans le 1er répertoire. Si échec -> abandon
+&gt;	if ! cd "$1" ; then return ; fi
+&gt;	#Balayer tout le contenu du répertoire
+&gt;	for f in * ; do
+&gt;		#Sauter les liens symboliques
+&gt;		if [ -L "$f" ] ; then
+&gt;			continue
+&gt;		fi
+&gt;		#Si on a trouvé un sous-répertoire, l'explorer en
+&gt;		#incrémentant sa position (de 4 pour l'esthétique)
+&gt;		if [ -d "$f" ] ; then
+&gt;			explore_repertoire "$f" $(($2 + 4))
+&gt;		fi
+&gt;	done
+&gt;	#Revenir dans le répertoire initial
+&gt;	cd ..
+&gt;}
+&gt;
+&gt;#Lancer l'exploration à partir de l'argument
+&gt;explore_repertoire "$1" 0</code></pre></p>
+			<p>L'appel de la variable $f est obligatoire en local sinon l'appel récursif  aurait été modifié sa valeur avant le retour</p>
+			<p>PLus on descend dans l'arborescence plus ont rempli avec des espaces blancs pour mieu voir l'emplacement de chaque fichier</p>
+		</article>
+		<h1><u>La valeur retourné par une fonction</u></h1>
+		<article>
+			<p>Une fonction retourne une valeur qui est le code retour de la dernière instruction exécuté</p>
+			<p>L'instruction return permet, si on le désire de définir explicitemetn un code retour</p>
+			<p>Le code retour d'une fonction sert principalement pour les test de condition type if_then_else_fi</p>
+			<p>Se code retour ne peut pas être stocker dans une variable (En règle général) ni être affiché</p>
+			<p>Le code est égal à zéro pour signifié pas de souci. C'est égal à true</p>
+			<p>Si c'est une autre valeur alors erreur dans l'éxécution. c'est false</p>
 		</article>
 	</section>
     </body>
