@@ -1,5 +1,6 @@
 <?php
-$adr = "/pages/";
+/*requete pour récuperer les 10 derniers messages*/
+$adr="/pages/";
 echo "
     <header>
         <nav>
@@ -23,7 +24,16 @@ echo "
         </nav>
     </header>
         
-        <aside>
-            <img src=\"/pages/img/mini_yoda.jpg\" alt=\"maitre yoda\" />
-        </aside>";
+     <aside id=\"image\">
+        <img src=\"/pages/img/mini_yoda.jpg\" alt=\"maitre yoda\" />
+     </aside>
+     <aside id=\"chat\">
+        <p><u>Petit chat pour dialoguer entre utilisateur :</u></p>
+        <form method='post'>
+            <label for='pseudo'>Pseudo : </label><input type='text' name='pseudo' id='pseudo' /><br/>
+            <label for='Message'>Message : </label><textarea name='message' id='message' rows='20' cols='45'></textarea><br/>
+            <input type='submit' value='Envoyer' />
+        </form>
+     </aside>
+     ";
 ?>

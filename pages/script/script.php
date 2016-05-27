@@ -706,6 +706,7 @@ l’égalité et != pour la différence. Les conditions peuvent être associées
 	<section id="condition_if">
 		<h1><u>Les conditions de structure if_then_elif_then_else_fi</u></h1>
 		<article>
+			<p><strong>Pour connaitre les options des conditions man test</strong></p>
 			<p>La structure :<code></br>&gt;if condition1 ; then</br>	&gt;instruction</br>&gt;elif condition2 ; then</br>	&gt;instruction</br>&gt;else</br>	&gt;instruction</br>&gt;fi</code></p>
 			<p>Il est recommandé d'utiliser les [ ] pour entourer les conditions</p>
 			<p>then peut se mettre à la ligne le ; n'est plus necessaire dans ce cas</p>
@@ -1214,7 +1215,7 @@ echo "Instalation pour noyau de type $Type_noyau"
 			<p>Les arguments sont placé dans les paramètres positionnels $1 $2 $3 ... $n ou l'on pourra les consulter dans la fonction</p>
 			<p>Une attitude défensive de programmation voudrai que l'on vérifie au moins que le bon nombre d'arguments à été passé</p>
 			<p>C'est possible grâce aux paramètres spécial $@ qui contient le nombre de paramètre positionnel reçu</p>
-			<p>Exemple de code dans une fonction qui vérife que l'on à bien 3 paramètres positionnel reçu<code>
+			<p>Exemple de code dans une fonction qui vérife que l'on à bien 3 paramètres positionnel reçu</p>
 			<p><code>&gt;function trois_arg</br>&gt;{</br>&gt;#Cette runtime attend trois arguments</br>&gt;if [ $# -ne  3 ] ; then</br>&gt;echo "Nbr d'arguments erroné dans trois_arg()"</br>&gt;return</br>&gt;fi</br>&gt;echo "Traitement des arguments de trois_arg()"</code></p>
 			<p><u>Exemple de transmition des arguments passé en ligne de commande à une fonction</u></p>
 			<p><pre><code>
