@@ -35,6 +35,9 @@
 				<li><a href="#for_do">La boucle for_do_done</a></li>
 				<li><a href="#select">La boucle de selection select_do_done</a></li>
 				<li><a href="#fonction">Les fonctions dans un script</a></li>
+				<li><a href="#commande">Quelques commandes shell</a></li>
+				<li><a href="#getopts">La fonction de haut niveau getopts pour les arguments en ligne de commandes</a></li>
+				<li><a href="#touch">La commande touch pour créer un fichier et modifier date dernier modif ou creation</a></li>
             </ol>
         </article>
     </section>
@@ -1289,6 +1292,355 @@ echo "Instalation pour noyau de type $Type_noyau"
 			<p>Se code retour ne peut pas être stocker dans une variable (En règle général) ni être affiché</p>
 			<p>Le code est égal à zéro pour signifié pas de souci. C'est égal à true</p>
 			<p>Si c'est une autre valeur alors erreur dans l'éxécution. c'est false</p>
+		</article>
+	</section>
+	<section id="commande">
+		<h1><u>Quelques commandes pour script Shell très utilent</u></h1>
+		<article>
+			<p>Les commandes du shell peuvent se répartir en trois catégories</p>
+			<ol>
+				<li>Configuration du comportement du shell</li>
+				<li>L'éxecution de scripts</li>
+				<li>Les interactions avec le système</li>
+			</ol>
+			<h3><u>La commande set permet de configurer le comportement du shell</u></h3>
+			<p>Cette commande propose un grands nombres d'arguments. Consulter man bash</p>
+			<p><u>Voici une liste de quelques options utilent</u></p>
+			<table>
+				<thead>
+					<tr>
+						<th>Options</th>
+						<th>Significations</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>-a <br />ou<br />-o allexport</td>
+						<td>Toutes les variables sont automatiquement exporter dans les processus fils</td>
+					</tr>
+					<tr>
+						<td>-n<br />ou<br />-o noexec</td>
+						<td>Ne pas éxecuter les commandes du script mais les afficher pour permettre le debogage.</td>
+					</tr>
+					<tr>
+						<td>-u<br />ou<br />-o nounset</td>
+						<td>La lecture d'une variable inexistente déclenchera une erreur. Cela et très précieux pour la mise au point de script</td>
+					</tr>
+					<tr>
+						<td>-v<br />ou<br />-o verbose</td>
+						<td>Afficher le contenu du script au fur et à mesure de son execution</td>
+					</tr>
+					<tr>
+						<td>-x<br />ou<br />-o xtrace</td>
+						<td>Permettre le suivi du script instruction par instruction. </td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="2">Utiliser le + à la place du - devant une option permet réclamer le comprtement contraire</td>
+					</tr>
+					<tr>
+						<td colspan="2">Il est recommander d'utiliser l'option set -u au début d'un script pour détecter immédiatement les fautes de frappes</td>
+					</tr>
+				</tfoot>
+			</table>
+			<h3><u>La commande source ou . pour appeler un script au lieu de ./</u></h3>
+			<p>Le lancement d’un script ou d’une commande externe peut se faire de plusieurs manières. Tout d’abord, on peut appeler directement le programme, sur la ligne de commande
+				ou dans une ligne de script, si le fichier se trouve dans un répertoire mentionné dans la variable PATH , ou si le chemin d’accès est indiqué en entier. Dans ce cas, un processus fils
+				est créé, grâce à l’appel système fork() , et ce nouveau processus va exécuter la commande indiquée. Dès que celle-ci se termine, le processus fils « meurt » également.
+				Le processus père attend la fin de son fils et en reçoit un code – dont il tient compte ou non – expliquant les circonstances de la terminaison du processus. La création d’un
+				processus fils peut être mise en évidence grâce à la variable spéciale $$ qui, nous le verrons plus bas, contient le PID (Process Identifier) du processus.</p>
+			<p>Dans le cas d’un script shell, on peut également demander que l’exécution ait lieu dans l’environnement en cours, le shell lisant le script ligne à ligne et l’interprétant directement. Pour cela, on utilise la commande source , que l’on peut également abréger en un
+			simple point. Cela présente deux avantages essentiels : </p>
+			<ul>
+				<li>Le script exécuté peut modifier l’environnement du shell courant, aussi bien les variables</li>
+			que le répertoire de travail ;
+				<li>Le fichier n’a pas besoin d’être exécutable.</li>
+			</ul>
+			<p>Attention toutefois si le script se termine par une instruction exit alors c'est le shell lui-même que de fermera</p>
+			<p>L'utilisation de source ou . est réserver au script shell/bash</p>
+			<h3><u>La commande exec demande qu'un fichier binaire soit executé par le même processus que le shell en cour</u></h3>
+			<p>A ce momment la toute l'image mémoire sera remplacée définitivement par celle de l'éxécutable réclamé</p>
+			<p>Lorsque le processus se termine le processus mourra sans revenir au shell</p>
+			<h3><u>La commande exit pour interompre un processus</u></h3>
+			<p>Il est parfois nécessaire de terminer un script shell brutalement, sans attendre d’arriver à
+				la dernière instruction, ou depuis l’intérieur d’une fonction, comme c’est le cas dans la
+				gestion d’erreurs critiques. Une commande interne, nommée exit , termine immédia-
+				tement le shell en cours, en renvoyant le code de retour indiqué en argument. Si ce code
+				est absent, exit renvoie le code de la dernière commande exécutée.
+				Par convention, un code nul correspond à une réussite, et prend une valeur vraie dans un
+				test if . Un code non nul signifie « échec » et renvoie une valeur fausse pour if .
+			</p>
+			<p><strong>On notera toutefois que l’appel exit termine entièrement le shell en cours. Lors d’une
+			invocation classique, le processus fils créé pour exécuter le script se finit et le processus
+			père reprend la main. En revanche, lors d’une invocation avec source ou exec , le shell
+			original est également terminé.
+			</strong></p>
+			<h3><u>La commande cd dispose d'option très utilent</u></h3>
+			<p>cd est une commande interne pas d'un utilitaire système</p>
+			<p>La commande cd a quelques particularités intéressantes :
+			<ul>
+				<li>cd seul revient dans le répertoire indiqué dans la variable HOME configurée lors de la
+				connexion de l’utilisateur. Si cette variable n’existe pas, cd ne fait rien.</li>
+				<li>cd - ramène dans le répertoire précédent. On peut alterner ainsi entre deux répertoires
+				avec des invocations cd - successives.Commandes, variables et utilitaires système</li>
+				<li>Lorsque l’argument de cd n’est pas un chemin complet, le sous-répertoire de destina-
+				tion est recherché par des balayages des répertoires indiqués dans la variable CDPATH .
+				Celle-ci n’est que rarement configurée. Lorsqu’elle n’existe pas, cd considère qu’elle
+				vaut « .  » : c’est-à-dire qu’il ne recherche la destination que dans les sous-répertoires
+				du répertoire courant.</li>
+			</ul>
+			<p>Inversement, pour retrouver le nom du répertoire courant, on peut recourir à une
+				commande interne nommée pwd qui fournit ce nom sur sa sortie standard. Il est préférable
+				d’employer cette commande car elle est optimisée, même s’il existe un utilitaire système
+				/bin/pwd .
+			</p>
+			<h3><u>La commande echo très utilisé envoie des informations sur la sortie standard</u></h3>
+			<p>Il s'agit d'une commande interne au shell mais un utilitaire sous forme executable existe souvant dans les distributions /bin/echo</p>
+			<p><u>Voici une liste d'options : </u></p>
+			<table>
+				<thead>
+					<tr>
+						<th>Option</th>
+						<th>echo interne</th>
+						<th>/bin/echo</th>
+						<th>Signification</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>-n</td>
+						<td>oui</td>
+						<td>oui</td>
+						<td>Ne pas afficher de saut à la ligne après l'affichage. Cela permet de juxtaposer des messages lors d'appel sucessifs, ou d'afficher un symbole invitant l'utilisateur à une saisie.</td>
+					</tr>
+					<tr>
+						<td>-e</td>
+						<td>oui</td>
+						<td>oui</td>
+						<td>Interpréter les séquences particulières de caractères</td>
+					</tr>
+					<tr>
+						<td>-E</td>
+						<td>oui</td>
+						<td>oui</td>
+						<td>Ne pas interpréter les séquences spéciales. Il s'agit du comportement par défaut</td>
+					</tr>
+					<tr>
+						<td>--version</td>
+						<td>non</td>
+						<td>oui</td>
+						<td>Afficher le numéro de version de l'utilitaire</td>
+					</tr>
+					<tr>
+						<td>--help</td>
+						<td>non</td>
+						<td>oui</td>
+						<td>Afficher un écran d'aide</td>
+					</tr>
+				</tbody>
+			</table>
+			<p><u>Précision sur les option -E et -e pour l'interprètation des séquences particulières</u></p>
+			<p>Les options décritent ci-dessous ne fonctionne que si l'option -e est activé</p>
+			<table>
+				<thead>
+					<tr>
+						<th>Séquences</th>
+						<th>Significations</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>\\</td>
+						<td>Affichage du caractère littèral \</td>
+					</tr>
+					<tr>
+						<td>\XXX</td>
+						<td>Affichage du caractère ascii corespondant au code XXX exprimé en octal</td>
+					</tr>
+					<tr>
+					<tr>
+						<td>\a</td>
+						<td>Sonnerie</td>
+					</tr>
+						<td>\b</td>
+						<td>Retour en arrière d'un caractère</td>
+					</tr>
+					<tr>
+						<td>\c</td>
+						<td>Eliminer le saut de ligne final(comme l'option -e)</td>
+					</tr>
+					<tr>
+						<td>\f</td>
+						<td>Saut de page</td>
+					</tr>
+					<tr>
+						<td>\n</td>
+						<td>Saut de ligne</td>
+					</tr>
+					<tr>
+						<td>\r</td>
+						<td>Retour chariot en début de ligne</td>
+					</tr>
+					<tr>
+						<td>\t</td>
+						<td>Tabulation horizontale</td>
+					</tr>
+					<tr>
+						<td>\v</td>
+						<td>Tabulation verticale</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>On peut utilisé ses séquences pour controler grossièrement le mouvement du cursuer</p>
+			<p><u>Par exemple la commande suivante affiche la date en bas à gauche de l'écran</u></p>
+			<p><code>while true ; do D=$(date)i ; echo -en "\r$D" ; done</code>
+			<p>Chaque écritue de ce code écrase la ligne précédente grâce au retour chariot au début de ligne</p>
+			<h3><u>La commande read lit l'entrée standard</u></h3>
+			<p>C'est une commande interne. elle prend en argument une ou plusieurs variables.</p>
+			<p>Si aucune variable n'est renseigné alors le contenu et envoyé dans la variable spéciale $REPLY</p>
+			<p>Elle lit une ligne depuis l'entrée standard puis la scinde en diffèrents mot pour remplir les variables indiqués</p>
+			<p>Le découpage a lieu en utilisant comme séparateur les caractères présent dans la varibale spéciale IFS</p>
+			<p>Le premier mot sera stocké dans la première variable le second dans la second jusqu'a la dernière qui recevra le reste de la ligne</p>
+			<p>La fonction read est interne au Shell il ne serait donc pas possible d'utiliser un éxecutable binaire /bin/read qui serait éxecuté dans un sous-processus et qui ne modifirai pas les variables dans le processus père</p>
+			<p>Pour la même raison on ne peut pas utilisé read dans un papeline, car chaque commande peut être éxecuter dans un processus indépendant</p>
+			<p>Prenons un exemple : retrouver le nom complet de l'utilisateur à partir de son nom de connexion en consultant le fichier : /etc/passwd</p>
+			<p>Ce fichier est constitué de la façon suivante :</p>
+			<ol>
+				<li>identifiant</li>
+				<li>mot de passe (généralement absent car dissimuler par le fichier /etc/shadow)</li>
+				<li>numéro de l'identification de l'utilisateur</li>
+				<li>numéro d'identification du groupe principal auquel appartient l'utilisateur</li>
+				<li>nom complet de l'utilisateur</li>
+				<li>répertoire personnel de connexion</li>
+				<li>shell utilisé</li>
+			</ol>
+			<p>Mauvais exemple : <code>&gt;$IFS=":"; grep $USER /etc/passwd | read ident passe uid gid nom reste</code></p>
+			<p>Hélas ce code n'est pas portable car read sera éxécuté dans sous processus et ne modifie pas la variable ident du shell père</p>
+			<p>Mais dans certaine version de shell korn cette commande fonctionne car il considère qu'une commande read placé en dernière position d'un papeline doit être éxecuté par le shell père</p>
+			<p>Une solution consiste à stocker le résultat des commandes en amont dans des variables; puis envoyé les valeurs dans une entrée standard redirigé depuis cette variable au moyen d'un document en ligne</p>
+			<p>Exemple :</br><pre><code>
+&gt;/bin/sh: 1: Syntax error: redirection unexpected=$(grep $USER /etc/passwd)
+&gt;IFS=":"
+&gt;read ident passe uid gid nom restant &lt;&lt;FIN
+&gt;$A
+&gt;FIN
+&gt;echo "Le nom de $ident est : $nom"
+			</code></pre></p>
+			<p>Le comportement du shell par rapport à la variable IFS est parfois un peu déroutant.
+			Il faut savoir qu’elle lui sert essentiellement à séparer les mots obtenus sur une ligne, de
+			façon à distinguer les commandes et les arguments. Par défaut, IFS contient les caractères
+			espace, tabulation et retour chariot. Cette variable a été employée à de nombreuses reprises
+			pour exploiter des failles de sécurité, aussi les shells modernes prennent-ils à son encontre
+			des mesures draconiennes :
+			<ul>
+				<li>IFS n’est jamais exportée dans l’environnement des sous-processus.</li>
+				<li>IFS est réinitialisée à sa valeur par défaut à chaque démarrage du shell (elle n’est donc
+			pas importée).</li>
+			</ul>
+			Voici une autre explication au fait que la ligne naïve de lecture du nom de l’utilisateur
+			depuis le fichier /etc/passwd avec un pipeline ne fonctionne pas, IFS reprenant sa valeur
+			par défaut dans chacun des sous-processus.</p>
+		</article>
+	</section>
+	<section id="getopts">
+		<h1><u>La fonction getopts permet la lecture des options passé en ligne de commande</u></h1>
+		<article>
+			<p><u>Structure d'utilisation de getopts :</u></p>
+			<p><pre><code>
+			&gt;#!/bin/bash
+			&gt;
+			&gt;while getopts liste_d_options option ; do
+			&gt;	case $option in
+			&gt;		option_1 ) .... ;;
+			&gt;		option_2 ) .... ;;
+			&gt;		? ) ... ;;
+			&gt;	esac
+			&gt;done</code></pre></p>
+			<p>Le premier argument qui se trouve à la suite de getopts contient toutes les lettres accepté par le script pour introduire une option</p>
+			<p>Si une option doit complété par un argument, on fait suivre la lettre de deux point (:)</p>
+			<p>Par exemple les options de la commande touch reconnue par le SUSv3 comprenne au moins :</p>
+			<table id="touch">
+				<thead>
+					<tr>
+						<th>Options</th>
+						<th>Significations</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>-a</td>
+						<td>Mettre à jour la date et l'heure du dernier accès au fichier</td>
+					</tr>
+					<tr>
+						<td>-c</td>
+						<td>ignorer les fichiers qui n'éxistent pas</td>
+					</tr>
+					<tr>
+						<td>-m</td>
+						<td>Mettre à jour la date et l'heure de la dernière modification du fichier</td>
+					</tr>
+					<tr>
+						<td>-r fichier</td>
+						<td>Utilisé la date et l'heure du fichier indiqué plutôt que la date actuelle</td>
+					</tr>
+					<tr>
+						<td>-t date</td>
+						<td>Utilisé la date et l'heure fournies plutôt que la date actuelle.</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>On peut écrire comme ceci la chaîne qui décrit les options : acmr:t: . À chaque appel, la fonction getopts incrémente la variable interne OPTIND qui vaut zéro
+				par défaut au début du script, et examine l’argument de la ligne de commande ayant ce rang. S’il s’agit d’une option simple, qui ne réclame pas d’argument, elle place la lettre
+				correspondante dans la variable dont le nom a été fourni à la suite de la chaîne d’options. S’il s’agit d’une option qui nécessite un argument supplémentaire, elle en vérifie la
+				présence, et le place dans la variable spéciale OPTARG . La fonction getopts renvoie une valeur vraie si une option a été trouvée, et fausse sinon. Ainsi, après lecture de toutes les
+				options qui se trouvent en début de ligne de commande, on peut accéder aux arguments qui suivent, simplement en sautant les OPTIND-1 , premiers mots grâce à l’instruction
+				shift . Lorsqu’une option illégale est rencontrée, getopts remplit la variable d’option avec un point d’interrogation.
+			</p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;#L'option c et l'option d peuvent prendre des arguments signifié avec les deux (:)
+&gt;while getopts "abc:d:" option ; do
+&gt;	echo -n "Analyse argument numéro $OPTIND : "
+&gt;	case $option in
+&gt;		a ) echo "Option A" ;;
+&gt;		b ) echo "Option B" ;;
+&gt;		c ) echo "Option C, argument $OPTARG" ;;
+&gt;		d ) echo "Option D, argument $OPTARG" ;;
+&gt;		? ) echo "Inconnu" ;;
+&gt;	esac
+&gt;done
+&gt;echo $OPTIND
+&gt;shift $((OPTIND - 1))
+&gt;while [ $# -ne 0 ] ; do
+&gt;	echo "Argument suivant : " $1
+&gt;	shift
+&gt;done</code></pre></p>
+			<p><u>Gérer les erreurs</u></p>
+			<p>Si on place une option qui doit prendre un argument et que l'on omet cette argument getopts place dans la variable d'option ? mais affiche également un message d'erreur indiquant qu'il manque un argument puis il efface la variable $OPTARG et continue l'éxécution</p>
+			<p>Si la variable OPTERR contient la valeur 0, alors le shell n'affiche plus le message d'erreur par contre il place bien ? dans la variable option efface OPTARG</p>
+			<p>Nous pouvons observer que le comportement est identique pour deux cas d’erreur différents. Cela est un peu gênant en termes de dialogue avec l’utilisateur, aussi le shell
+			propose-t-il de différencier les deux situations. Lorsque le premier caractère de la chaîne contenant les options est un deux-points, getopts n’affiche aucun message d’erreur, mais
+			adopte le comportement suivant :
+			<ol>
+				<li>lorsqu’une lettre d’option illégale est rencontrée, le caractère « ?  » est placé dans la variable d’option, et la lettre est placée dans OPTARG ;</li>
+				<li>si un argument supplémentaire est manquant, le caractère « :  » est placé dans la variable d’option, et la lettre de l’option qui nécessite l’argument est placée dans OPTARG .</li>
+			</ol>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;while getopts ":abc:d:" option ; do
+&gt;	case $option in
+&gt;		a ) echo "Option -a" ;;
+&gt;		b ) echo "Option -b" ;;
+&gt;		c ) echo "Option -c, argument $OPTARG" ;;
+&gt;		d ) echo "Option -d, argument $OPTARG" ;;
+&gt;		: ) echo "Argument manquant pour l'option -$OPTARG" ;;
+&gt;		? ) echo "Option -$OPTARG inconnue" ;;
+&gt;	esac
+&gt;done
+			</code></pre></p>
 		</article>
 	</section>
     </body>
