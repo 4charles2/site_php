@@ -38,6 +38,14 @@
 				<li><a href="#commande">Quelques commandes shell</a></li>
 				<li><a href="#getopts">La fonction de haut niveau getopts pour les arguments en ligne de commandes</a></li>
 				<li><a href="#touch">La commande touch pour créer un fichier et modifier date dernier modif ou creation</a></li>
+				<li><a href="#wait">La commande wait pour attendre la fin des processus fils ou d'un processus renseigné avec son PID</a></li>
+				<li><a href="#commande_externe">Utilisation des commandes externes</a></li>
+				<li><a href="#parallelisme_processus_fils">Le parallélisme des processus fils</a></li>
+				<li><a href="#at">La commande at pour programmer une commande à une heure précise</a></li>
+				<li><a href="#processus_background">Contrôler et lancer des processus en arrière plan</a></li>
+				<li><a href="#ps">La commande ps pour afficher les procesuss en cour</a></li>
+				<li><a href="#mkfifo">Utilisé la commande mkfifo pour créer des files</a></li>
+				<li><a href="#entrer_sortie">Système d'entrée sortie du shell</a></li>
             </ol>
         </article>
     </section>
@@ -1048,6 +1056,9 @@ echo "Instalation pour noyau de type $Type_noyau"
 			<p>echo affichera le nom des argumments passé en ligne de commande</p>
 			<p>Exemple d'utilisation de la boucle for en ligne de commande pour rennommer tous les fichier .TGZ en tar</p>
 			<p><code>&gt;for i in *.TGZ ; do mv $i ${i%%.TGZ}.tar ; done</code></p>
+			<p>Exemple de boucle avec la commande seq qui va décompte les nombre de 5 à 0</p>
+			<p><code>&gt;for i in $(seq -5 0) ; do echo ${i#-} ; sleep 1 ; done</code></p>
+			<p>Le résultat sera 5 4 3 2 1 0 avec une pause de 1 seconde entre chaque numéro</p>
 		</article>
 	</section>
 	<section id="select">
@@ -1641,7 +1652,772 @@ echo "Instalation pour noyau de type $Type_noyau"
 &gt;	esac
 &gt;done
 			</code></pre></p>
+			<p>Dans ce code si l'on omet un argument alors les deux points seront placé dans la variable d'option et la lettre de l'option sera placé dans la variable OPTARG</p>
+			<p>Le message d'erreur sera alors beaucoup plus claire puisque si l'argument d'une option et absent alors le message d'erreur sera argument manquant pour l'option (Lettre de l'option)</p>
+			<h3><u>La fonction getopts également pour les arguments passé à une fonction</u></h3>
+			<p>La fonction getopts peut également servir pour lire les arguments passé à une fonction<u><strong>Il ne faut pas oublier de remettre la varirable OPTIND à zéro</strong></u></p>
+			<p>Avant d'invoquer la fonction getopts. L'appel à getopts dans une fonction peut s'avérer utile surtout si la fonction et exporté dans l'environnement</p>
+			<h3><u>getopts et les options longues exemple --help</u></h3>
+			<p>La fonction getopts ne permet pas de lire directement les options longue avec les deux -- devant à la mamière des utilitaires GNU</p>
+			<p>Il faut pour cela utiliser un artifice. On utilise le caractere - dans la chaine d'option suivi des : (deux points) pour definir le nom de l'option</p>
+			<p>Une astuce pour que le travaille soit réalisé qu'une fois c'est de remplacer le - de l'option longue par la lettre de l'option courte</p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;VERSION=3.14
+&gt;while getopts ":hv-:" option ; do
+&gt;	if [ "$option" = "-" ] ; then
+&gt;		case $OPTARG in
+&gt;			help ) option=h ;;
+&gt;			version ) option=h ;;
+&gt;			* ) echo "Option $OPTARG inconnue" ;;
+&gt;		esac
+&gt;	fi
+&gt;	case $option in
+&gt;		h ) echo "Syntaxe : $(basename $0) [option...]"
+&gt;			echo " Options :"
+&gt;			echo " -v --version : Numéro de version"
+&gt;			;;
+&gt;		v ) echo "Version $(basename $0) $VERSION" ;;
+&gt;		? ) echo "Inconnu" ;;
+&gt;	esac
+&gt;done</pre></code></p>
+			<p>L'utilisation d'option permet de documenter automatiquement l'invocation d'un utilitaire dans un script, et améliore donc l'ergonomie de l'application.</p>
+			<p>Il faut quand même être conscient que leur implémentation, telle que nous l’avons décrite ici, ne permet pas de disposer de toutes les fonctionnalités réellement offertes par les routines
+			d’analyse de la ligne de commande présentes dans la bibliothèque C. Entre autres, on ne peut pas facilement proposer d’options longues qui acceptent des arguments supplémentaires.</p>
+		</article>
+	</section>
+	<section id="variable_interne">
+		<h1><u>Voici le fonctionnement des variables internes</u></h1>
+		<article>
+			<p>Le shell gère automatiquement un grand nombre de variable interne qui fournissent des informations aus scripts, ou de modifier certains comprtement du shell</p>
+			<p>Pour les variables internes modifiant le comportement de bash se réferer à l'aide en ligne</p>
+			<h3><u>La variable $?</u></h3>
+			<p>La variable $? contient le code de retour du dernier papeline exécuter à l'avant-plan</p>
+			<p>Ceci permet de récupérer le code retour d'une commande. Et del'analyser en détails</p>
+			<p>Exemple la commande ping envoie des demandes d'echo à l'hôte indiqué sur sa ligne de commande</p>
+			<p>Si elle reçoit bien la réponse en écho alors elle se terminera alors avec un code de retour null. Si elle ne reçoit aucune réponse après un temps limite indiqué elle renverra 1. Si une autre erreur se produit alors elle renverra deux (2)</p>
+			<p>Exemple de code : <pre><code>
+	&gt;#!/bin/bash
+	&gt;
+	&gt;while [ -n "$1" ]; do
+	&gt;	# on envoie un seul paquet et on
+	&gt;	# attend au plus deux secondes
+	&gt;	ping -c 1 -w 2 $1 &lt; /dev/null 2&lt;&amp;1
+	&gt;	resultat=$?
+	&gt;	# ....
+	&gt;	if [ $resultat = 0 ]; then
+	&gt;		echo "$1 Ok !"
+	&gt;	elif [ $resultat = 1 ]; then
+	&gt;		echo "$1 injoignable"
+	&gt;	else
+	&gt;		echo "$1 inexistant"
+	&gt;	fi
+	&gt;	shift
+	&gt;done</code></pre></p>
+			<p>Le résultat mémorisé à la ligne <code>resultat=$?</code> Pourrait être traité beaucoup plus loin dans le script, sans que les commandes éxécuté entre temps symbolisé par la ligne #.... n'interfere</p>
+			<h3><u>Les variables $$ $! PPID</u></h3>
+			<p><u>Le paramètre $$</u></p>
+			<p>Le paramètre $$ contient le PID (process Identifier) du shell en cour. Il ne s'agit pas du PID de la commande en cour mais du shell principal. Lorsque qu'un sous shell et invoque avec les parenthèses par exemple $$ ne change pas il garde l'identiter du shell père</p>
+			<p>Même avec les parenthèses pour protéger l'interpretation directe du nom du paramètre. Pour qu'il change il faut qu'effectivement un nouveau shell soit invoqué avec la commande sh ou bash</p>
+			<p><u>Le paramètre $!</u></p>
+			<p>Le paramètre $! contient le PID de la dernière commande exécuté en arrière plan</p>
+			<p><u>La variable PPID</u></p>
+			<p>La variable PPID qui n'est pas modifiable contient le PPID (parent PID), c'est à dire le PID du processus père du shell en cour</p>
+			<p>Le fonctionnement qui en résulte par à rapport aux sous-shell est identique à celui de $$</p>
+			<h3><u>Les variables UID EUID</u></h3>
+			<p>Ces deux variables accessible uniquement en lecture, contiennte respectivement l'UID (User Identifier) réel et l'UID effectif du shell.</p>
+			<p>L'UID réel et le numéro d'identification de l'utilisateur qui à lancé le shell</p>
+			<p>L'UID effectif est l'identification qui est prise en compte par le noyau pour vérifier les autorisations d'accès aux divers éléments du système (et en premier lieu aux fichiers)</p>
+			<p>Dans la plupart des cas ces deux variables doivent contenir la même valeur</p>
+			<p>Elles diffèrent losrque qu'un processus est lancée avec des privilèges plus élevé (en général) que ceux dont dispose normalement l'utilisateur qui à lancer le sous-shell</p>
+			<p>Cela permet de fournir un accès à des éléments critiques du système avec un contrôle bien particulier</p>
+			<p>Pour que cela soit possible, les bits d’autorisation du fichier exécutable du processus doivent inclure un bit
+				particulier nommé Set-UID. L’utilisation de scripts Set-UID étant en soi une faille de sécurité sur de nombreux systèmes, Linux ne tient aucun compte de ce bit pour les
+				scripts. La seule manière d’invoquer un script avec un UID effectif, différent de l’UID réel, est de l’appeler depuis l’intérieur d’un programme C compilé, disposant lui-même
+				du bit Set-UID. Il n’est généralement pas utile de se soucier de ces variables mais, dans le cas où c’est
+				indispensable, on utilisera UID pour identifier l’utilisateur qui dialogue avec le script et EUID pour connaître l’identité prise en compte pour les autorisations d’accès.</p>
+			<h3><u>Les variables HOME, PWD, OLDPWD</u></h3>
+			<p>La variable HOME contient le répertoire personnel de l'utilisateur. C'est l'endroit ou l'on revient automatiquement lorsque l'on invoque la commande cd sans argument</p>
+			<p>La commande PWD contient le répertoire courant de travail du shell. Cette commande et mise à jour lorsque l'on invoque la cd</p>
+			<p>La commande OLDPWD renferme le répertoire précedent, celui vers lequel on retourne en invoquant cd -</p>
+			<p>La fonction interne PWD affiche le chemin d'accès absolue au répertoire courant à partir de la racine</p>
+			<p>On peut faire en sorte que autant que possible afficher le chemin depuis le repertoire personnel de l'utilisateur</p>
+			<p>Voici le code très simple pour cela</p>
+			<p><pre><code>
+&gt;;#!/bin/bash
+&gt;
+&gt;function pwd ()
+&gt;{
+&gt;;	A=${PWD%%$HOME*}
+&gt;	echo ${A:-\~${PWD#$HOME}}
+&gt;}</pre></code></p>
+			<p>Bien entendu la fonction doit être sourcé pour être accessible depuis le shell. . ou source pwd.bash(Nom du script)</p>
+		</article>
+	</section>
+	<section id="commande_externe">
+		<h1><u>Utilisation des commandes externe</u></h1>
+		<article>
+			<p>Les commandes internes offertes par le shell ne permettent pas de réaliser toutes les opérations souhaitable dans un script.</p>
+			<p>Il souvent souhaitable de faire appel à des fonctions externes généralement programmé en C, qui peuvent dialoguer de façon plus complète avec le système.</p>
+			<p>Les utilitaires standards sont disponibles sur la majeure partie des systèmes Unix, même si leurs options peuvent différer légèrement suivant les implémentations. La norme
+			SUSv3 en décrit une partie, ce qui leur confère une certaine portabilité. Le tableau présenté ci-après regroupe quelques utilitaires parmi les plus pratiques. On se
+			reportera aux pages individuelles de chaque commande de manuel pour avoir des précisions sur leur invocation.</p>
+			<table>
+				<thead>
+					<tr>
+						<th>nom</th>
+						<th>SUSv3 ?</th>
+						<th>Utilité</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>at <br />batch</td>
+						<td>oui <br/>oui</td>
+						<td>Différer l’exécution d’un programme. La commande at permet d’indiquer l’heure de démarrage retenue pour une tâche. batch attend que le système ne soit pas trop chargé.</td>
+					</tr>
+					<tr>
+						<td>basename</td>
+						<td>Oui</td>
+						<td>Éliminer le chemin d’accès et un éventuel suffixe dans un nom de fichier.</td>
+					</tr>
+					<tr>
+						<td>bc</td>
+						<td>Oui</td>
+						<td>Effectuer des calculs en virgule flottante.</td>
+					</tr>
+					<tr>
+						<td>bzip2</td>
+						<td>Non</td>
+						<td>Compresser ou décompresser des fichiers. Le taux de compression est souvent légèrement meilleur que celui atteint avec gzip . En revanche, la portabilité est moins bonne.</td>
+					</tr>
+					<tr>
+						<td>cat</td>
+						<td>Oui</td>
+						<td>Copier l’entrée standard vers la sortie standard. Peut servir à afficher un texte en utilisant un document en ligne, ou à saisir plusieurs lignes dans une seule variable.</td>
+					</tr>
+					<tr>
+						<td>cksum<br />md5sum<br />sum</td>
+						<td>Oui<br />Non<br />Non</td>
+						<td>Calculer une somme de contrôle d’un fichier. C’est utile lorsqu’on transfère des données par une liaison peu fiable (lien série, disquette, etc.).
+			md5sum emploie l’algorithme le plus complexe ; sum est le plus simple ; cksum est le plus portable des
+			trois.</td>
+					<tr>
+						<td>csplit</td>
+						<td>Oui</td>
+						<td>Découper un fichier en sections successives, déterminées par des lignes de séparation dont le contenu peut être indiqué dans une expression régulière.</td>
+					</tr>
+					<tr>
+						<td>date</td>
+						<td>Oui</td>
+						<td>Afficher une date avec un format précis. La configuration précise du format permet d’utiliser ce programme pour créer par exemple des noms de fichiers d’enregistrement automatique.</td>
+					</tr>
+					<tr>
+						<td>diff</td>
+						<td>Oui</td>
+						<td>Afficher les différences entre deux fichiers. Le programme diff effectue une analyse intelligente, ce qui permet d’utiliser son résultat pour disposer d’un fichier de variations que l’on transmet à l’utilitaire
+			patch afin d’obtenir les mêmes évolutions sur un autre système.</td>
+					</tr>
+					<tr>
+						<td>echo</td>
+						<td>Oui</td>
+						<td>Envoyer un message sur la sortie standard.</td>
+					</tr>
+					<tr>
+						<td>expr</td>
+						<td>Oui</td>
+						<td>Évaluer une expression. Cet utilitaire présente quelques fonctionnalités supplémentaires par rapport aux possibilités standards du shell. On l’utilise surtout pour le traitement de chaîne, ou pour exécuter des scripts avec un shell allégé (systèmes embarqués).</td>
+					</tr>
+					<tr>
+						<td>false</td>
+						<td>Oui</td>
+						<td>Toujours renvoyer un code d’échec. Sert à tester un script en vérifiant le passage dans les différentes branches de l’algorithme.</td>
+					</tr>
+					<tr>
+						<td>file</td>
+						<td>Oui</td>
+						<td>Afficher le type d’un fichier, en étudiant son contenu. L’analyse permet de reconnaître un grand nombre de fichiers binaires (image, son...) et de sources de différents langages de programmation.</td>
+					</tr>
+					<tr>
+						<td>find</td>
+						<td>Oui </td>
+						<td>Rechercher des fichiers dans une arborescence.</td>
+					</tr>
+					<tr>
+						<td>fmt</td>
+						<td>Non</td>
+						<td>Mettre un texte en forme en coupant les lignes pour qu’elles respectent une largeur donnée . Les césures sont correctement gérées.</td>
+					</tr>
+					<tr>
+						<td>fold</td>
+						<td>Oui</td>
+						<td>Couper les lignes d’un texte moins « intelligemment » qu’avec fmt .</td>
+					</tr>
+					<tr>
+						<td>grep</td>
+						<td>Oui</td>
+						<td>Rechercher un motif dans des fichiers. Nous examinerons cet utilitaire en détail dans le chapitre 7.</td>
+					</tr>
+					<tr>
+						<td>gzip</td>
+						<td>Non</td>
+						<td>Compresser des fichiers. Cet utilitaire est présent sur la plupart des Unix, même s’il est légèrement moins portable que compress .</td>
+					</tr>
+					<tr>
+						<td>head</td>
+						<td>Oui</td>
+						<td>Afficher le début d’un fichier, c’est-à-dire un nombre donné de lignes ou de caractères.</td>
+					</tr>
+					<tr>
+						<td>kill</td>
+						<td>Oui</td>
+						<td>Envoyer un signal à un processus.</td>
+					</tr>
+					<tr>
+						<td>lpr</td>
+						<td>Non</td>
+						<td>Imprimer un fichier. La configuration du système d’impression dépend de l’administrateur, mais cette commande permet généralement d’imprimer au moins des fichiers texte (sources) et la plupart du temps des fichiers formatés (PostScript, HTML, images, etc.)</td>
+					</tr>
+					<tr>
+						<td>nice</td>
+						<td>Oui</td>
+						<td>Modifier la priorité d’un processus. Cette commande permet de lancer un programme en l’empêchant de grignoter tous les cycles processeur, et de déranger ainsi les autres utilisateurs – ou les autres processus. Son exécution sera plus longue, mais plus « courtoise » en quelque sorte.</td>
+					</tr>
+					<tr>
+						<td>nohup</td>
+						<td>Oui</td>
+						<td>Séparer un processus de son terminal de contrôle.</td>
+					</tr>
+					<tr>
+						<td>od</td>
+						<td>Oui</td>
+						<td>Présenter le contenu d’un fichier sous forme de valeurs numériques décimales, hexadécimales ou octales.</td>
+					<tr>
+						<td>paste</td>
+						<td>Oui</td>
+						<td>Juxtaposer les lignes correspondantes provenant de plusieurs fichiers. L’utilité de cette commande ne se présente pas souvent.</td>
+					</tr>
+					<tr>
+						<td>pr</td>
+						<td>Oui</td>
+						<td>Préparer un fichier de texte pour l’impression. Cette commande gère entre autres la largeur et la numérotation des pages.</td>
+					</tr>
+					<tr>
+						<td>printf</td>
+						<td>Oui</td>
+						<td>Afficher des données formatées. Cet utilitaire est une sorte d’ echo nettement amélioré proposant des formats pour afficher les nombres réels. Les programmeurs C reconnaîtront une implémentation en ligne de commande de la célèbre fonction de la bibliothèque stdio .</td>
+					</tr>
+					<tr>
+						<td>ps</td>
+						<td>Oui</td>
+						<td>Afficher la liste des processus en exécution.</td>
+					</tr>
+					<tr>
+						<td>seq</td>
+						<td>Non</td>
+						<td>Développer une liste de valeurs numériques. Cet utilitaire, répandu mais pas inclus dans le standard SUSv3, prend en argument deux valeurs et envoie sur sa sortie standard une liste qui contient tous les nombres intermédiaires. Ainsi, seq 1 10 affiche tous les nombres de 1 à 10. On l’utilise en association avec la commande for du shell.</td>
+					</tr>
+					<tr>
+						<td>sort</td>
+						<td>Oui</td>
+						<td>Trier les lignes d’un fichier. On peut configurer la portion de la ligne qu’il faut utiliser pour les comparaisons, ainsi que la méthode de tri.</td>
+					</tr>
+					<tr>
+						<td>split</td>
+						<td>Oui</td>
+						<td>Découper un fichier en plusieurs parties. Cet utilitaire permet le découpage de fichiers binaires de sorte que leur recollage ultérieur avec cat reconstitue le fichier original. Très utile pour transporter un gros fichier binaire à l’aide de plusieurs suppor ts amovibles (clé USB).</td>
+					</tr>
+					<tr>
+						<td>stty</td>
+						<td>Oui</td>
+						<td>Configurer le terminal. Cet utilitaire permet d’ajuster finement le comportement du terminal (et bien souvent de le rendre temporairement inutilisable !). Nous y recourrons dans le prochain chapitre.</td>
+					</tr>
+					<tr>
+						<td>tail</td>
+						<td>Oui</td>
+						<td>Afficher les dernières lignes d’un fichier. Cela permet par exemple de voir les derniers enregistrements d’un fichier de journalisation ( /var/log/messages ). L’option -f permet un affichage continu à chaque modification.</td>
+					<tr>
+						<td>tar</td>
+						<td>Non</td>
+						<td>Créer des archives regroupant plusieurs fichiers. Cette commande était utilisée à l’origine pour regrouper des fichiers sur une bande, mais on l’emploie à présent pour créer des archives d’une arborescence (fichiers source par exemple). La version GNU inclut des possibilités directes de compression/décompression.
+					</tr>
+					<tr>
+						<td>tee</td>
+						<td>Oui</td>
+						<td>Copier l’entrée standard vers la sortie standard et vers un fichier. On insère parfois cet utilitaire dans un pipeline pour copier « au passage » les données dans un fichier.</td>
+					</tr>
+					<tr>
+						<td>touch</td>
+						<td>Oui</td>
+						<td>Toucher un fichier, ce qui modifie ses horodatages. Cela sert dans des scripts d’administration qui utilisent les dates de dernier accès pour savoir si un fichier peut être effacé. On l’utilise aussi pour forcer la recompilation d’un fichier source avec make , ou pour créer un nouveau fichier vide.</td>
+					</tr>
+					<tr>
+						<td>tr</td>
+						<td>Oui</td>
+						<td>Transposer des caractères lors de la copie de l’entrée standard vers la sortie standard. Cela permet entre autres de remplacer les caractères accentués par leur version nue, de traduire les caractères de contrôle d’une imprimante, ou de supprimer les caractères non imprimables.
+					</tr>
+					<tr>
+						<td>true</td>
+						<td>Oui</td>
+						<td>Toujours renvoyer un code de réussite. Utilisé pour tester un script, ou pour écrire une boucle infinie avec while true ; do .</td>
+					</tr>
+					<tr>
+						<td>wc</td>
+						<td>Oui</td>
+						<td>Compter les lignes, mots et caractères contenus dans un fichier.</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>Pour connaître la liste complète des commandes disponible et leur utilisation consulter les manuels de bash et shell en ligne</p>
+			<p>Sur certain systeme vous pouvez appeler <code>man 1 Index</code> qui représenterat un index des commandes interne et quelques utilitaires externe disponibles</p>
+			<p>Pour plus d'information sur une commande la commande help, par exemple help getopts fournie directement le passage du manuel relatif à cette commande</p>
+			<p>Pour mieux connaître les commandes externes, la meilleur solution consiste à éxaminer les dossiers /bin /usr/bin et d'invoquer la commande man sur chacun des fichiers inconnue</p>
+		</article>
+	</section>
+	<section id="parallelisme_processus_fils">
+		<h1><u>Le parallèlisme et les processus fils</u></h1>
+		<article>
+			<p>Pour dupliquer un processus il suffit qu'il re-invoque lui-même en faisant suivre l'appel d'un &amp;</p>
+			<p>Le paramètre $0 contient le nom du programme ayant servi pour l'éxecution initiale, ainsi l'appel $0 &amp; suffit t-il pour lancer une nouvelle occurence du même script</p>
+			<p>Si on passer au processus fils les arguments reçu sur la ligne de commande il suffit de faire $0 "$@" &amp;</p>
+			<p>Bien évidament le nouveau processus doit être capable de déterminer qu'il est le fils d'un script précedent, afin de ne pas relancer la duplication à l'infinie</p>
+			<p>Un moyen simple consiste à remplir une variable dans le processus père qui sera exporté dans l'environnement du processus fils et une analyse de celle-ci permettra de scinder les deux processus en deux branches d'éxecution</p>
+			<p>Nous savons que le paramètre $$ contient le PID du processus en cour. Mais un autre paramètre est interessant  : $!, qui contient le PID de la dernière commande éxecuté en arrière plan</p>
+			<p>Dans notre exemple nous lançon qu'un processus fils la variable contiendra la valeur PID de ce processus fils mais dans des cas plus important il peut être utile de conserver cette valeur dans une variable jsute apès le lancement en arrière plan</p>
+			<p>Le script suivant contient deux branches distinctes d'éxecution, séparé par un test if</p>
+			<p>La premier contient la branche du processus pere et la seconde du processus fils, chacun d'eux affiche quelque informations sur leur PID et appelle la commande sleep pour s'endormir pendant une seconde</p>
+			<p>Exemple de code : <pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;if [ "$MON_PID" != "$PPID" ] ; then
+&gt;#Processus Père
+&gt;	export MON_PID=$$
+&gt;	echo "PERE : mon PID est $$"
+&gt;	echo "PERE : je lance un fils"
+&gt;	$0 &amp;
+&gt;	sleep 1
+&gt;	echo "PERE : le PID de mon fils est $!"
+&gt;	echo "PERE : je me termine"
+&gt;else
+&gt;#Processus FILS
+&gt;	echo "FILS : mon PID est $$, celui de mon Père est $PPID"
+&gt;	sleep 1
+&gt;	echo "FILS : je me termine"
+&gt;fi
+			<p>Dans ce code on vérife que un processus père n'existe pas grâce à la condition si la variable MON_PID et égal PID</p>
+			<p>la variable $$ indique le PID du processus en cour et $! Le PID du processus fils et la variable PPID renseigne le PID du processus père</p>
+			<p>Une erreur peut subvenir toutefois à la fin car le shell peut revenir en ligne de commande(shell interactif) alors que le processus fils n'à pas fini son éxecution</p>
+			<p>Pour évité cela une commande existe wait qui demande d'attendre la fin de l'exécution du processus fils avant de revenir à la ligne de commande</p>
+			<h3 id="wait"><u>La commande wait</u></h3>
+			<p>La commande suivi d'un Numéro de PID attend la fin du processus avec le PID renseigné</p>
+			<p>La commande wait sans aucun renseignemant suivi demande d'attendre la fin de tous les processus fils éxistant</p>
+			<p>Voici un exemple de code qui attend la fin de l'execution du processus fils : </p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;function compte
+&gt;{
+&gt;	local i;
+&gt;	for i in $(seq 3) ; do
+&gt;		echo "$1 : $i"
+&gt;		sleep 1
+&gt;	done
+&gt;}
+&gt;
+&gt;if [ "$MON_PID" = "$PPID" ] ; then
+&gt;#Processus FILS
+&gt;	echo "FILS : mon PID est $$, mon PPID est $PPID"
+&gt;	compte "FILS"
+&gt;	echo "FILS : je me termine"
+&gt;else
+&gt;#processus Père
+&gt;	export MON_PID=$$
+&gt;	echo "PERE : mon PID est $$"
+&gt;	echo "PERE : je lance un fils"
+&gt;	$0 &amp;
+&gt;	echo "PERE : mon fils a le PID $!"
+&gt;	compte "PERE"
+&gt;	echo "PERE : j'attends la fin de mon fils"
+&gt;	wait
+&gt;	echo "PERE : je me termine"
+&gt;fi</code></pre></p>
+			<p>La condition [ "$MON_PID" = "$PPID" ] vérife que le PID du processus père est identique à la variable créer lors de la création du processus père</p>
+			<p>On c'est qu'on peut analyser le code retour de la dernière commande lancer avec $? pour les processus en avant plan</p>
+			<p>Pour analyser le code retour d'un processus en arrière plan on peut utiliser le code retourné par wait si le PID du processus et renseigné sinon wait remplira la variable $? avec une valeur true</p>
+			<p>Un exemple de récupération du code retour du processus fils qui renvoit la valeur 14</p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;if [ "$MON_PID" = "$PPID" ] ; then
+&gt;#Processus FILS
+&gt;	echo "FILS : mon PID est $$, mon PPID est $PPID"
+&gt;	echo "FILS : je me termine avec le code 14"
+&gt;	exit 14
+&gt;else
+&gt;#Processus Père
+&gt;	export MON_PID=$$
+&gt;	echo "PERE : mon PID est $$"
+&gt;	$0 &amp;
+&gt;	echo "PERE : mon fils a le PID $!"
+&gt;	echo "PERE : j'attend la fin de mon fils"
+&gt;	wait $!
+&gt;	echo "PERE : mon fils s'est terminé avec le code $?"
+&gt;fi</code></pre></p>
+			<h3 id="at"><u>La commande at pour programmer l'execution d'une commande à une heure précise</u></h3>
+			<p>Exemple pour programmer une commande qui s'éxecutera 1 heure plus tard on utilise l'utilitaire at, qui lance une commande lues sur son entrée standard à l'instant indiqué par argument en ligne de commande</p>
+			<p>Comme at lit toujours son entrée standard on utilise un document en ligne pour lui transmettre les commandes souahitées</p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;while true ; do
+&gt;	FICHIER=$(date "+%Y_%m_%d_%H_%M")
+&gt;	TEMP=/var/tmp/enreg_$$
+&gt;	/usr/bin/enregistreur --serveur 192.1.5.20 --fichier $TEMP &amp;
+&gt;	at now + 1 hours &lt;&lt;-FIN
+&gt;	kill -INT $!
+&gt;	FIN
+&gt;	wait
+&gt;	FICHIER=${FICHIER}$(date "+-%Y_%m_%d_%H_%M.dat")
+&gt;	mv $TEMP $FICHIER
+&gt;done
+			<p>Comme on souhaite obtenir des fichiers aux noms significatifs, on commence par créer une première partie de nom avec la date de début. On crée aussi un nom de fichier temporaire en utilisant le numéro de
+			PID du processus en cours. L’enregistreur est ensuite lancé en arrière-plan, puis une commande kill est programmée pour l’heure suivante, qui lui enverra le signal requis. Le
+			script passe alors en attente de la fin de l’enregistrement. Le reste de la boucle est donc exécuté au bout d’une heure. On construit la seconde partie du nom de fichier, que l’on utilise alors pour renommer le fichier temporaire.</p>
+		<article>
+	</section>
+	<section id="processus_background">
+		<h1><u>Contrôler et créer des processus en arrière plan</u></h1>
+		<article>
+			<p>Pour lancer un pprocessus en arrière plan il nous suffit de mettre &amp; à la fin de la commande</p>
+			<p>Mais il est nécessaire d'avoir souvent reccour à d'autre méthode pour assurer le bon fonctionnement des scripts en arrière plan</p>
+			<p>La plupart des shells, lorsqu’ils reçoivent un signal SIGHUP , le retransmettent à tous les processus fils qu’ils ont créés. Ce signal, dont la signification est hang up (« raccro-
+			chage », au sens téléphonique du terme), est notamment émis par les terminaux et les modems lors d’une rupture de connexion. Certains shells émettent également ce signal,
+			systématiquement ou sous contrôle d’une option, lorsqu’ils se terminent. Quand aucune mesure particulière n’est prise au sein du processus, la réception de ce
+			signal le contraindra à se terminer immédiatement. C’est gênant si on souhaite lancer un travail en tâche de fond pour une longue durée, puis se déconnecter et récupérer le résultat le
+			lendemain matin par exemple. Pour pallier ce problème, on peut recourir à un utilitaire nommé nohup qui fait en sorte qu’un processus ne soit pas sensible au signal SIGHUP .</p>
+			<p>Cet utilitaire exécute l’application demandée avec une priorité légèrement diminuée, puisqu’il s’agit d’une tâche de fond qui ne doit pas perturber les autres processus. Enfin,
+			il redirige la sortie standard et celle d’erreur vers le fichier nohup.out ou ~/nohup.out , car le processus s’exécute sans terminal pour afficher ses résultats.
+			L’emploi de nohup est très simple ; il suffit de l’utiliser en préfixe pour lancer le programme. Par exemple, le script suivant compte jusqu’à quatre en écrivant son résultat sur la sortie standard et en respectant une petite pause entre chaque écriture.</p>
+			<p>Exemple d'utilisation avec un script de comptage : </p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;for i in $(seq 1 4) ; do
+&gt;	echo $i
+&gt;	sleep 3
+&gt;done</code></pre></p>
+			<p>Voici les diffèrents résultat suivant la méthode d'appel effectué</p>
+			<p><pre><code>
+&gt;$ ./comptage.sh &amp;
+&gt;[1] 17463
+&gt;$ 1
+&gt;2
+&gt;3
+&gt;4
+&gt;[1]+ Done
+&gt;Le script et éxecuté dans un sous shell mais la sortie standard vient pertuber la processus interactif
+&gt;./comptage.sh
+&gt;$ nohup ./comptage.sh &amp;
+&gt;[1] 17472
+&gt;nohup: appending output to `nohup.out'
+&gt;$ (attente 40 secondes, puis Entrée)
+&gt;[1]+ Done
+&gt;Ici le processus et lancer dans un sous shell et la sortie standard et envoyé dans un fichier nommé nohup.out une fois lancé apuiyé sur entrè et le script continuera de s'éxécuté en fond sans pertubé le shell interactif
+&gt;$ cat nohup.out
+&gt;1
+&gt;2
+&gt;3
+&gt;4
+&gt;$</code></pre></p>
+			<p>Ensuite on affiche le contenu du fichier nohup.out pour voir le résultat de la commande</p>
+			<p>Il convient de noter que, suivant la configuration du terminal (et plus particulièrement de l'option tostop de stty), un processus en arrière plan peut être arrèté automatiquement s'il esseye d'écrire sur sa sortie standard.</p>
+			<p>Lorsque qu'une application doit tourné en arrière plan pendant une longue durée et également fournir des services à d'autre processus</p>
+			<p>Il devient interessant de le programmer comme un demon unix. Ce type de processus doit remplir un certain nombre de critères qui lui permettent ainsi de fonctionner d'une manière sûre et fiable aussi longtemp qu'il le requiert.</p>
+			<p id="ps">Tout d'abord un demon ne doit pas avoir de terminal de contrôle. On peut observer cela grâce à la commande ps qui affiche dans tty, un point d'interrogation pour les processus sans terminaux de contrôle</p>
+		</article>
+	</section>
+	<section id="demon">
+		<h1><u>Utiliser un demon unix pour lancer un processus en arrière plan sans terminal de contrôle</u></h1>
+		<article>
+			<p>Pour lancer un demon nous devons créer une nounvelle session de processus</p>
+			<p>Pour cela c'est la commande setsid et comme le processus ne doit pas être leader de son groupe, qu'il doit s'agir d'un processus fils de celui qui est à l'avant plan. Nous utiliserons un scrip qui se dupliquera pour que le processus père se termine après avoir créer son fils</p>
+			<p>Le deuxieme point important, c'est de bien refermer les cannaux d'entrée sortie standards qui ont été mis en place par le shell lors du lancement du programme. Pour ce faire, on procède avec les opérateurs de redirection <code>&lt;&amp;- et &gt;&amp;- </code>qui indiquent la fermeture du flux. Nous ajoutons donc <code>0&lt;&amp;-, 1&gt;&amp;- et 2&gt;&amp;-</code> sur la ligne de commande de lancement du demon.</p>
+			<p>Un dernier critère établit enfin qu'un démon ne doit en aucun cas bloquer une partition qu'un administrateur système pourrait avoir besoin de démonter</p>
+			<p>L'une des premières instruction sera donc cd / pour déplacer le répertoire de travail vers la racine du système de fichier</p>
+			<p>Toutefois cela ne suffit pas ; lorsque le noyau exécute directement un script, il ouvre un descripteur, précisément vers ce fichier, qu'il emploie ensuite pour alimenter le shell</p>
+			<p>Le fichier script lui-même reste donc ouvert pendant toute la durée d’exécution du programme, ce qui bloque la partition. La solution consiste à lire le contenu du script
+			dans une grande chaîne de caractères stockée dans une variable, et à invoquer le shell en lui transmettant directement cette commande en argument de l’option -c , afin qu’il n’ait pas à manipuler le fichier.</p>
+			<p>Voici un script qui va lancer le reste du programme en demon :</p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;if [ "$MON_PID" != "$PPID" ] ; then
+&gt;	export MON_PID=$$
+&gt;	MON_LISTING=$(cat $0)
+&gt;	cd /
+&gt;	setsid /bin/bash -c "$MON_LISTING" "$0" "$@" 0&lt;&amp;- 1&gt;&amp;- 2&lt;&amp;- &amp;
+&gt;	logger -t $(basename $0) "Le PID du demon est $!"
+&gt;	echo "Le PID du démon est $!" &lt;&amp; 2
+&gt;	exit 0
+&gt;fi
+&gt;
+&gt;#Début du démon proprement dit
+&gt;
+&gt;sleep 30</code></pre></p>
+			<p>Affichera le PID du demon. Puis ensuite on peut verifier le log du processus dans : </p>
+			<p>Soit <code>/var/log/messages</code> soit comme sur mon pc dans <code>/var/log/syslog</code></p>
+			<p>Le plus simple pour voir le dernier processus lancer et la commande <code>tail -1 /var/log/syslog</code></p>
+			<p>On peut vérifier que le processus ne possèdent aucun fd (filedescriptor) dans le dossier /proc/5036/fd</p>
+			<p>A la place du numéro 5036 metre le PID du processus</p>
+			<p>Puis on peut vérifier si le processus à un terminal de contrôle (Dans notre cas il ne doit pas en avoir)</p>
+			<p>Pour cela la commande ps -l numeroPID</p>
+			<p>Dans la colonne tty un point d'interrogation doit être présent se qui signifie que aucun terminal de contrôle ne lui appartient</p>
+			<h3><u>La gestion des Signaux : </u></h3>
+			<p>On peut se représenter un signal comme une sorte d'impulsion qui est envoyé vers un autre processus pour communiquer </p>
+			<p>Les signaux sont surtout utilisé par le noyau pour indiquer à un programme l'occurence d'une situation extraordinaire (tentative d'accès à un espace mémoire invalide, instruction illégale, etc.)</p>
+			<p>Mais ils constituent également d'interaction entre l'utilisateur et le terminal (Touches spéciales comme Contrôle-C, Contrôle-Q, Contrôle-S, Contrôle-Z ...). On utilise parfois les signaux pour implémenter un dialogue minimal entre processus.</p>
+			<h3><u>Envoyé un signal : </u></h3>
+			<p>On procède à l'émission d'un signal au moyen de la commande kill. On fait suivre la commande du numéro du signal souhaité, précédé d'un tiret, puis du PID visé.</p>
+			<p>Le signal est alors envoyé au processus cible-Sous réserve que l'émetteur dispose des autorisations nécessaires - qui peut prendre des mesures en consèquences</p>
+			<p>Le numéro est souvent indiqué d'une manière symbolique, avec les noms décrits dans la table ci-dessous</p>
+			<p>On ajoute le préfixe SIG suivi du suffixe voulu. Voici quelque signaux principaux : </p>
+			<table>
+				<thead>
+					<tr>
+						<th>Noms</th>
+						<th>Descriptions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>SIGUSR1 et SIGUSR2</td>
+						<td>Réservé aux applications utilisateurs, et on les emploies souvent pour implémenter un dialogue entre des scripts personnel</td>
+					</tr>
+					<tr>
+						<td>SIGTERM, SIGINT, SIGQUIT, SIGKILL</td>
+						<td>Sont employé pour mettre fin à l'éxecution d'un processus, ils sont présenté ici dans l'ordre croissant de leur caractère impératif</td>
+					</tr>
+					<tr>
+						<td>SIGHUP</td>
+						<td>Sert généralement à demander à un démon de relire ses fichiers de configuration, se qui évite de devoir l'arrêter et de le relancer.</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>Exemple de code : </p>
+			<p><pre><code>
+			&gt;kill -HUP $PID_DEMON
+			&gt;kill -TERM $PID_SERVEUR
+			&gt;kill -USR2 $PID_CLIENT</code></pre></p>
+			<p>On notera qu'un PID négatif correspond en fait à l'identifiant d'un groupe de processus, ce qui permet d'envoyer un signal à tous ces descandants d'un processus. On y recourt rarement dans la programmation shell</p>
+			<p>L'emploi du PID -1 permet pour sa part de demander l'envoi d'un signal à tous les processus du syteme. On utilisera jamais cette commande en étant logger en root pour éviter d'arreter tous le système, mais pour un utilisateur normal, eu égard aux permissions d'émission, c'est un moyen de tuer tous ses propres processus en une seul fois</p>
+			<p>Voici la commande : <code>kill -KILL -1</code></p>
+			<p>Bien sur on se retrouve déconnecté mais c'est parfois la seul solution pour terminé un script qui se reproduit à l'infini comme :</p>
+			<p><pre><code>
+&gt;#! /bin/bash
+&gt;$0 &amp;</code></pre></p>
+			<h3><u>Recevoir des signaux : </u></h3>
+			<article>
+				<p>Lorsque qu'un processus reçoit un signal, il adopte automatiquement l'un des trois comportement suivant :</p>
+				<ol>
+					<li>Ignorer le signal : Le processus continue simplement son travail comme si de rien n'était.</li>
+					<li>Capturer le signal : le deroulement du processus est interrompu est un série d'instruction préprogrammés est éxécutée. Une fois ces instructions terminées, le processus reprend son cour normal</li>
+					<li>Agir par defaut : à chaque signal est attribuée une action par défaut. Certains, comme SIGCHLD, n'ont aucune influence sur le processus. D'autre comme SIGTSTP, arrête temporairement le processus.
+					Enfin la majorité d'entre eux provoque la fin du processus avec, comme SIGSEGV, création d'un fichier core contenant une représentation de l'espace mémoire, afin de permettre le debogage post mortem, ou,
+					comme SIGINT, sans création de ce fichier.</li>
+					</ol>
+				<p><strong>Deux signaux ne peuvent pas être Capturer ni être Ignorer. SIGKILL et SIGSTOP</strong></p>
+				<p>Pour configurer le comportement souhaité pour un processus, on utilise la commande trap. Celle-ci prend en argument une chaine de caractères suivie d'un symbole de signal.</p>
+				<p>Si la chaine est absente, le processus reprend le comportemet par defaut pour le signal mentionné.Si la chaîne est vide, le signal sera ignoré. Sinon, la chaine sera évalué à la reception du signal.</p>
+				<p>En général, cette chaine contiendra simplement le nom d'une fonction chargée de gérer l'occurence du signal. Cette fonction est traditionnelement appelée gestionnaire du signal</p>
+				<p>Exemple : Dans ce script suivant, on va vérifier que la chaine transmise à trap n'est bien évaluée qu'à la réception du signal, en y placant une variable dont ont modifie le contenu. Le processus s'envoie lui-même un signal à l'aide du paramètre $$ qui contient son propre PID</p>
+				<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;function gestionnaire_1
+&gt;{
+&gt;	echo "-&gt; SIGINT reçu dans gestionnaire 1"
+&gt;}
+&gt;
+&gt;function gestionnaire_2
+&gt;{
+&gt;	echo "-&gt;SIGINT reçu dans gestionnaire 2"
+&gt;}
+&gt;
+&gt;trap '$GEST' INT
+&gt;
+&gt;echo "GET non remplie : envoi de SIGINT"
+&gt;kill -INT $$
+&gt;
+&gt;echo "GEST=gestionnaire_1 : envoi de SIGINT"
+&gt;GEST=gestionnaire_1
+&gt;kill -INT $$
+&gt;
+&gt;echo "GEST=gestionnaire_2 : envoi de SIGINT"
+&gt;GEST=gestionnaire_2
+&gt;kill -INT $$</code></pre></p>
+				<p>Nous vérifions que tant que GUEST n'est pas remplie, la chaîne transmise à trap est vide et le signal ignoré, puis au gré des modifications de cette variable, le processus éxecute l'un ou l'autre des gestionnaire</p>
+			<p>Voici le script de réponse : </p>
+			<p><pre><code>
+&gt;./exemple_trap.bash
+&gt;GEST non remplie : envoi de SIGINT
+&gt;GEST=gestionnaire_1 : envoi de SIGINT
+&gt;-&gt; SIGINT reçu dans gestionnaire 1
+&gt;GEST=gestionnaire_2 : envoi de SIGINT
+&gt;-&gt; SIGINT reçu dans gestionnaire 2</code></pre></p>
+			<p>Notez que l'utilitaire nohup utilisé dans le script et parfois implémenté par un script qui invoque <code>trap "" HUP</code> avant d'appeler la commande mentionnée en argument, ce afin que cette dernière ignore le signal SIGHUP</p>
+			<h3><u>Attente de signaux</u></h3>
+			<p>Lorsqu'on emploie des signaux à des fins de dialogue entre processus, il est important de bien vérifier que la synchronisation entre les processus ne risque pas d'aboutir à des situations de blocage, ou chacun attend un message de son interlocuteur avant de poursuivre son éxecution. En règle générale, il est recommandé de restreindre l'action du gestionnaire de signal à la modification d'une variable globale. Celle-ci sera consultée régulièrement dans le corps du script pour savoir si un signal est arrivé. Par exemple, on pourra utiliser un signal comme :</p>
+			<p><pre><code>
+&gt;USR1_recu=0;
+&gt;function gestionnaire_USR1
+&gt;{
+&gt;	USR1_recu=1;
+&gt;}
+&gt;trap gestionnaire_USR1 USR1</code></pre></p>
+				<p>Et dans le corp du message</p>
+				<p><pre><code>
+&gt;# attente du signal
+&gt;	while [ $USR1_recu -eq 0 ] ; do
+&gt;		sleep 1
+&gt;	done
+&gt;# le signal est arrivé, on continue...</code></pre></p>
+				<h3 id="mkfifo"><u>Les communications entre processus </u></h3>
+				<p>La communication entre processus recouvre un large domaine de la programmation système, où l’on retrouve aussi bien les tubes ou les sockets réseau que les segments de
+				mémoire partagée ou les sémaphores. Au niveau des scripts shell, la communication entre des processus distincts est toutefois assez restreinte. Nous avons déjà évoqué les
+				possibilités de synchronisation autour des signaux USR1 et USR2 , mais il s’agit vraiment d’une communication minimale. De plus, le processus émetteur d’un signal doit connaî-
+				tre son correspondant par son identifiant PID. En d’autres termes, s’ils ne sont pas tous les deux issus d’un même script (avec un mécanisme père/fils comme nous l’avons vu), il
+				faut mettre au point une autre méthode de communication du PID (fichier, par exemple). Les systèmes Unix proposent toutefois un mécanisme étonnamment simple et puissant,
+				qui permet de faire transiter autant d’information qu’on le désire entre des processus, sans liens préalables : les files Fifo (First In First Out, premier arrivé, premier servi).
+				Une file est une sorte de tunnel que le noyau met à la disposition des processus ; chacun peut y écrire ou y lire des données. Une information envoyée à l’entrée d’une file est
+				immédiatement disponible à sa sortie, sauf si d’autres données sont déjà présentes, en attente d’être lues. Pour que l’accès aux files soit le plus simple possible, le noyau fournit
+				une interface semblable aux fichiers. Ainsi un processus écrira-t-il dans une file de la même manière qu’il écrit dans un fichier (par exemple avec echo et une redirection pour
+				un script shell) et pourra-t-il y lire avec les mêmes méthodes que pour la lecture d’un fichier ( read par exemple). En outre, l’interface étant identique à celle des fichiers, les
+				autorisations d’accès seront directement gérées à l’aide du propriétaire et du groupe de la file.
+				La création d’une file dans le système de fichiers s’obtient avec l’utilitaire mkfifo . Celui-ci prend en argument le nom de la file à créer, éventuellement précédé d’une option -m
+				suivie du mode d’accès en octal. Dans l’exemple suivant, nous allons créer un système client-serveur, dans lequel un
+				processus serveur fonctionnant en mode démon crée une file Fifo avec un nom bien défini. Notre serveur aura pour rôle de renvoyer le nom complet qui correspond à un
+				identifiant d’utilisateur, en consultant le fichier /etc/passwd . Les clients lui enverront donc dans sa file Fifo les identifiants à rechercher. Toutefois, pour que le serveur puisse
+				répondre au client, ce dernier devra également créer sa propre file, et en transmettre le nom dans le message d’interrogation. Le script du client sera le plus simple. Il connaît le
+				nom de la file du serveur, ici ~/noms_ident.fifo , mais on pourrait convenir de déplacer ce fichier vers un répertoire système comme /etc . Le script créera donc une file personnelle,
+				et enverra l’identifiant recherché, suivi du nom de sa file, dans celle du serveur. Il attendra ensuite la réponse et se terminera après avoir supprimé sa file.</p>
+				<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;FIFO_SRV=~/noms_ident.fifo
+&gt;FIFO_CLT=~/fifo_$$.fifo
+&gt;
+&gt;if [ -z "$1" ] ; then
+&gt;	echo "Syntaxe : $0 identifiant" &gt;&amp;2
+&gt;	exit 1
+&gt;fi
+&gt;
+&gt;if [ ! -p $FIFO_SRV ] ; then
+&gt;	echo "Le serveur n'est pas accessible"
+&gt;	exit 1
+&gt;fi
+&gt;
+&gt;mkfifo -m 0622 $FIFO_CLT
+&gt;if [ ! -p $FIFO_SRV ] ; then
+&gt;	echo "Impossible de créer la file ~/fifo_$$.fifo"
+&gt;	exit 1
+&gt;fi
+&gt;
+&gt;echo "$1 $FIFO_CLT" &gt; $FIFO_SRV
+&gt;cat &lt; $FIFO_CLT
+&gt;rm -f $FIFO_CLT</code></pre></p>
+				<p>Le serveur est un peu plus complexe : tout d’abord, il doit basculer en arrière-plan, en mode démon. Ensuite, pour être certain de toujours détruire la file Fifo quand il se
+				termine, nous allons lui ajouter un gestionnaire pour les principaux signaux de terminaison, ainsi que pour le pseudo-signal EXIT qui est invoqué lorsque le script se termine
+				normalement. Le serveur vérifie qu’un autre serveur n’est pas déjà actif, sinon il lui envoie une demande de terminaison. Ensuite, il crée la file Fifo prévue et entre dans la boucle de
+				fonctionnement principal. Cette boucle se déroule jusqu’à ce qu’il reçoive un identifiant « FIN  ». L’identifiant et le nom de la Fifo du client sont lus grâce à une instruction read .
+				On balaye ensuite le fichier /etc/passwd . Pour ce faire, le plus simple est de mettre en place une redirection depuis ce fichier vers l’entrée standard grâce à exec . Cette mise en
+				œuvre a pour effet secondaire de ramener au début le pointeur de lecture dans le fichier /etc/passwd . Pour séparer les champs qui se trouvent sur les lignes du fichier, on recourt
+				sans problème à read , après avoir temporairement modifié la variable IFS , pour qu’elle contienne le séparateur « :  ». Si l’identifiant est trouvé, le nom complet est inscrit dans la file Fifo du client, et la boucle recommence.</p>
+				<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;# Passage en mode démon
+&gt;if [ "$MON_PID" != "$PPID" ] ; then
+&gt;	export MON_PID=$$
+&gt;	MON_LISTING=$(cat $0)
+&gt;	cd /
+&gt;	setsid /bin/bash -c "$MON_LISTING" "$0" "$@" 0&lt;&amp;- 1&gt;&amp;- 2&gt;&amp;- &amp;
+&gt;	logger -t $(basename $0) "Le PID du démon est $!"Programmation shell avancée
+&gt;	C HAPITRE 6
+&gt;	echo "Le PID du démon est $!" &gt;&amp; 2
+&gt;	exit 0
+&gt;fi
+&gt;FIFO_SRV=~/noms_ident.fifo
+&gt;	function gestionnaire_signaux
+&gt;{
+&gt;	rm -f $FIFO_SRV
+&gt;		exit 0
+&gt;}
+&gt;trap gestionnaire_signaux EXIT QUIT INT HUP
+&gt;if [ -e $FIFO_SRV ] ; then
+&gt;	echo "FIN" &gt; $FIFO_SRV &amp;
+&gt;	exit 0
+&gt;fi
+&gt;mkfifo -m 0622 $FIFO_SRV
+&gt;if [ ! -p $FIFO_SRV ] ; then
+&gt;	echo "Impossible de créer la file FIFO $FIFO_SRV"
+&gt;	exit 1
+&gt;fi
+&gt;FIN=""
+&gt;while [ ! $FIN ] ; do
+&gt;	read IDENT FIFO_CLT &lt; $FIFO_SRV
+&gt;	TROUVE=""
+&gt;	exec &lt; /etc/passwd
+&gt;	ANCIEN_IFS="$IFS"
+&gt;	IFS=":"
+&gt;	while read ident passe uid gid nom reste ; do
+&gt;		if [ "$IDENT" == "$ident" ] ; then
+&gt;			TROUVE="Oui"
+&gt;			break
+&gt;		fi
+&gt;	done
+&gt;	IFS=$ANCIEN_IFS
+&gt;	if [ "$IDENT" == "FIN" ] ; then
+&gt;		FIN="Oui"
+&gt;		TROUVE="Oui"
+&gt;		nom="Fin du serveur"
+&gt;	fi
+&gt;	if [ $TROUVE ] ; then
+&gt;		echo "$nom" &gt; $FIFO_CLT
+&gt;	else
+&gt;		echo "Non trouvé" &gt; $FIFO_CLT
+&gt;	fi
+&gt;done</code></pre></p>
+				<p>Voici le résultat de l'éxecution</p>
+				<p><pre><code>
+&gt;./fifo_serveur.sh
+&gt;Le PID du démon est 6963
+&gt;$ ./fifo_client.sh
+&gt;Syntaxe : ./fifo_client.sh identifiant
+&gt;$ ./fifo_client.sh cpb
+&gt;Christophe Blaess
+&gt;$ ./fifo_client.sh root
+&gt;root
+&gt;$ ./fifo_client.sh ftp
+&gt;FTP User
+&gt;$ ./fifo_client.sh inexistant
+&gt;Non trouvé
+&gt;$ ./fifo_client.sh FIN
+&gt;Fin du serveur
+&gt;$ ./fifo_client.sh root
+&gt;Le serveur n'est pas accessible
+&gt;$ ls ~/*.fifo
+&gt;ls: Aucun fichier ou répertoire de ce type</code></pre></p>
+				<p>La communication entre processus au moyen des files Fifo est un mécanisme puissant, mais il faut bien prendre garde aux risques d’interactions bloquantes si chacun des deux
+				processus attend l’action de l’autre. Il est aisé – et amusant – de tester les différentes situations en créant manuellement une file avec la commande mkfifo , puis d’examiner les
+				comportements et les blocages en écrivant dans la file avec echo "..." &gt; fifo ou en lisant avec cat &lt; fifo depuis plusieurs fenêtres xterm différentes.</p>
+			</article>
+		</article>
+	</section>
+	<section id="entrer_sortie">
+		<h1><u>Les sytèmes d'entrée et de sortie du shell</u></h1>
+		<article>
+			<p>
 		</article>
 	</section>
     </body>
-</html>
