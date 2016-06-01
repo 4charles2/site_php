@@ -10,6 +10,7 @@
         <h1><u>Utilisation se script Shell</u></h1>
         <article>
             <ol>
+				<li><a href="#reseau">Les commandes pour le réseau</a></li>
                 <li><a href="#variable">Manpulation de variable</a></li>
                 <li><a href="#renommer_fichier">Rennommer des fichier</a></li>
                 <li><a href="#longueur_string">Calculer la longueur d'une chaine de caractère</a></li>
@@ -46,7 +47,12 @@
 				<li><a href="#ps">La commande ps pour afficher les procesuss en cour</a></li>
 				<li><a href="#mkfifo">Utilisé la commande mkfifo pour créer des files</a></li>
 				<li><a href="#entrer_sortie">Système d'entrée sortie du shell</a></li>
+				<li><a href="#tee">La commande tee pour T permet une copie en dérivation en (T)</a></li>
+				<li><a href="#xargs">Pour transmettre des lignes de texte en arguments sélectionner à l'aide d'une commande</a></li>
+				<li><a href="#styy">La commande stty pour modifier les paramètres du terminal employé par l'utilisateur</a></li>
             </ol>
+			<p>Voici un site qui présente les 101 commandes les plus importantes de linux</p>
+			<a href="https://buzut.fr/2012/09/10/101-commandes-indispensables-sous-linux/">Les 101 commandes les plus importantes de linux</a>
         </article>
     </section>
 	<section id="argument">
@@ -2004,7 +2010,7 @@ echo "Instalation pour noyau de type $Type_noyau"
 &gt;	echo "FILS : mon PID est $$, celui de mon Père est $PPID"
 &gt;	sleep 1
 &gt;	echo "FILS : je me termine"
-&gt;fi
+&gt;fi</code></pre></p>
 			<p>Dans ce code on vérife que un processus père n'existe pas grâce à la condition si la variable MON_PID et égal PID</p>
 			<p>la variable $$ indique le PID du processus en cour et $! Le PID du processus fils et la variable PPID renseigne le PID du processus père</p>
 			<p>Une erreur peut subvenir toutefois à la fin car le shell peut revenir en ligne de commande(shell interactif) alors que le processus fils n'à pas fini son éxecution</p>
@@ -2080,11 +2086,11 @@ echo "Instalation pour noyau de type $Type_noyau"
 &gt;	wait
 &gt;	FICHIER=${FICHIER}$(date "+-%Y_%m_%d_%H_%M.dat")
 &gt;	mv $TEMP $FICHIER
-&gt;done
+&gt;done</code></pre></p>
 			<p>Comme on souhaite obtenir des fichiers aux noms significatifs, on commence par créer une première partie de nom avec la date de début. On crée aussi un nom de fichier temporaire en utilisant le numéro de
 			PID du processus en cours. L’enregistreur est ensuite lancé en arrière-plan, puis une commande kill est programmée pour l’heure suivante, qui lui enverra le signal requis. Le
 			script passe alors en attente de la fin de l’enregistrement. Le reste de la boucle est donc exécuté au bout d’une heure. On construit la seconde partie du nom de fichier, que l’on utilise alors pour renommer le fichier temporaire.</p>
-		<article>
+		</article>
 	</section>
 	<section id="processus_background">
 		<h1><u>Contrôler et créer des processus en arrière plan</u></h1>
@@ -2217,21 +2223,20 @@ echo "Instalation pour noyau de type $Type_noyau"
 &gt;#! /bin/bash
 &gt;$0 &amp;</code></pre></p>
 			<h3><u>Recevoir des signaux : </u></h3>
-			<article>
-				<p>Lorsque qu'un processus reçoit un signal, il adopte automatiquement l'un des trois comportement suivant :</p>
-				<ol>
-					<li>Ignorer le signal : Le processus continue simplement son travail comme si de rien n'était.</li>
-					<li>Capturer le signal : le deroulement du processus est interrompu est un série d'instruction préprogrammés est éxécutée. Une fois ces instructions terminées, le processus reprend son cour normal</li>
-					<li>Agir par defaut : à chaque signal est attribuée une action par défaut. Certains, comme SIGCHLD, n'ont aucune influence sur le processus. D'autre comme SIGTSTP, arrête temporairement le processus.
-					Enfin la majorité d'entre eux provoque la fin du processus avec, comme SIGSEGV, création d'un fichier core contenant une représentation de l'espace mémoire, afin de permettre le debogage post mortem, ou,
-					comme SIGINT, sans création de ce fichier.</li>
-					</ol>
-				<p><strong>Deux signaux ne peuvent pas être Capturer ni être Ignorer. SIGKILL et SIGSTOP</strong></p>
-				<p>Pour configurer le comportement souhaité pour un processus, on utilise la commande trap. Celle-ci prend en argument une chaine de caractères suivie d'un symbole de signal.</p>
-				<p>Si la chaine est absente, le processus reprend le comportemet par defaut pour le signal mentionné.Si la chaîne est vide, le signal sera ignoré. Sinon, la chaine sera évalué à la reception du signal.</p>
-				<p>En général, cette chaine contiendra simplement le nom d'une fonction chargée de gérer l'occurence du signal. Cette fonction est traditionnelement appelée gestionnaire du signal</p>
-				<p>Exemple : Dans ce script suivant, on va vérifier que la chaine transmise à trap n'est bien évaluée qu'à la réception du signal, en y placant une variable dont ont modifie le contenu. Le processus s'envoie lui-même un signal à l'aide du paramètre $$ qui contient son propre PID</p>
-				<p><pre><code>
+			<p>Lorsque qu'un processus reçoit un signal, il adopte automatiquement l'un des trois comportement suivant :</p>
+			<ol>
+				<li>Ignorer le signal : Le processus continue simplement son travail comme si de rien n'était.</li>
+				<li>Capturer le signal : le deroulement du processus est interrompu est un série d'instruction préprogrammés est éxécutée. Une fois ces instructions terminées, le processus reprend son cour normal</li>
+				<li>Agir par defaut : à chaque signal est attribuée une action par défaut. Certains, comme SIGCHLD, n'ont aucune influence sur le processus. D'autre comme SIGTSTP, arrête temporairement le processus.
+				Enfin la majorité d'entre eux provoque la fin du processus avec, comme SIGSEGV, création d'un fichier core contenant une représentation de l'espace mémoire, afin de permettre le debogage post mortem, ou,
+				comme SIGINT, sans création de ce fichier.</li>
+				</ol>
+			<p><strong>Deux signaux ne peuvent pas être Capturer ni être Ignorer. SIGKILL et SIGSTOP</strong></p>
+			<p>Pour configurer le comportement souhaité pour un processus, on utilise la commande trap. Celle-ci prend en argument une chaine de caractères suivie d'un symbole de signal.</p>
+			<p>Si la chaine est absente, le processus reprend le comportemet par defaut pour le signal mentionné.Si la chaîne est vide, le signal sera ignoré. Sinon, la chaine sera évalué à la reception du signal.</p>
+			<p>En général, cette chaine contiendra simplement le nom d'une fonction chargée de gérer l'occurence du signal. Cette fonction est traditionnelement appelée gestionnaire du signal</p>
+			<p>Exemple : Dans ce script suivant, on va vérifier que la chaine transmise à trap n'est bien évaluée qu'à la réception du signal, en y placant une variable dont ont modifie le contenu. Le processus s'envoie lui-même un signal à l'aide du paramètre $$ qui contient son propre PID</p>
+			<p><pre><code>
 &gt;#!/bin/bash
 &gt;
 &gt;function gestionnaire_1
@@ -2256,52 +2261,52 @@ echo "Instalation pour noyau de type $Type_noyau"
 &gt;echo "GEST=gestionnaire_2 : envoi de SIGINT"
 &gt;GEST=gestionnaire_2
 &gt;kill -INT $$</code></pre></p>
-				<p>Nous vérifions que tant que GUEST n'est pas remplie, la chaîne transmise à trap est vide et le signal ignoré, puis au gré des modifications de cette variable, le processus éxecute l'un ou l'autre des gestionnaire</p>
-			<p>Voici le script de réponse : </p>
-			<p><pre><code>
+			<p>Nous vérifions que tant que GUEST n'est pas remplie, la chaîne transmise à trap est vide et le signal ignoré, puis au gré des modifications de cette variable, le processus éxecute l'un ou l'autre des gestionnaire</p>
+		<p>Voici le script de réponse : </p>
+		<p><pre><code>
 &gt;./exemple_trap.bash
 &gt;GEST non remplie : envoi de SIGINT
 &gt;GEST=gestionnaire_1 : envoi de SIGINT
 &gt;-&gt; SIGINT reçu dans gestionnaire 1
 &gt;GEST=gestionnaire_2 : envoi de SIGINT
 &gt;-&gt; SIGINT reçu dans gestionnaire 2</code></pre></p>
-			<p>Notez que l'utilitaire nohup utilisé dans le script et parfois implémenté par un script qui invoque <code>trap "" HUP</code> avant d'appeler la commande mentionnée en argument, ce afin que cette dernière ignore le signal SIGHUP</p>
-			<h3><u>Attente de signaux</u></h3>
-			<p>Lorsqu'on emploie des signaux à des fins de dialogue entre processus, il est important de bien vérifier que la synchronisation entre les processus ne risque pas d'aboutir à des situations de blocage, ou chacun attend un message de son interlocuteur avant de poursuivre son éxecution. En règle générale, il est recommandé de restreindre l'action du gestionnaire de signal à la modification d'une variable globale. Celle-ci sera consultée régulièrement dans le corps du script pour savoir si un signal est arrivé. Par exemple, on pourra utiliser un signal comme :</p>
-			<p><pre><code>
+		<p>Notez que l'utilitaire nohup utilisé dans le script et parfois implémenté par un script qui invoque <code>trap "" HUP</code> avant d'appeler la commande mentionnée en argument, ce afin que cette dernière ignore le signal SIGHUP</p>
+		<h3><u>Attente de signaux</u></h3>
+		<p>Lorsqu'on emploie des signaux à des fins de dialogue entre processus, il est important de bien vérifier que la synchronisation entre les processus ne risque pas d'aboutir à des situations de blocage, ou chacun attend un message de son interlocuteur avant de poursuivre son éxecution. En règle générale, il est recommandé de restreindre l'action du gestionnaire de signal à la modification d'une variable globale. Celle-ci sera consultée régulièrement dans le corps du script pour savoir si un signal est arrivé. Par exemple, on pourra utiliser un signal comme :</p>
+		<p><pre><code>
 &gt;USR1_recu=0;
 &gt;function gestionnaire_USR1
 &gt;{
 &gt;	USR1_recu=1;
 &gt;}
 &gt;trap gestionnaire_USR1 USR1</code></pre></p>
-				<p>Et dans le corp du message</p>
-				<p><pre><code>
+			<p>Et dans le corp du message</p>
+			<p><pre><code>
 &gt;# attente du signal
 &gt;	while [ $USR1_recu -eq 0 ] ; do
 &gt;		sleep 1
 &gt;	done
 &gt;# le signal est arrivé, on continue...</code></pre></p>
-				<h3 id="mkfifo"><u>Les communications entre processus </u></h3>
-				<p>La communication entre processus recouvre un large domaine de la programmation système, où l’on retrouve aussi bien les tubes ou les sockets réseau que les segments de
-				mémoire partagée ou les sémaphores. Au niveau des scripts shell, la communication entre des processus distincts est toutefois assez restreinte. Nous avons déjà évoqué les
-				possibilités de synchronisation autour des signaux USR1 et USR2 , mais il s’agit vraiment d’une communication minimale. De plus, le processus émetteur d’un signal doit connaî-
-				tre son correspondant par son identifiant PID. En d’autres termes, s’ils ne sont pas tous les deux issus d’un même script (avec un mécanisme père/fils comme nous l’avons vu), il
-				faut mettre au point une autre méthode de communication du PID (fichier, par exemple). Les systèmes Unix proposent toutefois un mécanisme étonnamment simple et puissant,
-				qui permet de faire transiter autant d’information qu’on le désire entre des processus, sans liens préalables : les files Fifo (First In First Out, premier arrivé, premier servi).
-				Une file est une sorte de tunnel que le noyau met à la disposition des processus ; chacun peut y écrire ou y lire des données. Une information envoyée à l’entrée d’une file est
-				immédiatement disponible à sa sortie, sauf si d’autres données sont déjà présentes, en attente d’être lues. Pour que l’accès aux files soit le plus simple possible, le noyau fournit
-				une interface semblable aux fichiers. Ainsi un processus écrira-t-il dans une file de la même manière qu’il écrit dans un fichier (par exemple avec echo et une redirection pour
-				un script shell) et pourra-t-il y lire avec les mêmes méthodes que pour la lecture d’un fichier ( read par exemple). En outre, l’interface étant identique à celle des fichiers, les
-				autorisations d’accès seront directement gérées à l’aide du propriétaire et du groupe de la file.
-				La création d’une file dans le système de fichiers s’obtient avec l’utilitaire mkfifo . Celui-ci prend en argument le nom de la file à créer, éventuellement précédé d’une option -m
-				suivie du mode d’accès en octal. Dans l’exemple suivant, nous allons créer un système client-serveur, dans lequel un
-				processus serveur fonctionnant en mode démon crée une file Fifo avec un nom bien défini. Notre serveur aura pour rôle de renvoyer le nom complet qui correspond à un
-				identifiant d’utilisateur, en consultant le fichier /etc/passwd . Les clients lui enverront donc dans sa file Fifo les identifiants à rechercher. Toutefois, pour que le serveur puisse
-				répondre au client, ce dernier devra également créer sa propre file, et en transmettre le nom dans le message d’interrogation. Le script du client sera le plus simple. Il connaît le
-				nom de la file du serveur, ici ~/noms_ident.fifo , mais on pourrait convenir de déplacer ce fichier vers un répertoire système comme /etc . Le script créera donc une file personnelle,
-				et enverra l’identifiant recherché, suivi du nom de sa file, dans celle du serveur. Il attendra ensuite la réponse et se terminera après avoir supprimé sa file.</p>
-				<p><pre><code>
+			<h3 id="mkfifo"><u>Les communications entre processus </u></h3>
+			<p>La communication entre processus recouvre un large domaine de la programmation système, où l’on retrouve aussi bien les tubes ou les sockets réseau que les segments de
+			mémoire partagée ou les sémaphores. Au niveau des scripts shell, la communication entre des processus distincts est toutefois assez restreinte. Nous avons déjà évoqué les
+			possibilités de synchronisation autour des signaux USR1 et USR2 , mais il s’agit vraiment d’une communication minimale. De plus, le processus émetteur d’un signal doit connaî-
+			tre son correspondant par son identifiant PID. En d’autres termes, s’ils ne sont pas tous les deux issus d’un même script (avec un mécanisme père/fils comme nous l’avons vu), il
+			faut mettre au point une autre méthode de communication du PID (fichier, par exemple). Les systèmes Unix proposent toutefois un mécanisme étonnamment simple et puissant,
+			qui permet de faire transiter autant d’information qu’on le désire entre des processus, sans liens préalables : les files Fifo (First In First Out, premier arrivé, premier servi).
+			Une file est une sorte de tunnel que le noyau met à la disposition des processus ; chacun peut y écrire ou y lire des données. Une information envoyée à l’entrée d’une file est
+			immédiatement disponible à sa sortie, sauf si d’autres données sont déjà présentes, en attente d’être lues. Pour que l’accès aux files soit le plus simple possible, le noyau fournit
+			une interface semblable aux fichiers. Ainsi un processus écrira-t-il dans une file de la même manière qu’il écrit dans un fichier (par exemple avec echo et une redirection pour
+			un script shell) et pourra-t-il y lire avec les mêmes méthodes que pour la lecture d’un fichier ( read par exemple). En outre, l’interface étant identique à celle des fichiers, les
+			autorisations d’accès seront directement gérées à l’aide du propriétaire et du groupe de la file.
+			La création d’une file dans le système de fichiers s’obtient avec l’utilitaire mkfifo . Celui-ci prend en argument le nom de la file à créer, éventuellement précédé d’une option -m
+			suivie du mode d’accès en octal. Dans l’exemple suivant, nous allons créer un système client-serveur, dans lequel un
+			processus serveur fonctionnant en mode démon crée une file Fifo avec un nom bien défini. Notre serveur aura pour rôle de renvoyer le nom complet qui correspond à un
+			identifiant d’utilisateur, en consultant le fichier /etc/passwd . Les clients lui enverront donc dans sa file Fifo les identifiants à rechercher. Toutefois, pour que le serveur puisse
+			répondre au client, ce dernier devra également créer sa propre file, et en transmettre le nom dans le message d’interrogation. Le script du client sera le plus simple. Il connaît le
+			nom de la file du serveur, ici ~/noms_ident.fifo , mais on pourrait convenir de déplacer ce fichier vers un répertoire système comme /etc . Le script créera donc une file personnelle,
+			et enverra l’identifiant recherché, suivi du nom de sa file, dans celle du serveur. Il attendra ensuite la réponse et se terminera après avoir supprimé sa file.</p>
+			<p><pre><code>
 &gt;#!/bin/bash
 &gt;
 &gt;FIFO_SRV=~/noms_ident.fifo
@@ -2326,14 +2331,14 @@ echo "Instalation pour noyau de type $Type_noyau"
 &gt;echo "$1 $FIFO_CLT" &gt; $FIFO_SRV
 &gt;cat &lt; $FIFO_CLT
 &gt;rm -f $FIFO_CLT</code></pre></p>
-				<p>Le serveur est un peu plus complexe : tout d’abord, il doit basculer en arrière-plan, en mode démon. Ensuite, pour être certain de toujours détruire la file Fifo quand il se
-				termine, nous allons lui ajouter un gestionnaire pour les principaux signaux de terminaison, ainsi que pour le pseudo-signal EXIT qui est invoqué lorsque le script se termine
-				normalement. Le serveur vérifie qu’un autre serveur n’est pas déjà actif, sinon il lui envoie une demande de terminaison. Ensuite, il crée la file Fifo prévue et entre dans la boucle de
-				fonctionnement principal. Cette boucle se déroule jusqu’à ce qu’il reçoive un identifiant « FIN  ». L’identifiant et le nom de la Fifo du client sont lus grâce à une instruction read .
-				On balaye ensuite le fichier /etc/passwd . Pour ce faire, le plus simple est de mettre en place une redirection depuis ce fichier vers l’entrée standard grâce à exec . Cette mise en
-				œuvre a pour effet secondaire de ramener au début le pointeur de lecture dans le fichier /etc/passwd . Pour séparer les champs qui se trouvent sur les lignes du fichier, on recourt
-				sans problème à read , après avoir temporairement modifié la variable IFS , pour qu’elle contienne le séparateur « :  ». Si l’identifiant est trouvé, le nom complet est inscrit dans la file Fifo du client, et la boucle recommence.</p>
-				<p><pre><code>
+			<p>Le serveur est un peu plus complexe : tout d’abord, il doit basculer en arrière-plan, en mode démon. Ensuite, pour être certain de toujours détruire la file Fifo quand il se
+			termine, nous allons lui ajouter un gestionnaire pour les principaux signaux de terminaison, ainsi que pour le pseudo-signal EXIT qui est invoqué lorsque le script se termine
+			normalement. Le serveur vérifie qu’un autre serveur n’est pas déjà actif, sinon il lui envoie une demande de terminaison. Ensuite, il crée la file Fifo prévue et entre dans la boucle de
+			fonctionnement principal. Cette boucle se déroule jusqu’à ce qu’il reçoive un identifiant « FIN  ». L’identifiant et le nom de la Fifo du client sont lus grâce à une instruction read .
+			On balaye ensuite le fichier /etc/passwd . Pour ce faire, le plus simple est de mettre en place une redirection depuis ce fichier vers l’entrée standard grâce à exec . Cette mise en
+			œuvre a pour effet secondaire de ramener au début le pointeur de lecture dans le fichier /etc/passwd . Pour séparer les champs qui se trouvent sur les lignes du fichier, on recourt
+			sans problème à read , après avoir temporairement modifié la variable IFS , pour qu’elle contienne le séparateur « :  ». Si l’identifiant est trouvé, le nom complet est inscrit dans la file Fifo du client, et la boucle recommence.</p>
+			<p><pre><code>
 &gt;#!/bin/bash
 &gt;
 &gt;# Passage en mode démon
@@ -2388,8 +2393,8 @@ echo "Instalation pour noyau de type $Type_noyau"
 &gt;		echo "Non trouvé" &gt; $FIFO_CLT
 &gt;	fi
 &gt;done</code></pre></p>
-				<p>Voici le résultat de l'éxecution</p>
-				<p><pre><code>
+			<p>Voici le résultat de l'éxecution</p>
+			<p><pre><code>
 &gt;./fifo_serveur.sh
 &gt;Le PID du démon est 6963
 &gt;$ ./fifo_client.sh
@@ -2408,16 +2413,149 @@ echo "Instalation pour noyau de type $Type_noyau"
 &gt;Le serveur n'est pas accessible
 &gt;$ ls ~/*.fifo
 &gt;ls: Aucun fichier ou répertoire de ce type</code></pre></p>
-				<p>La communication entre processus au moyen des files Fifo est un mécanisme puissant, mais il faut bien prendre garde aux risques d’interactions bloquantes si chacun des deux
-				processus attend l’action de l’autre. Il est aisé – et amusant – de tester les différentes situations en créant manuellement une file avec la commande mkfifo , puis d’examiner les
-				comportements et les blocages en écrivant dans la file avec echo "..." &gt; fifo ou en lisant avec cat &lt; fifo depuis plusieurs fenêtres xterm différentes.</p>
-			</article>
+			<p>La communication entre processus au moyen des files Fifo est un mécanisme puissant, mais il faut bien prendre garde aux risques d’interactions bloquantes si chacun des deux
+			processus attend l’action de l’autre. Il est aisé – et amusant – de tester les différentes situations en créant manuellement une file avec la commande mkfifo , puis d’examiner les
+			comportements et les blocages en écrivant dans la file avec echo "..." &gt; fifo ou en lisant avec cat &lt; fifo depuis plusieurs fenêtres xterm différentes.</p>
 		</article>
 	</section>
 	<section id="entrer_sortie">
 		<h1><u>Les sytèmes d'entrée et de sortie du shell</u></h1>
 		<article>
-			<p>
+			<p>Rappelons tout d'abord qu'il est possible de mettre en place ou de modifier les redirections au sein même d'un script</p>
+			<p>Utilisé un regroupement de commande et modifier temporairement les entrées et sortie standard uniquement pour cette portion</p>
+			<p>On peut également modifier les redirections grâce à la commande exec, sans arguments, comme dans le script ci-dessus fifo_serveur.sh</p>
+			<p>Il donc possible en fesant preuve de patience de réalider des script shell pour gérer des données de façon intelligente sans faire appel à un autre language de programmation</p>
+			<p>Lorsque qu'on rédige des chaines de commandes qui agissent comme des filtres (entrée standard et sortie standard), deux besoins apparaissent souvent : </p>
+			<ol>
+				<li>observer, durant la phase de mise au point, les données qui circulent en un point quelconque du pipeline</li>
+				<li>regroupé des informations qui se trouve sur des lignes successives pour construire une seul commande.</li>
+			</ol>
+			<p>Deux utilitaires permettent de réaliser ces fonctions : tee pour la premiere et xargs pour la seconde</p>
+			<h3 id="tee"><u>La commande tee pour une sortie annexe</u></h3>
+			<p>Cette utilitaire peut s'imaginer comme un T en plonberie, c'est à dire un accessoire que l'on insère dans un pipeline pour disposé d'une sortie annexe</p>
+			<p>tee lit les données sur son entrée standard et les copie sur sa sortie standard, tout en envoyant une copie supplémentaire dans tous les fichiers dont le nom lui est fournies en argument</p>
+			<p>Cette commande permet donc enregistré le trafic de données entre chaque commande d'un pipeline, se qui est très pratique lors de la mise au point</p>
+			<p>Il est également possible d'utiliser le nom de fichier spécial /dev/tty pour obtenir un affichage à l'écran des données qui transite par tee</p>
+			<p>Voici un exemple de script qui ecoute l'interface ethernet eth0, que l'on filtre par le nom d'hôte : </p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;tcpdump -i eth0 -l | grep 192.1.1.51 &gt; capture</code></pre></p>
+			<p>Si l'on regarde le résultat du fichier capture il sera vide</p>
+			<p>Pour comprendre pourquoi aucune donnée ne passe on utilise la commande tee</p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;tcpdump -i eth0 -l | tee /dev/tty | grep 192.1.1.51 &gt; capture</code></pre></p>
+			<p>On place /dev/tty après tee pour demander un affichage à l'écran</p>
+			<p>Une fois relancer la commande on s'aperçoit qu'on voulait filter une adresse ip alors que tcpdump dans ce cas renvoiyait des noms d'hôtes sous forme symbolique</p>
+			<p>Avoir le reflexe d'utiliser tee pour sonder le passage de données dans un pipeline permet souvent de gagner du temp lors de la mise au point de commande composées qui sont complexes</p>
+			<h3 id="xargs"><u>La commande xargs pour transmettre en arguments des lignes de texte sélectionner à l'aide d'une commande</u></h3>
+			<p>Elle prend des lignes de textes sur son entrée standard, les regroupes pour les transmettre en argument avant de lancer une autre commande</p>
+			<p>C'est le seul moyen efficace de transformer des données arrivant dans un flux du type pipeline en information du type pipeline en information sur une ligne de commande</p>
+			<p>SOn utilisation la plus fréquente est l'association des outils find et grep pour rechercher des chaînes de caractères, en parcourant récursivement les répertoires qui contienne les fichiers</p>
+			<p><code>&gt;find . -name *.c | xargs grep ipv6_getsockopt</code></p>
+			<p>Va permetre d'analyser l'interieure de chacun des fichiers retourner par find grâce à xargs</p>
+			<p>Très éfficace également pour transmettre le résultat d'une application sur la ligne de commande d'une autre</p>
+			<p>Par exemple le lancement d'un éditeur sur tous les fichiers qui contiennent une chaîne données (l'option -l de grep demande que ne soit affiché que les noms de fichiers ou la chaine se trouve)</p>
+			<p><code>&gt;grep -l interface_eth '*.pm' | xargs nedit</code></p>
+		</article>
+	</section>
+	<section id="reseau">
+		<h1><u>Les commandes utiles pour manipuler le réseau</u></h1>
+		<article>
+			<p>Voici une liste de commande pour manipuler le réseau : </p>
+			<table>
+				<thead>
+					<tr>
+						<th>Commande</th>
+						<th>Fonction</th>
+						<th>Exemple</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>tcpdump</td>
+						<td>Imprime le contenu des paquets sur une interface réseau</td>
+						<td>tcpdump -i 192.168.0.36 -l | grep 192.168.0.36 &gt; capture</td>
+					</tr>
+					<tr>
+						<td>ifconfig</td>
+						<td>ifconfig</td>
+						<td>Permet d'obtenir des info sur interface réseau comme son ip ou ip de la passerelle</td>
+					</tr>
+				</tbody>
+			</table>
+		</article>
+	</section>
+	<section id="stty">
+		<h1><u>La commande stty pour configurer les options du terminal de l'utilisateur</u></h1>
+		<article>
+			<p>Voici une petite liste des possibilité de la commande :</p>
+			<table>
+				<thead>
+					<tr>
+						<th>Options</th>
+						<th>Significations</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>-g</td>
+						<td>Afficher la configuration en cours dans un format qui puissent être utilisé pour la restauré ultérieurement.</td>
+					</tr>
+					<tr>
+						<td>-a</td>
+						<td>Afficher la configuration de manière intelligible </td>
+					</tr>
+					<tr>
+						<td>sane</td>
+						<td>Remise du terminal dans un état utilisable</td>
+					</tr>
+					<tr>
+						<td>-echo</td>
+						<td>Suprimer l'echo des caractères saisies</td>
+					</tr>
+					<tr>
+						<td>-icanon</td>
+						<td>Basculer en mode non canonique, ce qui modifie le comportement vis-à-vis de certaines touches spéciales.</td>
+					</tr>
+					<tr>
+						<td>min m time t</td>
+						<td>En mode non canonique, faire echoué la lecture si m caractères n'ont pas été lus au bout de t dixièmes de seconde</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>On retiendra que la lecture au vol de caractères se fait en configurant le terminal avec :</p>
+			<p><code>stty -icanon min 0 time 1</code></p>
+			<p>Et ensuite en utilisant read comme dans le script suivant</p>
+<p><pre><code>
+&gt;saisie_touche.sh :
+&gt;#! /bin/sh
+&gt;sauvegarde_stty=$(stty -g)
+&gt;stty -icanon time 1 min 0 -echo
+&gt;touche=""
+&gt;while [ -z "$touche" ] ; do
+&gt;	read touche
+&gt;done
+&gt;echo "Touche pressée = " $touche
+&gt;stty $sauvegarde_stty</code></pre></p>
+			<p>Le résultat : </p>
+			<p><pre><code>
+&gt;./saisie_touche.sh
+&gt;	(pression sur a)
+&gt;Touche pressée = a</code></pre></p>
+			<p>Par exemple voic la liste des options stty -a sur mon pc : </p>
+			<p><pre><code>
+				speed 38400 baud; rows 24; columns 168; line = 0;
+				intr = ^C; quit = ^\; erase = ^?; kill = ^U; eof = ^D; eol = M-^?; eol2 = M-^?; swtch = M-^?;
+				start = ^Q; stop = ^S; susp = ^Z; rprnt = ^R; werase = ^W; lnext = ^V;
+				flush = ^O; min = 1; time = 0;
+				parenb -parodd cs8 hupcl -cstopb cread -clocal -crtscts
+				ignbrk brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr icrnl ixon -ixoff -iuclc ixany imaxbel iutf8
+				opost -olcuc -ocrnl onlcr -onocr -onlret -ofill -ofdel nl0 cr0 tab0 bs0 vt0 ff0
+				isig icanon iexten echo echoe echok -echonl -noflsh -xcase -tostop -echoprt echoctl echoke
+			</code></pre></p>
 		</article>
 	</section>
     </body>
