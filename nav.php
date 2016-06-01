@@ -1,5 +1,6 @@
 <?php
 /*requete pour récuperer les 10 derniers messages*/
+include("bdd/connexion.php");
 $adr="/pages/";
 echo "
     <header>
@@ -33,7 +34,7 @@ echo "
             <label for='pseudo'>Pseudo : </label><input type='text' name='pseudo' id='pseudo' /><br/>
             <label for='Message'>Message : </label><textarea name='message' id='message' rows='20' cols='45'></textarea><br/>
             <input type='submit' value='Envoyer' />
-        </form>
-     </aside>
-     ";
+        </form>";
+        include("bdd/affiche_message.php");
+     echo "</aside>";
 ?>
