@@ -53,6 +53,11 @@
 					<li><a href="#tput">La commande pour fonctionnalité de haut niveau</a></li>
 					<li><a href="#dialog">La commande dialog pour réaliser des interfaces utilisateur conviviable en mode texte</a></li>
 					<li><a href="#debogage">Les manipulations et techniques de debogage des scripts</a></li>
+					<li><a href="#virgule_flotante">Manipuler des nombres flotants</a></li>
+					<li><a href="#expression_reguliere">Les expréssion régulière (rationelle)</a></li>
+					<li><a href="#grep">Utilisation de la commande grep</a></li>
+					<li><a href="#tableau_expression">Tableau des symboles pour expression rationnelle simple et étendue</a></li>
+					<li><a href="#find">Utilisation de commande find</a></li>
 				</ol>
 				<p>Voici un site qui présente les 101 commandes les plus importantes de linux</p>
 				<a href="https://buzut.fr/2012/09/10/101-commandes-indispensables-sous-linux/">Les 101 commandes les plus importantes de linux</a>
@@ -2590,6 +2595,397 @@
 				</ul>
 				<p>La commande internet <code>times</code> pour obtenir des statistiques sur les temps utilisateur et système consommés par processus et par ses descandants. Cela permet parfois d'affiner la mise au point 
 				en recherchant les portions d'un programme les plus gourmandes en temps processeur.</p>
+			</article>
+		</section>
+		<section id="virgule_flotante">
+			<h1><u>La manipulation directe de nombre flotant n'est pas possible avec bash seul quelque version de shell ksh le permette sinon il faut ruser !</u></h1>
+			<article>
+				<p>Toutefois, les scripts shell peuvent quand même bénéficier de l'arithmétique des nombre réel grâce à un outils standard nommé bc</p>
+				<p>Cette outil peût être utilisé de manière interactive (comme une calculatrice) ou dans un script</p>
+				<p>Dans la bibliothèque étendue de bc accessible via son option -l en ligne de commande. La fonction a(x) renvoie l'arc tangente de x.</p>
+				<p>Voici un exemple interactif :<code>&gt;bc -l</br>&gt;4*a(1)</br>&gt;3,14159265358979323844</br>&gt;quit</code></p>
+				<p>Et maintenant un exemple dans un script : </p>
+				<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;X=1.234
+&gt;Y=5.6789
+&gt;Z=$( echo "$X * $Y" | bc -l )
+&gt;echo "Z vaut : $Z"</pre></code>
+				<p>Ce qui donne comme résultat : <code>Z vaut : 7.007726</code></p>
+				<p>On envoie l'opération dans bc -l</p>
+				<p>Pour les options possible voir man bc</p>
+			</article>
+		</section>
+		<section id="expression_reguliere">
+			<h1><u>Utilisation des expressions régulière</u></h1>
+			<article>
+				<p>Une expression régulière est une description d'un chaine de caracteres. Elle se présente elle-même sous forme de chaine, mais son contenu est symbolique et doit être interprété comme tel.</p>
+				<p>Par exemple, l'expression <code>^[[:digit:]]+ -[[:blank:]]+.*$</code> est une description qui dit en substance :</p>
+				<ul>
+					<li>au moins un chiffre en début de chaine</li>
+					<li>suivi d'un espace</li>
+					<li>suivi d'un tiret</li>
+					<li>suivi d'un ou plusieur espaces ou tabulations</li>
+					<li>suivis d'un nombre quelconque de caractères terminant la chaîne</li>
+				</ul>
+				<p>Une expression rationnelle sert généralement à selectionner une ou plusieurs chaînes dans un enssemble donné, par exemple des lignes spécifiques dans un fichier. 
+				Une expréssion régulière peut donc, la plupart du temps, être mise en correspondance avec plusieurs chaîne diffèrentes, et parfois même une infinité de chaînes</p>
+				<p>Selon les applications on peut afficher la chaîne complete (sélection de lignes avec grep), suprimer ou modifier la portion sélectionnée (scripts sed), ou lancer des actions qui dépendent de la structure de la chaîne (traitement de fichiers avec awk).</p>
+				<p><u>On dispose de deux types d'expression rationnelles : les simples et les étendues.</u></p>
+				<p>En pratique la diffèrence entre les deux se situera sur la nécessité ou non de préfixer certains symbole spéciaux par un backslash (barre oblique inverse).</p>
+				<h3><u>Les expréssions régulière simple</u></h3>
+				<p>Certains caractères ont des significations spéciales. Dans une expression rationnelle simples, ces métacaractère sont :  </p>
+				<ul>
+					<li>.: un caractère quelconque</li>
+					<li>*</li>
+					<li>[ ]</li>
+					<li>^ : Ddébut de chaîne</li>
+					<li>$ : Fin de chaîne</li>
+				</ul>
+				<p>Tous les autres caractères ne sont mis en correspondance qu'avec leur propres valeur. Exemple l'expression abcd ne peut correspondre qu'a la chaine abcd</p>
+				<p>Exemple de script <pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;EXPRESSION="$1"
+&gt;#Eliminons l'expression des arguments de ligne de commande :
+&gt;shift
+&gt;#Puis comparons-la avec les chaînes :
+&gt;for chaine in "$@" ; do
+&gt;	echo "$chaine" | grep "$EXPRESSION" &gt; /dev/null
+&gt;	if [ $? -eq 0 ] ; then
+&gt;#equal à zero car en shell zero signifie ok et autre non
+&gt;		echo "$chaine : OUI"
+&gt;	else
+&gt;		echo "$chaine : NON"
+&gt;	fi
+&gt;done</code></pre></p>
+				<p>On notera que dans l'exemple précedent que le script affiche une réussite si l'expression rationnelle peut être mise en correspondance avec une sous-partie de la chaîne proposée, même si la chaîne complète 
+				n'est pas utilisée</p>
+				<p>Par exemple avec les arguments : <code>&gt;./regexp.sh ABCD xyzABCD123</code> Donnera un résultat positif<code>&gt;xyzABCD123 : oui</code>car ABCD se trouve bien dans la chaine de caractère</p>
+				<p>Si l'ont souhaite que toutes la chaîne soit employé on utilisera les symbôles de début et de fin de chaîne.</p>
+				<p><u>Le symbôle générique .</u></p>
+				<p>Le caractère point . dans une expression, est un symbôle générique qui peut représenter n'importe quel caractère dans la chaîne</p>
+				<p>Exemple avec : <pre><code>&gt;./regexp.sh A.B AxB A.B AxyB</code></pre></p>
+				<p><pre><code>&gt;AxB : oui</br>&gt;A.B : oui</br>&gt;AxyB : non</code></pre></p>
+				<p>La derniere chaîne à été rejeté car le point correspond sans problème au x, mais le y ne peut pas être associer à B</p>
+				<p>Si on aurait voulu introduire un point littéral dans l'expréssion rationelle il aurai fallu le faire précédé d'un \ (blackslash)</p>
+				<p>Exemple : <code>&gt;./regexp.sh "A\.B" AxB A.B</br>&gt;AxB : NON</br>&gt;A.B : OUI</code></p>
+				<p>On notera l'emploi d'apostroĥe pour encadrer l'expression régulière, pour éviter que le shell n'intervienne et ne suprime le blackslash avant d'invoquer le script</p>
+				<p><u>Les caractère ^ et $ pour début et fin de chaine</u></p>
+				<p>Les deux symbôles spéciaux, ^ et $, représente respectivement début de chaine et fin de chaine</p>
+				<p>Il ne sont pas mis en correspondance avec un caractère véritable, mais avec une chaine vide. Par exemple, <code>&gt;^a</code> peut correspondre à n'importe quelle chaine dont le premier caractère est un a</p>
+				<p>De même que a$ peut correspondre à n'importe quel chaîne se terminant par a</p>
+				<p>En corollaire ^a$ représente uniquement la lettre a</p>
+				<p>Une exprèssion ^$ représente une chaine vide, (dont la réprésentation ascii 0x0A)</p>
+				<p><u>Les alternatives avec le caractère | qui doit être précéde de \</u></p>
+				<p>Le caractère | lorsqu'il est précédé de \ indique une alternative entre deux caractère</p>
+				<p>Un exemple : <pre><code>&gt;./regexp.sh 'Ax\|yB' AxB AyB AzB</br>&gt;AxB : oui</br>&gt;AyB : OUI</br>&gt;AzB : non</code></pre></p>
+				<p><u>Les listes de caractères </u></p>
+				<p>Lorsque plusieurs caractères peuvent convenir à un emplacement donné, nous avons vu qu'il est possible d'enchaîner les alternatives, mais écrire : a\|b\|c\|d\|e n'est pas très pratique</p>
+				<p>Il est donc possible d'indiquer des listes de caractères suceptibles de correspondre à un caractère de la chaine. On regroupe la liste entre [ crochet ], et son contenu sera mis en corelation avec seul d'entre eux</p>
+				<p>Les caractères spéciaux comme * \ et . reprennent signification litérale dans les crochets</p>
+				<p>Pour insérer un crochet dans une liste on place le crochet ferment en première position et le crochet ouvrant en dernière position</p>
+				<p>Exemple de script utilisant une liste : (Un seul des caractères présent dans cette liste correspondra)<pre><code>
+&gt;./regexp.bash 'A[.\*]B' AxB A.B 'A*B' 'A\B'
+&gt;AxB : NON
+&gt;A.B : OUI
+&gt;A*B : OUI
+&gt;A\B : OUI</code></pre></p>
+				<p>Les caractères .\* sont testés avec leur valeurs littérales</p>
+				<p>Il est également possible d'utiliser des intervales avec les listes</p>
+				<p>Pour éviter d'avoir trop de caractères à écrire dans la liste comme par exemple [abcdefghijklmnopqrstuvwxyz], on peut utiliser une intervale. Pour ce faire on sépare les deux bornes avec un tiret,
+				et l'intervalle acceptera tous les caractères intermédiaire de la table ascii.</p>
+				<p>Par exemple avec deux intervalles une avec les caractères de l'alphabet et les caractères numérique</p>
+				<p><code>&gt;./regexp.bash 'A[a-z][0-9]B' Ac5B AC5B AczB</br>&gt;A5cB : OUI</br>&gt;AC5B : NON</br>&gt;AczB : NON</code></p>
+				<p>Si le premier caractère après le crochet ouvrant est un ^ alors siginification est inversé; elle pourra correspondre à n'inporte quel caractère sauf ceux indiqué</p>
+				<p><code>&gt;./regexp 'A[a-z]B' 'A#B' A8B AcB</br>&gt;A#B : NON</br>&gt;A8B : NON</br>&gt;AcB : OUI</br>&gt;#Alors que avec cette requête : </br>&gt;./regexp 'A[^a-z]' 'A#B' A8B AcB</br>&gt;A#B : OUI</br>&gt;A8B : OUI</br>&gt;AcB : OUI</code></p>
+				<p>A tout autre emplacement le caractère ^ reprend sa valeur littérale. Le tiret reprend sa signification litérale si il est placé en premier ou derniere position (ou jsute derrière ^)</p>
+				<p><u>Les classes</u></p>
+				<p>L'utilisation d'intervalles n'est pas très portable car il s'appuie uniquement sur l'ordre des caractères dans le jeu ascii qui est loin d'être le seul et qui ne contient pas les caractères accentué par exemple</p>
+				<p>Pour amélioré la portabilité des expréssions régulières, on peut recourir à la notion de classe de caractère. En outre les classes varie selon la localisation du système.</p>
+				<p>Les diffèrences essentielles entre l'ASCII et le ISO-8859-15 (latin-15) Utilisé dans l'europe de l'ouest.</p>
+				<p>Le nom d'une classe doit être indiqué avec la notation [:nom:], et ce obligatoirement à l'interieur d'une liste entre crochet. <strong>Ce qui revient à écrire [[:nom:]]</strong></p>
+				<p>Voici la liste des douzes classes standard : </p>
+				<table>
+					<thead>
+						<tr>
+							<th>Nom</th>
+							<th>Signification</th>
+							<th>Ascii</th>
+							<th>Iso-8859-15</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>alpha</td>
+							<td>Lettres alphabétiques dans la localisation en cours</td>
+							<td>[A-Za-z]</td>
+							<td>[A-Za-zÀÁÂÃÄ...
+							ùúûü ́y]</td>
+						</tr>
+						<tr>
+							<td>digit</td>
+							<td>Chiffres décimaux</td>
+							<td>[0-9]</td>
+							<td>idem Ascii</td>
+						</tr>
+						<tr>
+							<td>xdigit</td>
+							<td>Chiffres héxadicimaux</td>
+							<td>[0-9A-Fa-f]</td>
+							<td>Idem Ascii</td>
+						</tr>
+						<tr>
+							<td>alnum</td>
+							<td>Chiffres ou lettres alphabétiques</td>
+							<td>[[:alpha:][:digit:]]</td>
+							<td>Idem Ascii</td>
+						</tr>
+						<tr>
+							<td>lower</td>
+							<td>Lettre minuscule dans la localisation en cours</td>
+							<td>[a-z]</td>
+							<td>[a-zàáâãä...ùúûü ́y]</td>
+						</tr>
+						<tr>
+							<td>upper</td>
+							<td>Lettre majuscule dans la localisation en cours</td>
+							<td>[A-Z]</td>
+							<td>[A-ZÀÁÂÃÄ...ÙÚÛÜÝ]</td>
+						</tr>
+						<tr>
+							<td>blank</td>
+							<td>Caractère blancs</td>
+							<td>Espaces et Tabulation</td>
+							<td>Idem Ascii</td>
+						</tr>
+						<tr>
+							<td>space</td>
+							<td>Caractère d'espacement</td>
+							<td>Espaces, Tabulation, saut de ligne et de page, retour chariot</td>
+							<td>Idem Ascii</td>
+						</tr>
+						<tr>
+							<td>punct</td>
+							<td>Signe de ponctuation</td>
+							<td>[]!"#$%&amp;'()*+,-./:;&lt;=&gt;?@\^_`{|}~[]</td>
+							<td>Idem Ascii</td>
+						</tr>
+						<tr>
+							<td>graph</td>
+							<td>Symbôle ayant une représentation graphique</td>
+							<td>[[:alnum:][:punct:]]</td>
+							<td>Idem Ascii</td>
+						</tr>
+						<tr>
+							<td>print</td>
+							<td>Caractère imprimables (graph et espace)</td>
+							<td>[[:graph:]]</td>
+							<td>Idem Ascii</td>
+						</tr>
+						<tr>
+							<td>cntrl</td>
+							<td>Caractères de contrôle</td>
+							<td>Codes Ascii inférieurs à 31, et caractère de code 127</td>
+							<td>Idem Ascii</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>Il existe deux autres types de classes de caractères. Les symbôles de juxtaposition et les classes d'équivalences qui se présente respectivement sous la forme [.symboles.] et [=classe=] dans une liste entre crochets.</p>
+				<p><u>Les Répetitions</u></p>
+				<p>Si nous voulons décrire un mot de 4 lettres entouré de blancs : <code>&gt;[[:blank:]][[:alpha:]][[:alpha:]][[:alpha:]][[:alpha:]][[:blank:]]</code></p>
+				<p>Ce n'est pas très élegant. Il faut savoir que l'on peut à la suite de la description placé un caractère de répétition.</p>
+				<p>Comme le carractère * qui signifie zéro , une ou plusieurs occurence de l'élément précedent</p>
+				<p>Lorsque l'asterisuqe * est placé juste après un point alors, il remplacera autant de caractère qu'il le faudra</p>
+				<p>L'astérisque reprend sa valeur littérale s'il est placé juste après un backslash ou lorsqu'il se trouve dans un liste entre crochet</p>
+				<p>Exemple d'expression pour trouver le premier mot : </p>
+				<p>Dans cette expression : <code>^[[:blank:]]*[[:alpha:]][[:alpha:]]*[[:blank:]]*</code> On recherche un mot qui et précédé de zéro , un ou plusieurs espace suivi d'une lettre suivie de zéro, une ou plusieurs lettre suivie de zéro, un ou plusieurs espace</p>
+				<p> On pourrai encore faire mieux car dans ce cas on à écrit deux fois alpha car on souhaite au minimum une lettre pour composé un mot hors si on avait mis <code>^[[:blank:]]*[[:alpha:]]*[[:blank:]]*</code>
+				le mot aurait pu être composé de zéro lettre</p>
+				<p>Pour demander qu'il y ai au moins une lettre il faut utiliser le caractère \+ qui signifie une ou plusieurs occurence de l'élément précédent</p>
+				<p>Ce qui donnerai : <code>[[:blank:]]*[[:alpha:]]\+[[:blank:]]*</code> Dans cette expression le mot sera au minimum composé d'un caractère alphabétique dans la localisation en cour</p>
+				<p>Exemple <code>&gt;./regexp 'ab\+c' ac abc abbbc</br>&gt;ac : non</br>&gt;abc : OUI</br>&gt;abbbc : OUI</code></br>Il peut y avoir une ou plusieur fois la lettre b </p>
+				<p>Il existe également l'opérateur de répétition \? qui signifie zéro ou une fois occurence du caractère précédent</p>
+				<p>Exemple : <code>&gt;./regexp 'ab\?c' ac abc abbbc</br>&gt;ac : OUI</br>&gt;abc : OUI</br>&gt;abbbc : NON</code></br>Il peut y  avoir zéro ou une fois la lettre b</p>
+				<p>Et enfin il y a l'opérateur \{n,m\} qui signifie au moin n fois et au plus m fois le caractère précédent</p>
+				<p>Un exemple : <code>&gt;./regexp 'ab\{4,6\}c' abbc abbbbc abbbbbbc abbbbbbbc</br>&gt;abbc : NON</br>&gt;abbbbc : OUI</br>&gt;abbbbbbc : OUI</br>&gt;abbbbbbbc : NON</code></br>Il peut y avoir 4 5 ou 6 fois la lettre b</p>
+				<p><u>Il existe plusieurs varainte de \{ et \} : </u></p>
+				<ul>
+					<li>\{n,\} au moins n fois</li>
+					<li>\{0,m\} au plus m occurences</li>
+					<li>\{n\} exactement n occurences</li>
+				</ul>
+				<p>Si un opérateur de répétition se trouve à la suite d'un caractère générique comme . alors on ne demande pas la répétition du même caractère mais une séquence de caractère.</p>
+				<p>Par exemple : <code>&gt;./regexp.sh 'A.\{3\}C' AxyzC</br>&gt;AxyzC : OUI</code></br>Indique une suite de 3 caractère car le point indique n'importe quel caractère</p>
+				<p><u>Le groupement de caractère ou de sous expression</u></p>
+				<p>S'il est pratique de pouvoir indiquer une répétition de caractère, on peut aussi être ammenez à rechercher des répétitions de séquences de caractères, ou de sous expréssions rationelles.</p>
+				<p>On peut ainsi définir un groupement de caractère à l'aide des symboles \( et \). Lorsqu'un opérateur de répétition est placé à la suite d'un groupement, il agit sur l'enssemble de la séquence.</p>
+				<p>Par exemple, l'expression rationnelle \(123\)\{2\} demande deux fois la répétition de 123 : <code>&gt;./regexp 'A\(123\)\{2\}' A123B A123123B</br>&gt;A123B : NON</br>&gt;A123123B : OUI</code> Dans la seconde suite de caractère il y à bien deux fois de suite le groupement de caractère 123 alors que pas dans la premiere suite de caractère</p>
+				<p>Les groupements peuvent eux-même être associer à une alternative \| :</p>
+				<p>Exemple <code>&gt;./regexp 'A\(12\)\|\(34\)B' A12B A34B A14B</br>&gt;A12B : OUI</br>&gt;A34B : OUI</br>&gt;A14B : NON</code></br>Il peut y avoir un groupement de 12 ou 34 entre les caractères A et B</p>
+				<p><u>Le référencement arrière :</u></p>
+				<p>Les regroupement peuvent servir losrque la même séquence de caractère doit se retrouver à plusieurs emplacements dans la même chaine. On peut alors insérer un indicateur qui fera référence à uine portion e l'expression régulière en correspondance. Le symbole \1 représente la sous-chaîne qui est mise n correspondance avec le premier regroupement e l'expression rationnelle, \2 la portion de la chaîne associé au deuxième regroupement, et ainsi de suite</p>
+				<p>Ainsi, si notre expression rationnelle commence par \(.\)x\(..\), le symbole \1 représentera le premier groupement qui en l'occurence ne représente qu'un caractère \(.\) et \2 représente le deuxième groupement qui représente dans ce cas deux caractère \(..\)</p>
+				<p>On remarquera que si la notation .\{3\} réclame 3 caractères quelconques, \(.\)\1\1 réclame 3 fois le même caractère, tout comme \(.\)\1\{2\}</p>
+				<p>Un exemple d'utilisation :<code>&gt;./regexp 'A.\{3\}B' A123B A222B</br>&gt;A123B : OUI</br>&gt;A222B : OUI</code></br>Demande 3 caractères quelconque entre les lettres A et B</p>
+				<p>Alors que : <code>&gt;./regexp 'A\(.\)\1\1B' A123B A222B</br>&gt;A123B : NON</br>&gt;A222B : OUI</code></br>On demande trois fois l'occurence du même caractère selectionner par le point</p>
+			</article>
+		</section>
+		<section id="tableau_expression">
+			<h1><u>Le tableau des symbole pour les expressions rationelle simple et étendue</u></h1>
+			<article>
+				<table>
+					<thead>
+						<tr>
+							<th>Signification</th>
+							<th>Symbole pour expression régulière simple</th>
+							<th>Symbole pour expression régulière étendue</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Caractère générique</td>
+							<td>.</td>
+							<td>.</td>
+						</tr>
+						<tr>
+							<td>Début de ligne</td>
+							<td>^</td>
+							<td>^</td>
+						</tr>
+						<tr>
+							<td>Fin de ligne</td>
+							<td>$</td>
+							<td>$</td>
+						</tr>
+						<tr>
+							<td>Alternative</td>
+							<td>\|</td>
+							<td>|</td>
+						</tr>
+						<tr>
+							<td>Liste de caractère</td>
+							<td>[ ]</td>
+							<td>[ ]</td>
+						</tr>
+						<tr>
+							<td>Classes de caractère (dans une liste)</td>
+							<td>[:class:]</td>
+							<td>[:class:]</td>
+						</tr>
+						<tr>
+							<td>Juxtaposition de caractère (dans une liste)</td>
+							<td>[.séquence.]</td>
+							<td>[.séquence.]</td>
+						</tr>
+						<tr>
+							<td>Classe d'équivalence (dans une liste)</td>
+							<td>[=classe=]</td>
+							<td>[=classe=]</td>
+						</tr>
+						<tr>
+							<td>Zéro, une ou plusieurs occurences de l'élément précédent</td>
+							<td>*</td>
+							<td>*</td>
+						</tr>
+						<tr>
+							<td>Une ou plusieurs occurences de l'élément précédent</td>
+							<td>\+</td>
+							<td>+</td>
+						</tr>
+						<tr>
+							<td>Zéro ou une occurence de l'élément précédent</td>
+							<td>\?</td>
+							<td>?</td>
+						</tr>
+						<tr>
+							<td>Au moins n et au plus m occurences de l'élément précédent</td>
+							<td>\{n,m\}</td>
+							<td>{n,m}</td>
+						</tr>
+						<tr>
+							<td>Au moins n occurences de l'élément précédent</td>
+							<td>\{n,\}</td>
+							<td>{n,}</td>
+						</tr>
+						<tr>
+							<td>Au plus m occurences de l'élément précédent</td>
+							<td>\{0,m\}</td>
+							<td>{0,m}</td>
+						</tr>
+						<tr>
+							<td>Exactement n occurences de l'élément précédent</td>
+							<td>\{n\}</td>
+							<td>{n}</td>
+						</tr>
+						<tr>
+							<td>Regroupement de caractères</td>
+							<td>\( \)</td>
+							<td>( )</td>
+						</tr>
+						<tr>
+							<td>Référence arrière au n-iéme regroupement</td>
+							<td>\n (remplacer n par numéro de position du regroupement voulue ex : \1)</td>
+							<td>\n</td>
+						</tr>
+						<tr>
+							<td>Préfixe d'un caractère spécial pour reprendre sa valeur littérale</td>
+							<td>\</td>
+							<td>\</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>Naturellement, dans les expressions rationnelles étendues, les caractères | , + , ? , { , } , ( , et ) ,
+				qui deviennent spéciaux, doivent être préfixés par un backslash pour retrouver leur valeur
+				littérale, ce qui n’était pas nécessaire dans les expressions simples.</p>
+			</article>
+		</section>
+		<section id="grep">
+			<h1><u>Utilisation de la commande grep</u></h1>
+			<article>
+				<p>L'outil grep et un outil indispensable. Il permet de parcourir des fichiers pour rechercher les lignes qui contiennent une expression rationnelle. Voici sa syntaxe habituelle : </p>
+				<p><code>&gt;grep [option] expression fichiers ...</code></p>
+				<p>Voici une liste des options utiles : </p>
+				<ul>
+					<li>-E : les expréssions régulières sont étendues; Par défaut, emploie des expressions rationnelle simples. Si on l'invoque sous le nom de egrep, il adopte le même comportement qu'avec cette option</li>
+					<li>-F : l'expression recherchée n'est pas une expression régulière mais une simple chaîne de caractères, même si elle contient des caractères qui seraient spéciaux pour une expression rationnelle.
+					Ceci est très utile lorsque la chaine recherchée est fournie par une source que nous ne maitrisons pas dans le script (l'utilisatuer par exemple). L'invocation de fgrep a un effet identique</li>
+					<li>-i : ignorer les diffèrences entre majuscule et minuscule (ignore case)</li>
+					<li>-v afficher les lignes qui ne contienne pas l'expression rationnelle inverse du résultat par défaut</li>
+				</ul>
+				<p>Assez souvent, l'expression rationnelle est réduite à une simple chaîne de caractères constante</p>
+				<p>Exemple : <code>grep -F "snmp" /etc/services</code></p>
+				<p>Recherche la chaîne de caractère snmp dans tous les fichiers présent dans le répertoire /etc/service</p>
+				<p>Quand on ne donne pas de nom de fichier, grep recherche le motif dans les lignes qui provienne de son entrée standard</p>
+				<p>Exemple avec : <code>&gt;tcpdump -lnq -i eth0 | grep "192.\.1\.1\.[[:digit:]]*\.telnet"</code>
+				<p>Voici un script qui utilise les expréssions régulières étendue : <pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;EXPRESSION="$1"
+&gt;#Eliminons l'expression des arguments de ligne de commande :
+&gt;shift
+&gt;#Puis comparons-la avec les chaînes :
+&gt;for chaine in "$@" ; do
+&gt;	echo "$chaine" | egrep "$EXPRESSION" &gt; /dev/null
+&gt;	if [ $? -eq 0 ] ; then
+&gt;#equal à zero car en shell zero signifie ok et autre non
+&gt;		echo "$chaine : OUI"
+&gt;	else
+&gt;		echo "$chaine : NON"
+&gt;	fi
+&gt;done</code></pre>
+				<p>Ce script prend en argument l'expression régulière étendue puis les chaînes de caractères dans lesquel faire la recherche</p>
+				<p>Exemple d'utilisation de ce script : </p>
+				<p><code>&gt;./regexpext.bash 'A(12)|(34)B' A12B A34B A14B</br>&gt;A12B : OUI</br>&gt;A34B : OUI</br>&gt;A14B : NON</code></p>
+				<p><code>&gt;./regexpext.bash 'A.{3}B' A123B A222B</br>&gt;A123B : OUI</br>&gt;A222B : OUI</code></p>
+				<p><code>&gt;./regexpext.bash 'A.\1\1B A123B A222B</br>&gt;A123B : NON</br>&gt;A222B : OUI</code></p>
+			</article>
+		</section>
+		<section id="find">
+			<h1><u>Utilisation de la commande find</u></h1>
+			<article>
+				<p>Pour rechercher de manière récursive une chaine de caractère dans tous les fichiers qui se trouvent dans tous les sous-répertoires à partir d'un point donné</p>
 			</article>
 		</section>
 		<section id="reseau">
