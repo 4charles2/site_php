@@ -58,6 +58,7 @@
 					<li><a href="#grep">Utilisation de la commande grep</a></li>
 					<li><a href="#tableau_expression">Tableau des symboles pour expression rationnelle simple et étendue</a></li>
 					<li><a href="#find">Utilisation de commande find</a></li>
+					<li><a href="#sed">Utilisation de la commande sed</a></li>
 				</ol>
 				<p>Voici un site qui présente les 101 commandes les plus importantes de linux</p>
 				<a href="https://buzut.fr/2012/09/10/101-commandes-indispensables-sous-linux/">Les 101 commandes les plus importantes de linux</a>
@@ -2986,6 +2987,20 @@
 			<h1><u>Utilisation de la commande find</u></h1>
 			<article>
 				<p>Pour rechercher de manière récursive une chaine de caractère dans tous les fichiers qui se trouvent dans tous les sous-répertoires à partir d'un point donné</p>
+				<p>Ce travail ne peut pas être réalisé par grep, il n'éxamine que les noms de fichiers qui lui sont fournis en arguments</p>
+				<p>La première idée serait d'employé find pour recherché tous les noms de fichier à partir d'un point donné et d'envoyer la liste à grep</p>
+				<p>Le probleme qui se pose est que find envoie la liste sur sa sortie standard, alors que grep attend cette liste sur sa ligne de commande.</p>
+				<p>C'est l'ocasion d'utiliser l'utilitaire xargs qui est justement conçu pour ce type de situation</p>
+				<p>Nous appelons find avec l'option -type f pour qu'il ne s'interesse qu'aux fichiers normaux et il envoie la liste sur sa sortie standard. Celle-ci et envoyé à xargs qui va construire une ligne de commande en invoquant grep</p>
+				<p>Voici un exemple très utiles pour rechercher des symbôles dans les sources de projets volumineux</p>
+				<p><code>&gt;find . -type f | xargs grep SIGKILL</code></p>
+				<p>La version GNU de grep possède un option -R récursive, mais elle n'est pas standard, et ne permet pas de filtrer les fichiers parcourus (sur leur noms par exemple)</p>
+			</article>
+		</section>
+		<section id="sed">
+			<h1><u>utilisation de la commande sed</u></h1>
+			<article>
+				<p></p>
 			</article>
 		</section>
 		<section id="reseau">
