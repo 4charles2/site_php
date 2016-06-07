@@ -2943,7 +2943,7 @@
 			</article>
 		</section>
 		<section id="grep">
-			<h1><u>Utilisation de la commande grep</u></h1>
+			<h1><u>Utilisation de la commande grep (global regular expression print)</u></h1>
 			<article>
 				<p>L'outil grep et un outil indispensable. Il permet de parcourir des fichiers pour rechercher les lignes qui contiennent une expression rationnelle. Voici sa syntaxe habituelle : </p>
 				<p><code>&gt;grep [option] expression fichiers ...</code></p>
@@ -3000,7 +3000,184 @@
 		<section id="sed">
 			<h1><u>utilisation de la commande sed</u></h1>
 			<article>
-				<p></p>
+				<p>Sed est très pratique pour automatiser des tâches administratives et manipuler des fichiers texte comme par exemple (html) !</p>
+				<h3><u>Présentation : </u></h3>
+				<p>Sed est l'abbréviation de <em>Stream Editor</em> que l'on peut comprendre comme éditeur de texte orienté flux</p>
+				<p>Sed va agir sur les lignes d'un fichier de texte ou de son entrée standard, et fournir le résultat sur sa sortie standard</p>
+				<p>En conséquence les instructions de manipulation doivent être fournies dans fichiers de scripts indépendants, ou en ligne de commande. </p>
+				<p>La syntaxe d'invocation et la suivante :</p>
+				<p><code>&gt;Sed -e 'liste d'instruction' fichier_à_traiter</code> ou <code>&gt;Sed -f fichier_script fichier_a_traiter</code></p>
+				<p>Dans le premier cas les instruction sont transmise en ligne de commande, tandis que dans le deuxième cas elles sont regroupé dans un script mais cette solution est devenu aujourd'hui presque anecdotique</p>
+				<p>Si aucun fichier à traiter n'est renseigner alors Sed attend les données sur entrée standard. Lorsque l'on fournie directement les instructions en ligne de commande grâce à l'option -e il est préférable d'entourer entre accolade simple ' ' en raison de l'utilisation fréquente des caractères : ?,*,$,... succeptible d'être interprété par le shell</p>
+				<p>Une option importante est également disponible : -n avec laquel sed fonctionne en mode silencieux, c'est à dire qu'il ne copie une ligne de texte sur son entrée standard vers la sortie standard que si on lui demande explicitement et non pas automatiquement comme c'est le cas par défault.</p>
+				<p>Cette capacité à traiter les informations au vol dans les flus entrées-sortie standard fait qu'on utilise fréquemment dans les pipelines regroupant d'autres commandes système</p>
+				<h3><u>Fonctionnement de Sed</u></h3>
+				<p>Ce traitemet du texte lu dicte le fonctionnement même de sed, puisqu'il ne dispose pas d'une vue globale sur le fichier à traiter, mais uniquement des informations fractionnaires, dilivré sur le flus d'entrée standard. Ainsi Sed repose-t-il sur le mécanisme suivant :</p>
+				<ul>
+					<li>Lecture d'une ligne sur le flux d'entrée (jusqu'à se qu'il rencontre un caractère de saut de ligne)</li>
+					<li>Traitement de cette ligne en la soumettant à toutes les commandes rencontrées dans le fichier script</li>
+					<li>Affichage de la ligne résultante sur la sortie standard, sauf si sed est invoqué avec l'option -n</li>
+					<li>Passage à la ligne suivante, et ainsi de suite jusqu'à la fin du flux d'entré standard.</li>
+				</ul>
+				<p>Les commandes que sed accepte ne sont pas très nombreuses et sont toujours représenté par une lettre unique ( a , b , c , d , g , h , i , n , p , q , r , s , t , y ) ou par le signe = .
+				Il s'agit principalement d'insertion ou de suppression de lignes et de modification  de chaine de caractère</p>
+				<p>En pratique seul trois commandes sont utilisé réelement (d, p , s) les autres donnant des lignes illisible et surtout impossible à maintenir</p>
+				<p>Une commande peut éventuellement être précédé par une adresse. Dans ce cas, elle ne s'applique qu'aux lignes concernées du flux standard d'entrée.</p>
+				<p>Une adresse se présente sous forme numérique corespondant alors au numéro de la ligne sélectionné ou sous forme d'expréssion régulière</p>
+				<p>Les numéros de ligne commence à 1 et se poursuive sur l'enssemble des fichiers à traiter sans interuption</p>
+				<p>Une expréssion régulière permet de sélectionné une ou plusieurs lignes en fonction de leur contenu.</p>
+				<p>La sélection peut également se faire sur une intervalles de ligne, en indiquant deux adresses séparées par une virgule</p>
+				<p>Des espaces ou des tabulations peuvent être insérés à volonté en début de ligne, ainsi qu'entre l'adresse et la commande</p>
+				<p>Exemple d'utilisation de sed avec la commande p (print) :</p>
+				<p><code>&gt;sed -n -e '2p' &lt; /etc/hosts.allow</code></br>affiche la deuxieme ligne du fichier /etc/hosts.allow</p>
+				<p><code>&gt;sed -n -e '/file/p' &lt; /etc/hosts.allow</code></br>affiche les lignes avec l'occurence file</p>
+				<p><code>&gt;sed -n -e '2,4p' &lt; /etc/hosts.allow</code>Affiche les lignes 2 à 4 du fichier</p>
+				<p><code>&gt;sed -n -e '/hosts/,/services/p' &lt; /etc/hosts.allow</code>Affiche toutes les lignes correspondante entre l'occurence de la première expression rationnelle et la seconde</p>
+				<p>La sélection par intervalle se fait en fonction des règles suivantes :</p>
+				<ul>
+					<li>sed sélectionne la première ligne correspondant à la première expression rationnelle ou au numéro indiqué avant la virgule</li>
+					<li>Il sélectionne également toutes les lignes suivantes jusqu'à ce qu'il en rencontre une qui corresponde à la seconde expréssion régulière ou au numéro indiqué après la virgule</li>
+					<li>Les lignes suivantes ne sont pas sélectionné, jusqu'à ce qu'il en rencontre une qui correspondent à nouveau au premier critère</li>
+				</ul>
+				<p>En conséquence plusieurs remarques s'imposent : </p>
+				<ul>
+					<li>Si la seconde partie de l'intervalle est une expression rationnelle, sa mise en correspondance n'est tentée qu'à partir de la ligne qui suit celle qui est sélectionné par la premier partie.
+					Une intervalle formée en seconde partie d'une expression régulière sélectionne toujours au moins deux lignes. On notera toutefois que ce comportement standardisé de nos jours, peut varier sur des anciennes version de sed</li>
+					<li>En revanche une selection du type 2,2 ou /hosts/,2 peut très bien sélectionné qu'une ligne. Cela est également vrai pour une sélection du type 4,1 qui sélectionne que la ligne 4, ou /hosts/2 si le mot hosts n'apparait qu'en ligne 3 par exemple</li>
+					<li>Lorsque que aucune ligne ne correspond à la seconde partie de l'intervalle (expression régulière impossible à trouver ou numéro supérieur ou égal au nombre de lignes), la sélection s'applique jusq'à la fin du fichier. Comme Sed lit les lignes une à une, il n'a aucun moyen de savoir à l'avance si une correspondance sera possible. Il faut donc voir les intervalles comme des bascules sélection/déselection, et pas de véritables recherches de portion de texte</li>
+					<li>Enfin, un intervalle décrit par des expressions régulières peut se répéter dans le texte. Ceci est très utiles lorsque l'on souhaite extraire d'un fichier des portions definie par des indicateurs (un marqeur de début et de fin) qui se répétent à plusieurs emplacements.</li>
+				</ul>
+				<p>L'adresse symblique $ correspond à la dernière ligne du dernier fichier à traiter. On notera également que l'on peut nier une adresse, c'est à dire éxécuté les commandes qu'aux lignes ne correspondent pas à la sélection grâce à l'opérateur !.</p>
+				<p>Dans cette exemple nous affichons que les lignes qui ne sont pas vide : </p>
+				<p><code>&gt;sed -n -e '/^$/!p' &lt; /etc/hosts.allow </code>
+				<h3><u>Les commandes de Sed</u></h3>
+				<h5><u>La Commande p (print)</u></h5>
+				<ul>
+					<li>Affiche la n-ième ligne (sed -ne '$np'), ou les lignes de la n-ième à la m-ième d'un fichier (sed -ne '$n,$mp'). Ceci est également possible en enchaînant les commandes tail et head mais de manière moins élégante</li>
+					<li>Afficher des lignes dans un intervalles délimité par des expressions régulières. C'est en quelque sorte une extention de la commande grep qui n'affiche que les lignes correspondant à une expression, mais pas une intervalles</li>
+				</ul>
+				<h5><u>La commande d (delete) pour supprimer :</u></h5>
+				<p>Naturellement il ne s'agit pas d'une vraie suppression car sed travaille sur le flux et non sur sur le fichier lui même</p>
+				<p>Sed passe simplement à la ligne suivante sans afficher la ligne en cour</p>
+				<p>On l'utilise de façon symétrique à la commande p</p>
+				<p>Exemple la ligne : <code>&gt;sed -ne '/selection_à_garder/p'</code> et symétrique à <code>&gt;sed -e '/selection_à_rejeter/d'</code></p>
+				<p><strong>Remarquer l'absence -n dans la seconde ligne pour gardez l'affichage des lignes automatique</strong></p>
+				<p>Voici un exemple qui suprime les lignes qui contient le motif hosts : <code>&gt;sed -e '/hosts/d' &lt; /etc/hosts.allow</code></p>
+				<p>Voici un autre exemple qui suprime toutes les lignes qui ne contient pas le motif the : <code>&gt;sed -e '/the/!d' &lt; /etc/hosts.allow</code>
+				<p>Il est possible d'enchainer les commandes successivement en argument de l'option -e en les séparant par un ;</p>
+				<p>Ou enchainer les invocations de sed dans un pipeline afin qu'il soit plus lisible</p>
+				<p>Par exemple si l'on désire supprimer toutes les lignes blanches, ou celles qui débutent par un caractère dièse (#) on peut l'écrire : </p>
+				<p><code>&gt;sed -e '/^[[:blank:]]*$/d'; '/^[[:blank:]]*#/d'</code> ou <code>&gt;sed -e '/^[[:blank:]]*$/d' | sed -e '/^[[:blank:]]*#/d'</code>
+				<p>Ou encore mieu dans un script (supprime_commentaire.bash) : </p>
+				<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;for fic in "$@" ; do
+&gt;#Supprimons les lignes blanches
+&gt;	sed -e '/^[[:blank:]]*$/d' $fic |
+&gt;	sed -e '/^[[:blank:]]*#/d'
+&gt;done</code></pre>
+				<p>La lisibilité d'une invocation de sed et en générale très peu lisible c'est pour cela qu'une bonne habitude à prendre et de la faire précédé d'une ligne de commentaire</p>
+				<h5><u>La commande s (substitution)</u></h5>
+				<p>Elle permet de remplacer partiellement le contenu d'une ligne</p>
+				<p>En voici la syntaxe d'invocation<code>&gt;s/motif/remplacement/options</code></p>
+				<p>Naturellement on peut faire précédé cette commande d'une sélection d'adresse, le motif et d'abord rechercher dans la ligne en cour,et le cas échéant remplacer par la seconde chaine.</p>
+				<p>Lorsque sed rencontre dans la ligne une expression qui correspond au motif recherché, il la remplace avec la chaine de caractère fournie en second argument. Dans cette expression seul deux métacaractère peuvent être utilisé.</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Caractère</th>
+							<th>Signification</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>&amp;</td>
+							<td>Sera remplacé par la chaine de caractère complète qui à été mise en correspondance avec le motif.</td>
+						</tr>
+						<tr>
+							<td>\i</td>
+							<td>i étant un nombre entre 1 et 9, il est remplacé par la i-iéme sous-expression régulière encadrée par des parenthèses dans le motif initial</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>Il faut impérativement employer l'expression \&amp; pour obtenir le caractère &amp; dans la chaîne de remplacement</p>
+				<p>Les options possibles à la fin de la commande de substitution sont : </p>
+				<table>
+					<thead>
+						<tr>
+							<th>Options</th>
+							<th>Signification</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>g</td>
+							<td>Remplacer tous les motifs trouvé dans la ligne en cours. Cette option est presque toujours employé</td>
+						</tr>
+						<tr>
+							<td>i</td>
+							<td>Ne remplacer qu'à la i-ième occurence du motif dans la ligne. Cela peut servir lorsqu'on manipule des fichiers qui représentent des lignes 'enregistrements, contenant des champs séparés par des délimiteurs.</td>
+						</tr>
+						<tr>
+							<td>p</td>
+							<td>Afficher la ligne si une substitution est réalisée</td>
+						</tr>
+						<tr>
+							<td>w</td>
+							<td>Suivie d'un nom de fichier, cette option permet d'y envoyer le résultat de la substitution. Cela sert généralement à des fins de débogage.</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>Voici des exemples de recherche et remplacement : </p>
+				<p><code>&gt;echo "azerty azerty azerty" | sed -e "s/az/qw/"</code> Le résultat : <code>&gt;qwerty azerty azerty</code>
+				<p>À présent ont demander que la seconde occurence du motif soit remplacé :</p>
+				<p><code>&gt;echo "azerty azerty azerty" | sed -e "s/az/qw/2"</code> Le résultat : <code>&gt;azerty qwerty azerty</code>
+				<p>Remplacement de toutes les occurences du motif :</p>
+				<p><code>&gt;echo "azerty azerty azerty" | sed -e "s/az/qw/g"</code> Le résultat : <code>&gt;qwerty qwerty qwerty</code>
+				<p>Extention de chaîne : </p>
+				<p>La mise en correspondance se fait de telle sorte que le motif "consomme" le maximum de caractères</p>
+				<p>Nous allons demander a sed de remplacé un motif constitué d'un a, d'une chaine d'une longueur quelconque, et d'un z</p>
+				<p>Nous pouvons remarquer qu'il va assurer la substitution de la plus longue sous-chaîne possible en allant chercher le z le plus éloigné</p>
+				<p><code>&gt;echo "azerty azerty azerty" | sed -e "s/a.*z/qw/go"</code>
+				<p>Remplacement des caractères spéciaux : </p>
+				<p>Pour voir les caractères spéciaux dans un fichier la commande cat -t</p>
+				<p>Pour suprimer les caractères \r (retour chariot) représenté par ^M présent aux fin de lignes des fichiers dos</p>
+				<p><code>&gt;sed -e 's/^M$//' fichier.bat | cat -t</code> Affichera le contenu sans les caractères ^M</p>
+				<p>Pour saisir un retour chariot en ligne de commande il faut en générale utilisé les combinaisons ctrl-v et ctrl-m</p>
+				<p>Pour ajouter le retour chariot en fin de ligne \r symbolisé par ^M : </p>
+				<p><code>&gt;sed -e 's/$/^M/'</code> Ajoutera à toutes les fin de lignes un retour chariot ce qui fait un fichier unix lisible par dos</p>
+				<p><u>Les enssembles de caractères : </u></p>
+				<p>Les enssembles de caractère sont très souvent utilisé pour mettre en corespondance des chaînes de caractères, sans tenir compte des majuscules et minuscule</p>
+				<p>Exemple de code : <code>&gt;echo "azerty azerty azerty" | sed -e 's/[aA][Zz]/qw/g'</code> le Résultat : <code>&gt;qwerty qwerty qwerty</code></p>
+				<p>Ce code remplace tous les accents de la table latin_1 en leur équivalent appauvrie de la table ascii : </p>
+				<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;#Remplace tout les accents par les lettre simple pour passer de la table latin 1 à la table ascii standard
+&gt;
+&gt;sed -e 's/[ÀÁÂÃÄÅ]/A/g'|
+&gt;sed -e 's/Æ/AE/g'|
+&gt;sed -e 's/Ç/C/g'|
+&gt;sed -e 's/[ÈÉÊË]/E/g'|
+&gt;sed -e 's/[ÌÍÎÏ]/I/g'|
+&gt;sed -e 's/Ñ/N/g'|
+&gt;sed -e 's/[ÒÓÔÕÖØ]/O/g'|
+&gt;sed -e 's/[ÙÚÛÜ]/U/g'|
+&gt;sed -e 's/ Y  ́ /Y/g'|
+&gt;sed -e 's/[àáâãä]/a/g'|
+&gt;sed -e 's/æ/ae/g'|
+&gt;sed -e 's/ç/c/g'|
+&gt;sed -e 's/[èéêë]/e/g'|
+&gt;sed -e 's/[ìíîï]/i/g'|
+&gt;sed -e 's/ñ/n/g'|
+&gt;sed -e 's/[òóôöø]/o/g'|
+&gt;sed -e 's/[ùúûü]/u/g'|
+&gt;sed -e 's/  ́y /y/g'|
+				</code></pre></p>
+				<p>Exemple d'utilisation : <code>&gt;echo "Caractères accentués en français" | ./latin_1_en_ascii.bash</code> Résultat : <code>&gt;Caracteres accentues en francais</code></p>
+				<p><u>Remplacement du caractère &amp;</u></p>
+				<p>Le métacaractère &amp; remplace toute la chaîne de caractère mise en corespondance avec l'expression rationnelle en premier argument. Par exemple, nous pouvons l'employer pour encadrer un mot (Linux en l'occurence) par des balises &lt;B&gt; et &lt;/B&gt; 
 			</article>
 		</section>
 		<section id="reseau">
