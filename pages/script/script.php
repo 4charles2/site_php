@@ -50,7 +50,7 @@
 					<li><a href="#tee">La commande tee pour T permet une copie en dérivation en (T)</a></li>
 					<li><a href="#xargs">Pour transmettre des lignes de texte en arguments sélectionner à l'aide d'une commande</a></li>
 					<li><a href="#styy">La commande stty pour modifier les paramètres du terminal employé par l'utilisateur</a></li>
-					<li><a href="#tput">La commande pour fonctionnalité de haut niveau</a></li>
+					<li><a href="#tput">La commande tput pour fonctionnalité de haut niveau</a></li>
 					<li><a href="#dialog">La commande dialog pour réaliser des interfaces utilisateur conviviable en mode texte</a></li>
 					<li><a href="#debogage">Les manipulations et techniques de debogage des scripts</a></li>
 					<li><a href="#virgule_flotante">Manipuler des nombres flotants</a></li>
@@ -59,6 +59,7 @@
 					<li><a href="#tableau_expression">Tableau des symboles pour expression rationnelle simple et étendue</a></li>
 					<li><a href="#find">Utilisation de commande find</a></li>
 					<li><a href="#sed">Utilisation de la commande sed</a></li>
+					<li><a href="#awk">Utilisation de la commande awk</a></li>
 				</ol>
 				<p>Voici un site qui présente les 101 commandes les plus importantes de linux</p>
 				<a href="https://buzut.fr/2012/09/10/101-commandes-indispensables-sous-linux/">Les 101 commandes les plus importantes de linux</a>
@@ -1164,64 +1165,64 @@
 				<p><strong>Attention un return dans une boucle de sélection select ne fait pas quitter la fonction mais uniquement la boucle select</strong></p>
 				<p>La boucle while tout à la fin du script ne vérifie qu'une valeur tant que la fonction liste_fichiers renvoie null (pas d'erreur)</p>
 				<p>Les deux points dans la boucle while signifie ne rien faire</p>
-				<p>ici quelque exemple de résultat du script :</br><code>
-&gt;./menu_fichier.sh</br>
-&gt;*********************************************</br>
-&gt;1) doc.tgz</br>
-&gt;3) menu_fichier.sh</br>
-&gt;5) src.tgz</br>
-&gt;2) icones.tgz</br>
-&gt;4) sons.tgz</br>
-<strong>&gt;Fichier à traiter : 2</strong></br>
-&gt;*********************************************</br>
-&gt;1) Infos</br>
-&gt;3) Déplacer</br>
-&gt;5) Retour</br>
-&gt;2) Copier</br>
-&gt;4) Détruire</br>
-<strong>&gt;Action sur icones.tgz : 2</strong></br>
-&gt;Copier icones.tgz vers ? essai</br>
-&gt;*********************************************</br>
-&gt;1) Infos</br>
-&gt;3) Déplacer</br>
-&gt;5) Retour</br>
-&gt;2) Copier</br>
-&gt;4) Détruire</br>
-<strong>&gt;Action sur icones.tgz : 5</strong></br>
-&gt;*********************************************</br>
-&gt;1) doc.tgz</br>
-&gt;3) icones.tgz</br>
-&gt;5) sons.tgz</br>
-&gt;2) essai</br>
-&gt;4) menu_fichier.sh 6) src.tgz</br>
-<strong>&gt;Fichier à traiter : 2</strong></br>
-&gt;*********************************************</br>
-&gt;1) Infos</br>
-&gt;3) Déplacer</br>
-&gt;5) Retour</br>
-&gt;2) Copier</br>
-&gt;4) Détruire</br>
-<strong>&gt;Action sur essai : 4</strong></br>
-&gt;Détruire essai ? o</br>
-&gt;*********************************************</br>
-&gt;1) doc.tgz</br>
-&gt;3) menu_fichier.sh 5) src.tgz</br>
-&gt;2) icones.tgz</br>
-&gt;4) sons.tgz</br>
-<strong>&gt;Fichier à traiter : 5</strong></br>
-&gt;*********************************************</br>
-&gt;1) Infos</br>
-&gt;3) Déplacer</br>
-&gt;5) Retour</br>
-&gt;2) Copier</br>
-&gt;4) Détruire</br>
-&gt;Action sur src.tgz : 3</br>
-&gt;Nouvel emplacement pour src.tgz ? sources.tar.gz</br>
-&gt;*********************************************</br>
-&gt;1) doc.tgz</br>
-&gt;3) menu_fichier.sh 5) sources.tar.gz</br>
-&gt;2) icones.tgz</br>
-&gt;4) sons.tgz</br>
+				<p>ici quelque exemple de résultat du script :</br><pre><code>
+&gt;./menu_fichier.sh
+&gt;*********************************************
+&gt;1) doc.tgz
+&gt;3) menu_fichier.sh
+&gt;5) src.tgz
+&gt;2) icones.tgz
+&gt;4) sons.tgz
+<strong>&gt;Fichier à traiter : 2</strong>
+&gt;*********************************************
+&gt;1) Infos
+&gt;3) Déplacer
+&gt;5) Retour
+&gt;2) Copier
+&gt;4) Détruire
+<strong>&gt;Action sur icones.tgz : 2</strong>
+&gt;Copier icones.tgz vers ? essai
+&gt;*********************************************
+&gt;1) Infos
+&gt;3) Déplacer
+&gt;5) Retour
+&gt;2) Copier
+&gt;4) Détruire
+<strong>&gt;Action sur icones.tgz : 5</strong>
+&gt;*********************************************
+&gt;1) doc.tgz
+&gt;3) icones.tgz
+&gt;5) sons.tgz
+&gt;2) essai
+&gt;4) menu_fichier.sh 6) src.tgz
+<strong>&gt;Fichier à traiter : 2</strong>
+&gt;*********************************************
+&gt;1) Infos
+&gt;3) Déplacer
+&gt;5) Retour
+&gt;2) Copier
+&gt;4) Détruire
+<strong>&gt;Action sur essai : 4</strong>
+&gt;Détruire essai ? o
+&gt;*********************************************
+&gt;1) doc.tgz
+&gt;3) menu_fichier.sh 5) src.tgz
+&gt;2) icones.tgz
+&gt;4) sons.tgz
+<strong>&gt;Fichier à traiter : 5</strong>
+&gt;*********************************************
+&gt;1) Infos
+&gt;3) Déplacer
+&gt;5) Retour
+&gt;2) Copier
+&gt;4) Détruire
+&gt;Action sur src.tgz : 3
+&gt;Nouvel emplacement pour src.tgz ? sources.tar.gz
+&gt;*********************************************
+&gt;1) doc.tgz
+&gt;3) menu_fichier.sh 5) sources.tar.gz
+&gt;2) icones.tgz
+&gt;4) sons.tgz
 <strong>&gt;Fichier à traiter : 0</strong></code></pre></p>
 			<p>Les lignes en gras represente les interactions avec l'utilisateur</p>
 			<p>On voit bien que dans cette exemple que l'utilisateur fait son choix en entrant un numéro</p>
@@ -3177,7 +3178,197 @@
 				</code></pre></p>
 				<p>Exemple d'utilisation : <code>&gt;echo "Caractères accentués en français" | ./latin_1_en_ascii.bash</code> Résultat : <code>&gt;Caracteres accentues en francais</code></p>
 				<p><u>Remplacement du caractère &amp;</u></p>
-				<p>Le métacaractère &amp; remplace toute la chaîne de caractère mise en corespondance avec l'expression rationnelle en premier argument. Par exemple, nous pouvons l'employer pour encadrer un mot (Linux en l'occurence) par des balises &lt;B&gt; et &lt;/B&gt; 
+				<p>Le métacaractère &amp; remplace toute la chaîne de caractère mise en corespondance avec l'expression rationnelle en premier argument. Par exemple, nous pouvons l'employer pour encadrer un mot (Linux en l'occurence) par des balises &lt;B&gt; et &lt;/B&gt;</p>
+				<p>Voici la syntaxe du code : <code>&gt;echo "Le systeme Linux 2.6" | sed -e 's/[Ll]inux/&lt;B&gt;&amp;&lt;\/B&gt;/g'</code> le Résultat : <code>&gt;Le systeme &lt;B&gt;Linux&lt;/B&gt;</code></p>
+				<p>On voit ici que le caractère &amp; est remplacé par le premier argument trouvé de la commande de substitution soit dans notre cas Linux ou linux </p>
+				<p>Il faut savoir que le caractère / pour séparer les arguments de la commande n'est pas obligatoirement celui-ci mais peut être n'importe quel caractère comme dans l'exemple suivant ou on utilise le caractère !</p>
+				<p>Code avec séparateur d'argumment ! au lieu de / : <code>&gt;echo "Le systeme Linux 2.6" | sed -e 's![lL]inux!&lt;B&gt;&amp;&lt;/B&gt;!g'</code></p>
+				<p>On remarque que dans cette ligne il n'y à pas besoin d'échaper le signe / puisque nous avons utilisé le signe ! au lieu de / par contre il faut entouré la chaine avec des ' ' apostrophe car sinon le shell interprétera les signes !. Le shell se sert du signe ! pour gérer l'historique des commandes. Les guillemets " " ne convienne pas non plus car le shell chercherai à interpréter également les signes ! </p>
+				<p><u>Les références arrières</u></p>
+				<p>Lorsque des parties de l'expression régulière ont été encadré par des parenthèses elle même protègé par \( \) dans le motif recherché, il est possible d'y faire référence dans l'expression de remplacement,
+				en utilisant les symboles \1 pour la première sous-expression et \2 pour la deuxième, etc ...</p>
+				<p>Par exemple, nous allons écrire une commande de substitution qui va servir à réordonner les divers champs d'une date. Pour simplifier l'expression rationnelle, qui est déjà bien assez compliqué comme cela, nous utilisarions le séparateur - entre les constituants de la date au lieu du / habituelle qu'il aurait fallu protégé par \</p>
+				<p>Nous écrivons l'expression rationnelle en distinguant trois sous-expressions, chacune encadré par \( \). Les sous-expressions contiennent toutes un intervalle recouvrant les chiffres 0 à 9, suivi d'un astérisque autorisant la répétition</p>
+				<p>Le motif de remplacement est constitué de trois références arrière vers les sous-expressions obtenue, ces références étant séparer par des -. Nous inversons alors l'ordre pour retrouvé un schéma jour-mois-année</p>
+				<p>Voici la ligne de commande qui réalise le changement de format de la date avec sed : <code>&gt;date +"%Y-%m-%d" | sed -e 's/\([0-9]*\)-\([0-9]*\)-\([0-9]*\)/\3-\2-\1/'</code> Le résultat : 08-06-2016</p>
+				<p><u>Insértion de saut de ligne : </u></p>
+				<p>Lorsqu'il faut insérer un saut de ligne dans le cours d'une ligne sélectionnéer, la solution la plus portable est d'utiliser une substitution dans laquelle la seconde expression s'étend sur deux lignes,
+				la première étant terminé par un backslash \ on peut employer les références arrières pour replacer les motifs de l'expression régulière servant à trouver le point d'insertion</p>
+				<p>Voici le code qui insère un saut de ligne : </br><code>&gt;echo "Je souvent ce rêve étrange et pénétrant" | sed -e 's/\(rêve\) \(étrange\)/\1</br>&gt;\2/'</code></br> Le résultat : </br><code>&gt;Je fait souvent ce rêve</br>&gt;étrange et pénétrant</code>
+			<h5><u>Les autres commandes de sed :</u></h5>
+			<p>Il éxiste une vingtaine de commande avec sed, rarement utilisé car très difficilement lisible</p>
+			<p>En voici quelque une dans le tableau ci-dessous : </p>
+			<table>
+				<thead>
+					<tr>
+						<th>Commande</th>
+						<th>Syntaxe</th>
+						<th>Usage</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>a</td>
+						<td>a\texte ajouté</td>
+						<td>Ajout de texte après la ligne courante</td>
+					</tr>
+					<tr>
+						<td>c</td>
+						<td>c\texte remplacement</td>
+						<td>Remplacé les lignes sélectionnées par le texte fourni</td>
+					</tr>
+					<tr>
+						<td>i</td>
+						<td>i\texte inséré</td>
+						<td>Insérer du texte avant la ligne courante</td>
+					</tr>
+					<tr>
+						<td>l</td>
+						<td>L</td>
+						<td>Afficher les lignes sélectionnées avec les caractères de contrôle</td>
+					</tr>
+					<tr>
+						<td>n</td>
+						<td>N</td>
+						<td>Sauter à la fin du script</td>
+					</tr>
+					<tr>
+						<td>y</td>
+						<td>y/sources/cibles/</td>
+						<td>Convertir des caractères</td>
+					</tr>
+					<tr>
+						<td>=</td>
+						<td>=</td>
+						<td>Afficher la ligne en cours (pas d'intervalle)</td>
+					</tr>
+				</tbody>
+			</table>
+			<p><u>Voici un script qui va remplacer quelque lettre accentuées en entities HTML </u></p>
+			<p><pre><code>
+&gt;#!/bin/bash
+&gt;
+&gt;sed -e 's/Á/\&Agrave;/g' "$@" |
+&gt;sed -e 's/Ç/\&Ccedil;/g' |
+&gt;sed -e 's/Â/\&Acirc;/g' |
+&gt;sed -e 's/È/\&Egrave;/g' |
+&gt;sed -e 's/É/\&Eacute;/g' |
+&gt;sed -e 's/Ê/\&Ecirc;/g' |
+&gt;sed -e 's/Ë/\&Euml;/g' |
+&gt;sed -e 's/Î/\&Icirc;/g' |
+&gt;sed -e 's/Ï/\&Iuml;/g' |
+&gt;sed -e 's/Ô/\&Ocirc;/g' |
+&gt;sed -e 's/Ù/\&Ugrave;/g' |
+&gt;sed -e 's/Û/\&Ucirc;/g' |
+&gt;sed -e 's/Ü/\&Uuml;/g' |
+&gt;sed -e 's/à/\&agrave;/g' |
+&gt;sed -e 's/â/\&acirc;/g' |
+&gt;sed -e 's/æ/\&aelig;/g' |
+&gt;sed -e 's/ç/\&ccedil;/g' |
+&gt;sed -e 's/è/\&egrave;/g' |
+&gt;sed -e 's/é/\&eacute;/g' |
+&gt;sed -e 's/ê/\&ecirc;/g' |
+&gt;sed -e 's/ë/\&euml;/g' |
+&gt;sed -e 's/î/\&icirc;/g' |
+&gt;sed -e 's/ï/\&iuml;/g' |
+&gt;sed -e 's/ô/\&ocirc;/g' |
+&gt;sed -e 's/ù/\&ugrave;/g' |
+&gt;sed -e 's/û/\&ucirc;/g' |
+&gt;sed -e 's/ü/\&uuml;/g' |
+&gt;sed -e 's/ÿ/\&yuml;/g'</code></pre></p>
+				<p>Cela ne modifiera pas le fichier fournie en argument par contre on peut redirigé la sortie standard vers un nouveau fichier</p>
+				<p>Lecture de fichier ou d'entrée standard ou de plusieurs fichier possible avec ce script</p>
+				<p><strong>SI je rajoute la commande insert avant le -e soit sed -ie 's/motif/remplacement/g' alors la modification à lieu dans le fichier directement</strong></p>
+				<p>Dans le script qui suit les modifications sont réalisées dans le fichier</p>
+				<p><pre><code>
+&gt;#!/bin/bash
+&gt;#Permet de modifier les carectères accentué en entities HTML
+&gt;echo "Atention ce script va modifier le fichier en argument"
+&gt;echo -n "Pour confirmer y : "
+&gt;read
+&gt;if [ $REPLY != "y" ] ; then
+&gt;	echo "Abandon"
+&gt;	exit
+&gt;fi
+&gt;
+&gt;latin1[0]="Á"
+&gt;latin1[1]="Â"
+&gt;latin1[2]="Æ"
+&gt;latin1[3]="Ç"
+&gt;latin1[4]="È"
+&gt;latin1[5]="É"
+&gt;latin1[6]="Ê"
+&gt;latin1[7]="Ë"
+&gt;latin1[8]="Î"
+&gt;latin1[9]="Ï"
+&gt;latin1[10]="Ô"
+&gt;latin1[11]="Ù"
+&gt;latin1[12]="Û"
+&gt;latin1[13]="Ü"
+&gt;latin1[14]="à"
+&gt;latin1[15]="â"
+&gt;latin1[16]="æ"
+&gt;latin1[17]="ç"
+&gt;latin1[18]="è"
+&gt;latin1[19]="é"
+&gt;latin1[20]="ê"
+&gt;latin1[21]="ë"
+&gt;latin1[22]="î"
+&gt;latin1[23]="ï"
+&gt;latin1[24]="ô"
+&gt;latin1[25]="ù"
+&gt;latin1[26]="û"
+&gt;latin1[27]="ü"
+&gt;latin1[28]="ÿ"
+&gt;
+&gt;html[0]="\&amp;Agrave;"
+&gt;html[1]="\&amp;Acirc;"
+&gt;html[2]="\&amp;AElig;"
+&gt;html[3]="\&amp;Ccedil;"
+&gt;html[4]="\&amp;Egrave;"
+&gt;html[5]="\&amp;Eacute;"
+&gt;html[6]="\&amp;Ecirc;"
+&gt;html[7]="\&amp;Euml;"
+&gt;html[8]="\&amp;Icirc;"
+&gt;html[9]="\&amp;Iuml;"
+&gt;html[10]="\&amp;Ocirc;"
+&gt;html[11]="\&amp;Ugrave;"
+&gt;html[12]="\&amp;Ucirc;"
+&gt;html[13]="\&amp;Uuml;"
+&gt;html[14]="\&amp;agrave;"
+&gt;html[15]="\&amp;acirc;"
+&gt;html[16]="\&amp;aelig;"
+&gt;html[17]="\&amp;ccedil;"
+&gt;html[18]="\&amp;egrave;"
+&gt;html[19]="\&amp;eacute;"
+&gt;html[20]="\&amp;ecirc;"
+&gt;html[21]="\&amp;euml;"
+&gt;html[22]="\&amp;icirc;"
+&gt;html[23]="\&amp;iuml;"
+&gt;html[24]="\&amp;ocirc;"
+&gt;html[25]="\&amp;ugrave;"
+&gt;html[26]="\&amp;ucirc;"
+&gt;html[27]="\&amp;uuml;"
+&gt;html[28]="\&amp;yuml;"
+&gt;
+&gt;index=0
+&gt;
+&gt;for caractere in ${latin1[@]} ; do
+&gt;	sed -ie "s/$caractere/${html[$index]}/g" $1
+&gt;	((index++))
+&gt;done
+&gt;
+&gt;echo "Le fichier à été modifier"</code></pre></p>
+				<p>Le fichier passé en argument sera modifié avec les entities html</p>
+				<p>À manipuler avec précaution car le fichier ne pourra pas récupérer sont état précédent à moins de faire un script qui l'effet inverse</p>
+				<p>Comme vous l'aurez remarquer j'ai mis une condition au début du script pour demander confirmation et rappel de la modification du fichier</p>
+			</article>
+		</section>
+		<section id="awk">
+			<h1><u>Utilisation de la commande awk</u></h1>
+			<article>
+				<p>Awk permet de réaliser des tâches encore plus complète que sed comme des calculs arithmétique, des séquences logiques complètes. De plus les fonctionnalités de awk sont décrite dans la norme UNIX-3 ce qui leur confère une bonne portabilité sur les systèmes UNIX</p>
+				<p>Si sed et souvent employé </p>
 			</article>
 		</section>
 		<section id="reseau">

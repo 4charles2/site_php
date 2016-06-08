@@ -4,7 +4,7 @@ include("bdd/connexion.php");
 $adr="/pages/";
 echo "
     <header>
-        <nav>
+        <nav id=\"debut\">
             <h1><u><a href=\"/index.php\">Mon Memento</a></u></h1>
             <ul>
                 <li><a href=\"".$adr."script/script.php\">Script Shell</a></li>
@@ -26,7 +26,8 @@ echo "
     </header>
         
      <aside id=\"image\">
-        <img src=\"/pages/img/mini_yoda.jpg\" alt=\"maitre yoda\" />
+        <img src=\"/pages/img/mini_yoda.jpg\" alt=\"maitre yoda\" /><br />
+		<a href=\"#debut\">Revenir tout en haut de la page</a>
      </aside>
      <aside id=\"chat\">
         <p><u>Petit chat pour dialoguer entre utilisateur :</u></p>

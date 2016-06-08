@@ -16,6 +16,10 @@
                     <li><a href="#option">La liste des options dans vim</a></li>
                     <li><a href="#racourciTouche">Racourci d'une touche map</a></li>
                     <li><a href="#commande">Utiliser la ligne de commande dans VIM</a></li>
+					<li><a href="#incrementation">Incrémenter et décrémenter un chiffre</a></li>
+					<li><a href="#list_command">Pour voir la liste des commandes</a></li>
+					<li><a href="#calculatrice">Pour utiliser une calculatrice dans vim</a></li>
+					<li><a href="#orthographe">Pour activer la correction orthographique</a></li>
                 </ul>
             </article>
             <h1 id="vimrc"><u>Manipulation de VIMRC</u></h1>
@@ -228,5 +232,35 @@ endfunction</code></pre></p>
                 <p>Il y à 26 buffers en tous autant que de lettre minuscule</p>
             </article>
         </section>
+		<section id="incrementation">
+			<h1><u>Pour incrementer un chiffre ou le decrementer</u></h1>
+			<article>
+				<p>Pour incrementer un chiffre Ctrl-a</p>
+				<p>Pour decrementer un chiffre Ctrl-x</p>
+			</article>
+		</section>
+		<section id="list_command">
+			<h1><u>Voici comment connaître la liste des commandes de vim</u></h1>
+			<article>
+				<p><code>:help holy-grail</code></p>
+				<p>Permet d'obtenir la liste des commandes disponible pour VIM et vimrc</p>
+			</article>
+		</section>
+		<section id="calculatrice">
+			<h1><u>Pour utiliser une calculatrice dans vim</u></h1>
+			<article>
+				<p>Il est possible d'utiliser une calculatrice dans vim.
+				Pour cela ce mettre en mode édition et ensuite faire Ctrl r et = vous pourrez faire votre calcul dans la ligne de commande de vim puis le résultat sera écrit dans le fichier</p>
+			</article>
+		</section>
+		<section id="orthographe">
+			<h1><u>Pour activer la corection orthographique</u></h1>
+			<article>
+				<p>Dans vim on peut activer la corection orthographique avec l'option :set spell</p>
+				<p>Pour régler la langue de corection : setlocal spell spelllang=fr</p>
+				<p>Pour que ca fonctionne il faut télécharger le dictionnaire français et le placer dans le dossier .vim/spell/</p>
+				<p>Il se trouve dans le répertoire de l'utilisateur.</p>
+			</article>
+		</section>
 	</body>
 </html>
