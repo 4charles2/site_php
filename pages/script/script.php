@@ -10,6 +10,7 @@
 			<h1><u>Utilisation se script Shell</u></h1>
 			<article>
 				<ol>
+					<li><a href="#xwininfo">xwininfo commande pour connaître l'emplacement de la souris</a></li>
 					<li><a href="#reseau">Les commandes pour le réseau</a></li>
 					<li><a href="#variable">Manpulation de variable</a></li>
 					<li><a href="#renommer_fichier">Rennommer des fichier</a></li>
@@ -3369,6 +3370,13 @@
 			<article>
 				<p>Awk permet de réaliser des tâches encore plus complète que sed comme des calculs arithmétique, des séquences logiques complètes. De plus les fonctionnalités de awk sont décrite dans la norme UNIX-3 ce qui leur confère une bonne portabilité sur les systèmes UNIX</p>
 				<p>Si sed et souvent employé </p>
+			</article>
+		</section>
+		<section id="xwininfo">
+			<h1><u>Commande xwininfo pour connaître l'emplecement de la souris et autres informations utiles sur la fenêtre</u></h1>
+			<article>
+				<p>Lancer la commande xwininfo et cliquer avec la souris à l'endroit que l'on souhaite obtenir des informations</p>
+				<p>Très utiles par exemple avec la commande gnome-terminal afin de définir à quel endroit le terminal va s'ouvrir</p>
 			</article>
 		</section>
 		<section id="reseau">
