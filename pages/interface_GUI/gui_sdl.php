@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-        <head>
-            <title>SDL GUI</title>
-            <?php include('../../header.php'); ?>
-        </head>
-        <body>
-            <?php include('../../nav.php'); ?>
             <section>
                 <h1><u>Interface Graphique SDL</u></h1>
                 <article>
@@ -470,5 +462,3 @@ while(continuer)
                 <p>Exemple : <code>SDL_GetTicks();</code> Renvoie le temp écoulé en Uint32</p>
             </article>
         </section>
-        </body>
-</html>

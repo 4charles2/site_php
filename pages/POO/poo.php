@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Programation Orienté Objet</title>
-        <?php include('../../header.php'); ?>
-	</head>
-	<body>
-        <?php include("../../nav.php"); ?>
         <section>
         <h1><u>Régle en POO Programation Orienté Objet :</u></h1>
             <article> 
@@ -26,5 +18,3 @@
                     <p>Toutes les variables d'une classe doit être private ou protected</p>
             </article>
         </section>
-	</body>
-</html>

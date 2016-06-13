@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Image avec GD2</title>
-        <?php include('../../header.php'); ?>
-	</head>
-	<body>
-        <?php include("../../nav.php"); ?>
         <section>
             <h1><u>Présentation de la bibliothèque GD2 : </u></h1>
             <h3>Cette bibliothèque permet de créer des images</h3>
@@ -31,5 +23,3 @@
                 <p><code>$ma_variable = imagecreate(200,50);</code></p>
             </article>
         </section>
-    </body>
-</html>

@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <?php include('../../header.php'); ?>
-    </head>
-    <body>
-    <?php include('../../nav.php'); ?>
     <section>
         <h1><u>Présentation de bashrc</u></h1>
         <article>
@@ -115,5 +107,3 @@
 			   </code></pre>
 		   </article>
 	   </section>
-    </body>
-</html>

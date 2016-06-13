@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<title>Montitre</title>
-	</head>
-	<body>
-	<?php include('nav.php'); ?>
         <section>
            <h1><u>Momento html : </u></h1>
             <article>
@@ -76,5 +68,3 @@
 				</table>
 			</artilce>
 		</section>
-	</body>
-</html>

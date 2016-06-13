@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Makefile</title>
-        <?php include('../../header.php'); ?>
-    </head>
-    <body>
-        <?php include("../../nav.php"); ?>
         <section>
             <h1><u>Construire un makefile :</u></h1>
             <article>
@@ -241,5 +233,3 @@ fclean : clean
 re: fclean all</code></pre></p>
             </article>
         </section>
-    </body>
-</html>

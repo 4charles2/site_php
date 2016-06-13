@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Documentation de VIM</title>
-        <?php include('../../header.php'); ?>
-	</head>
-	<body>
-        <?php include('../../nav.php'); ?>
         <section>
             <h1><u>Momento de VIM</u></h1>
             <article>
@@ -26,7 +18,7 @@
             <article>
                 <p>Mon fichier vimrc</p>
                 <p><pre><code>
-" Maintainer:	Bram Moolenaar <Bram@vim.org>
+" Maintainer:	Bram Moolenaar &lt;Bram@vim.org&gt;
 " Last change:	30 mars 2016
 "
 " To use it, copy it to
@@ -48,14 +40,14 @@ set history=50		" keep 50 lines of command line history
 set incsearch		" do incremental searching
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
+" let &amp;guioptions = substitute(&amp;guioptions, "t", "", "g")
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
+inoremap &lt;C-U&gt; &lt;C-G&gt;u&lt;C-U&gt;
 
 if !exists(":DiffOrig")
 	command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
@@ -67,7 +59,7 @@ set mouse=a
 set number
 set list
 "parametre des caractere non imprimable dans vim
-set listchars=nbsp:µ,tab:>-,trail:~,eol:$
+set listchars=nbsp:µ,tab:&gt;-,trail:~,eol:$
 "Mettre en surbrillance les caractères non-imprimables qui ne devraient pas
 "figurer dans le code source.
 "Les Espaces en fin de ligne :
@@ -93,7 +85,7 @@ set showmode
 set showcmd		" display incomplete commands
 "La barre de status et l'avant dernier ligne
 set laststatus=2
-set statusline=%{strftime('%a\ %e\ %b\ %I:%M\ %p')}\ %-3.3n\ %t\ %h%m%r%w\[%{strlen(&ft)?&ft:'none'},%{&encoding},%{&fileformat}]\ %F%1*%*%10{getfsize(expand('%'))}\ %=%-14.(%l,%c%V%)\ %<%P\
+set statusline=%{strftime('%a\ %e\ %b\ %I:%M\ %p')}\ %-3.3n\ %t\ %h%m%r%w\[%{strlen(&amp;ft)?&amp;ft:'none'},%{&amp;encoding},%{&amp;fileformat}]\ %F%1*%*%10{getfsize(expand('%'))}\ %=%-14.(%l,%c%V%)\ %&lt;%P\
 " If using a dark background within the editing area and syntax highlighting
 " turn on this option as well
 set background=dark
@@ -120,7 +112,7 @@ hi cursorColumn guibg=#e196f6
 hi CursorLine guibg=#e196f6
 
 "Les abreviation vim
-ab html <!DOCTYPE html><CR><html><CR><head><CR></head><CR><body><CR></body><CR></html>
+ab html &lt;!DOCTYPE html&gt;&lt;CR&gt;&lt;html&gt;&lt;CR&gt;&lt;head&gt;&lt;CR&gt;&lt;/head&gt;&lt;CR&gt;&lt;body&gt;&lt;CR&gt;&lt;/body&gt;&lt;CR&gt;&lt;/html&gt;
                 </code></pre></p>
             </article>
             <h1 id="colorSyntax" ><u>Thème de coloration syntaxique</u></h1>
@@ -262,5 +254,3 @@ endfunction</code></pre></p>
 				<p>Il se trouve dans le répertoire de l'utilisateur.</p>
 			</article>
 		</section>
-	</body>
-</html>

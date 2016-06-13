@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Doc langage C</title>
-        <?php include('../../header.php'); ?>
-    </head>
-    <body>
-        <? include('../../nav.php'); ?>
         <section>
             <h1><u>Momento du langage C </u></h1>
             <article>
@@ -237,6 +229,4 @@ void essai(int nbARG, ...)
 }</code></pre></p>
                 <p>Ici la fonction reçois 5 arguments; La boucle s'arrête après avoir lu les 5 arguments</p>
             </article>
-        </section>
-    </body>
-</html>
+	</section>

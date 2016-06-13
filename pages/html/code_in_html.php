@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Affiche du code</title>
-        <?php include('../../header.php'); ?>
-	</head>
-	<body>
-        <?php include("../../nav.php"); ?>
         <section>
             <h1><u>Afficher du code à l'utilisateur dans HTML : </u></h1>
             <article>
@@ -25,6 +17,4 @@
                 </blockquote>
             </article>
         </section>
-    </body>
-</html>
 

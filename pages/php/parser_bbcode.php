@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>parser BBcode</title>
-        <?php include('../../header.php'); ?>
-	</head>
-	<body>
-        <?php include("../../nav.php"); ?>
         <section>
             <h1><u>Parser BBcode pour forum sur site internet :</u></h1>
             <article>
@@ -77,5 +69,3 @@ if(isset($_POST['texte']))
 }?&gt</code></pre></p>
             </article>
         </section>
-	</body>
-</html>

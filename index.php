@@ -10,9 +10,9 @@ echo "
 		<meta charset=\"uft-8\">
 		<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/style.css\" />
 	</head>
-	<body>
+	<body id=\"debut\">
     <header>
-        <nav id=\"debut\">
+        <nav>
             <h1><u><a href=\"/index.php\">Mon Memento</a></u></h1>
             <ul>
                 <li><a href=\"index.php?page=pages/script/script.php\">Script Shell</a></li>
@@ -32,7 +32,7 @@ echo "
         </nav>
     </header>
 	 <aside id=\"image\">
-        <img src=\"/pages/img/mini_yoda.jpg\" alt=\"maitre yoda\" /><br />
+        <img src=\"pages/img/mini_yoda.jpg\" alt=\"maitre yoda\" /><br />
 		<a href=\"#debut\">Revenir tout en haut de la page</a>
      </aside>
 	 <section id=\"first_section\">";

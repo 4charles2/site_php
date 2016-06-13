@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>gtk GUI</title>
-        <?php include('../../header.php'); ?>
-    </head>
-    <body>
-        <?php include('../../nav.php'); ?>
         <section>
             <h1><u>Interface Graphique</u></h1>
             <article>
@@ -171,5 +163,3 @@ return EXIT_SUCCESS;
                 <p>En cour</p>
             </article>
         </section>
-    </body>
-</html>

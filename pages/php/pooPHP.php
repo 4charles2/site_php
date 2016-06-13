@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Fonction POO pour PHP</title>
-        <?php include('../../header.php'); ?>
-	</head>
-	<body>
-        <?php include('../../nav.php'); ?> 
         <section>
             <h1><u>Méthodes POO pour PHP</u></h1>
             <article>
@@ -67,5 +59,3 @@
                 <p>Cette méthode est appelée lorsque l'on essaye d'assigner une valeur à un attribut auquel on n'a pas accès ou qui n'existe pas. Cette méthode prend deux paramètres : le premier est le nom de l'attribut auquel on a tenté d'assigner une valeur, le second paramètre est la valeur que l'on a tenté d'assigner à l'attribut. Cette méthode ne retourne rien. Vous pouvez simplement faire ce que bon vous semble !</p>
             </article>
         </section>
-	</body>
-</html>

@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>REGEX Predefinie</title>
-        <?php include('../../header.php'); ?>
-	</head>
-	<body>
-        <?php include("../../nav.php"); ?>
         <section>
             <h1><u>Voici une liste de REGEX prédéfinie :</u></h1>
             <p>Vous pouvez tester les codes grâces aux formulaires ! </p>
@@ -184,5 +176,3 @@
                 </blockquote>
             </article>
         </section>
-	</body>
-</html>

@@ -2,10 +2,13 @@ nav li{
     display: inline-block;
 }
 nav{
+	position: fixed;
+	margin: 1%;
     border: 1px solid black;
     border-radius: 15px;
     text-align: center;
     background-color: rgba(255, 255, 0, 0.2);
+	width: 95%;
 }
 #titre_principal{
     text-align: center;
@@ -17,7 +20,7 @@ article{
     padding: 10px;
     border: 1px dashed black;
     border-radius: 20px;
-    width: 850px;
+    width: 870px;
     background-color: rgba(255, 0, 0, 0.3);
 }
 pre{
@@ -40,7 +43,7 @@ pre code{
     background-color: rgba(255, 255, 0, 0.2);
     border: 2px solid black;
     border-radius: 20px;
-    margin-top: 80px;
+    margin-top: 180px;
 	margin-left: 1350px;
 }
 #image{
@@ -48,7 +51,7 @@ pre code{
 	height: 400px;
     position: fixed;
     margin: 10px;
-    margin-top: 80px;
+    margin-top: 180px;
 	background-color: rgba(0, 204, 0, 0.42);
 	border: 2px solid black;
 	border-radius: 20px;
@@ -58,6 +61,7 @@ img{
 	margin: 20px;
 }
 body{
+	position: absolute;
     background-color: rgba(55, 50, 55, 0.5);
     color: black;
 	border: 1px solid black;
@@ -68,11 +72,11 @@ section{
     background-color: rgba(255, 255, 0, 0.2);
     border: 2px solid black;
     border-radius: 25px;
-    width: 850px;
+    width: 880px;
 }
 #first_section{
 	width: 950px;
-	margin-top:80px;
+	margin-top:180px;
 	position: absolute;
 	margin-left: 300px;
 }

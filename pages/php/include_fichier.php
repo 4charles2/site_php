@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>connexion à une base de donné</title>
-        <?php include('../../header.php'); ?>
-	</head>
-	<body>
-        <?php include("../../nav.php"); ?>
         <section>
             <h1>Bout de code à inclure dans nos fichier</h1>
             <article>
@@ -24,5 +16,3 @@
     }
             </article>
         </section>
-	</body>
-</html>

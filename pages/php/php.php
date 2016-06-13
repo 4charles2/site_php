@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Memento php et mySql</title>
-        <?php include('../../header.php'); ?>
-	</head>
-	<body>
-        <?php include("../../nav.php"); ?>
         <section>
             <h1><u>Voici un memento sur le langage php et MySql : </u></h1>
             <article>
@@ -16,5 +8,3 @@
                 <p><a href="/pages/php/pooPHP.php">Fonction POO pour PHP</a></p>
             </article>
         </section>
-	</body>
-</html>
