@@ -112,8 +112,8 @@
 
                    "Les abreviation vim
                    ab html <!DOCTYPE html><CR><html><CR><head><CR></head><CR><body><CR></body><CR></html>
-                   </code></pre>
-                   </article>
-                   </section>
+			   </code></pre>
+		   </article>
+	   </section>
     </body>
-</html>>
+</html>
