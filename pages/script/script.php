@@ -7,7 +7,7 @@
     <body>
 		<?php include('../../nav.php'); ?>
 		<section>
-			<h1><u>Utilisation se script Shell</u></h1>
+			<h1><u>Fonctionnement des scripts Shell</u></h1>
 			<article>
 				<ol>
 					<li><a href="#xwininfo">xwininfo commande pour connaître l'emplacement de la souris</a></li>

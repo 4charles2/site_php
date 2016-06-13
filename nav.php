@@ -2,7 +2,14 @@
 /*requete pour récuperer les 10 derniers messages*/
 include("bdd/connexion.php");
 $adr="/pages/";
+$page_focus="/index.php";
 echo "
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=\"uft-8\">
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/style.css\" />
+	</head>
     <header>
         <nav id=\"debut\">
             <h1><u><a href=\"/index.php\">Mon Memento</a></u></h1>
@@ -14,7 +21,6 @@ echo "
                 <li><a href=\"".$adr."html/html.php\">html et css</a></li>
                 <li><a href=\"".$adr."javascript/javascript.php\">Javascript</a></li>
                 <li><a href=\"".$adr."vim/vim.php\">VIM</a></li>
-                <li><a href=\"".$adr."linux/linux\">Linux</a></li>
                 <li><a href=\"".$adr."git/Git et Github\">git et GitHub</a></li>
                 <li><a href=\"".$adr."language_c/langage_c.php\">Langage C</a></li>
                 <li><a href=\"".$adr."makefile/makefile.php\">Makefile</a></li>
@@ -24,11 +30,13 @@ echo "
             </ul>
         </nav>
     </header>
-        
-     <aside id=\"image\">
+	<body>
+	 <aside id=\"image\">
         <img src=\"/pages/img/mini_yoda.jpg\" alt=\"maitre yoda\" /><br />
 		<a href=\"#debut\">Revenir tout en haut de la page</a>
-     </aside>
+     </aside>";
+	 include($page_focus);
+	 echo "
      <aside id=\"chat\">
         <p><u>Petit chat pour dialoguer entre utilisateur :</u></p>
         <form method='post'>
@@ -37,5 +45,7 @@ echo "
             <input type='submit' value='Envoyer' />
         </form>";
         include("bdd/affiche_message.php");
-     echo "</aside>";
+     echo "</aside>
+	 </body>
+</html>";
 ?>

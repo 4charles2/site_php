@@ -61,14 +61,21 @@ body{
 	border: 1px solid black;
 }
 section{
-    margin: 80px;
-    margin-left: 290px;
-    margin-right: 100px;
+    margin: 5%;
     padding: 50px;
     background-color: rgba(255, 255, 0, 0.2);
     border: 2px solid black;
     border-radius: 25px;
     width: 950px;
+}
+#first_section{
+	margin-left: 300px;
+}
+#first_page{
+	width: 750px;
+}
+#first_page article{
+	width: 750px;
 }
 footer{
     clear: both;
