@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <?php include('../../header.php'); ?>
-    </head>
-    <body>
-		<?php include('../../nav.php'); ?>
 		<section>
 			<h1><u>Fonctionnement des scripts Shell</u></h1>
 			<article>
@@ -3406,5 +3398,3 @@
 				</table>
 			</article>
 		</section>
-    </body>
-</html>

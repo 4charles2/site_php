@@ -15,19 +15,19 @@ echo "
         <nav id=\"debut\">
             <h1><u><a href=\"/index.php\">Mon Memento</a></u></h1>
             <ul>
-                <li><a href=\"".$adr."script/script.php\">Script Shell</a></li>
-                <li><a href=\"".$adr."php/php.php\">php et MySql</a></li>
-                <li><a href=\"".$adr."POO/poo.php\">POO</a></li>
-                <li><a href=\"".$adr."php/regex.php\">REGEX</a></li>
-                <li><a href=\"".$adr."html/html.php\">html et css</a></li>
-                <li><a href=\"".$adr."javascript/javascript.php\">Javascript</a></li>
-                <li><a href=\"".$adr."vim/vim.php\">VIM</a></li>
-                <li><a href=\"".$adr."git/Git et Github\">git et GitHub</a></li>
-                <li><a href=\"".$adr."language_c/langage_c.php\">Langage C</a></li>
-                <li><a href=\"".$adr."makefile/makefile.php\">Makefile</a></li>
-                <li><a href=\"".$adr."bashrc/bashrc.php\">bashrc</a></li>
-                <li><a href=\"".$adr."interface_GUI/gtk_GUI.php\">interface GUI gtk</a></li>
-                <li><a href=\"".$adr."interface_GUI/gui_sdl.php\">interface GUI SDL</a></li>
+                <li><a href=\"index.php?page=pages/script/script.php\">Script Shell</a></li>
+                <li><a href=\"index.php?page=pages/php/php.php\">php et MySql</a></li>
+                <li><a href=\"index.php?page=pages/POO/poo.php\">POO</a></li>
+                <li><a href=\"index.php?page=pages/php/regex.php\">REGEX</a></li>
+                <li><a href=\"index.php?page=pages/html/html.php\">html et css</a></li>
+                <li><a href=\"index.php?page=pages/javascript/javascript.php\">Javascript</a></li>
+                <li><a href=\"index.php?page=pages/vim/vim.php\">VIM</a></li>
+                <li><a href=\"index.php?page=pages/git/Git et Github\">git et GitHub</a></li>
+                <li><a href=\"index.php?page=pages/language_c/langage_c.php\">Langage C</a></li>
+                <li><a href=\"index.php?page=pages/makefile/makefile.php\">Makefile</a></li>
+                <li><a href=\"index.php?page=pages/bashrc/bashrc.php\">bashrc</a></li>
+                <li><a href=\"index.php?page=pages/interface_GUI/gtk_GUI.php\">interface GUI gtk</a></li>
+                <li><a href=\"index.php?page=pages/interface_GUI/gui_sdl.php\">interface GUI SDL</a></li>
             </ul>
         </nav>
     </header>
@@ -37,6 +37,9 @@ echo "
      </aside>
 	 <section id=\"first_section\">";
 
+	 if (isset($_GET['page'])){
+		 $page_focus=$_GET['page'];
+	 }
 	 include ("$page_focus");
 
 	 echo "

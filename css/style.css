@@ -17,7 +17,7 @@ article{
     padding: 10px;
     border: 1px dashed black;
     border-radius: 20px;
-    width: 950px;
+    width: 850px;
     background-color: rgba(255, 0, 0, 0.3);
 }
 pre{
@@ -35,11 +35,13 @@ pre code{
 }
 #chat{
     float: right;
+	position: fixed;
     padding: 20px;
     background-color: rgba(255, 255, 0, 0.2);
     border: 2px solid black;
     border-radius: 20px;
     margin-top: 80px;
+	margin-left: 1350px;
 }
 #image{
     float: left;
@@ -61,21 +63,26 @@ body{
 	border: 1px solid black;
 }
 section{
-    margin: 5%;
-    padding: 50px;
+    padding: 30px;
+	margin: 10px;
     background-color: rgba(255, 255, 0, 0.2);
     border: 2px solid black;
     border-radius: 25px;
-    width: 950px;
+    width: 850px;
 }
 #first_section{
+	width: 950px;
+	margin-top:80px;
+	position: absolute;
 	margin-left: 300px;
 }
 #first_page{
+	margin :5%;
 	width: 750px;
 }
 #first_page article{
-	width: 750px;
+	margin: 5px;
+	width: 700px;
 }
 footer{
     clear: both;

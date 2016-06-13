@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Memento html</title>
-        <?php include('../../header.php'); ?>
+		<meta charset="utf-8" />
+		<title>Montitre</title>
 	</head>
 	<body>
-        <?php include("../../nav.php"); ?>
+	<?php include('nav.php'); ?>
         <section>
-            <h1><u>Momento html : </u></h1>
+           <h1><u>Momento html : </u></h1>
             <article>
                 <p><strong>Voici la liste des chapitres et bouts de codes :</strong></p>
 				<ul>
