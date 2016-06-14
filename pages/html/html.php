@@ -1,4 +1,5 @@
-        <section>
+
+        <section id="top_page">
            <h1><u>Momento html : </u></h1>
             <article>
                 <p><strong>Voici la liste des chapitres et bouts de codes :</strong></p>
@@ -67,5 +68,5 @@
 						</tr>
 					</tbody>
 				</table>
-			</artilce>
+			</article>
 		</section>

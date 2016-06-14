@@ -9,6 +9,8 @@ echo "
 	<head>
 		<meta charset=\"uft-8\">
 		<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/style.css\" />
+		<link rel=\"stylesheet\" media=\"all and (max-width: 1600px)\" href=\"/css/style_medium.css\" />
+		<link rel=\"stylesheet\" media=\"all and (max-width: 1100px)\" href=\"/css/style_small.css\" />
 	</head>
 	<body id=\"debut\">
     <header>
@@ -33,7 +35,7 @@ echo "
     </header>
 	 <aside id=\"image\">
         <img src=\"pages/img/mini_yoda.jpg\" alt=\"maitre yoda\" /><br />
-		<a href=\"#debut\">Revenir tout en haut de la page</a>
+		<a href=\"#top_page\">Revenir tout en haut de la page</a>
      </aside>
 	 <section id=\"first_section\">";
 

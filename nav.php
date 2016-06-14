@@ -10,6 +10,7 @@ echo "
 		<meta charset=\"uft-8\">
 		<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/style.css\" />
 	</head>
+	<body>
     <header>
         <nav id=\"debut\">
             <h1><u><a href=\"/index.php\">Mon Memento</a></u></h1>
@@ -30,7 +31,6 @@ echo "
             </ul>
         </nav>
     </header>
-	<body>
 	 <aside id=\"image\">
         <img src=\"/pages/img/mini_yoda.jpg\" alt=\"maitre yoda\" /><br />
 		<a href=\"#debut\">Revenir tout en haut de la page</a>

@@ -59,12 +59,14 @@ pre code{
 img{
     border-radius: 20px;
 	margin: 20px;
+	z-index: 1;
 }
 body{
 	position: absolute;
     background-color: rgba(55, 50, 55, 0.5);
     color: black;
 	border: 1px solid black;
+	width: auto;
 }
 section{
     padding: 30px;
@@ -75,13 +77,17 @@ section{
     width: 880px;
 }
 #first_section{
+	overflow: auto;
 	width: 950px;
+	height: 700px;;
 	margin-top:180px;
 	position: absolute;
+	position: fixed;
 	margin-left: 300px;
+	z-index:5;
 }
 #first_page{
-	margin :5%;
+	margin:5%;
 	width: 750px;
 }
 #first_page article{
@@ -133,4 +139,10 @@ thead{
 }
 #lien_visited:visited{
 	color: #AAA;
+}
+
+@media all and (max-width: 1200px){
+	#chat{
+		display: none;
+	}
 }
