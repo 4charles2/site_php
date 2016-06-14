@@ -140,9 +140,3 @@ thead{
 #lien_visited:visited{
 	color: #AAA;
 }
-
-@media all and (max-width: 1200px){
-	#chat{
-		display: none;
-	}
-}
