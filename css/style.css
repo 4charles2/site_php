@@ -110,3 +110,27 @@ thead{
     text-align: center;
     text-decoration: underline;
 }
+#lien_hover:hover{
+	color: red;
+	text-decoration: underline;
+}
+#paragraphe_hover:hover{
+	color: black;
+	box-shadow: 8px 8px 1px black;
+	border: 1px solid black;
+	text-shadow: 1px 1px 0px green;
+	background-color: white;
+}
+#lien_active:active{
+	color: black;
+	background-color: #FFCC66;
+}
+#paragraphe_focus:focus{
+	background-color: green;
+	border-radius: 15px;
+	box-shadow: 6px 6px 0px red;
+	text-shadow: 2px 2px 0px red;
+}
+#lien_visited:visited{
+	color: #AAA;
+}

@@ -8,6 +8,7 @@
 				</ul>
             </article>
         </section>
+		<?php include('css.php'); ?>
 		<section id="entities">
 			<h1><u>Liste de quelque entities html :</u></h1>
 			<article>
