@@ -7,9 +7,9 @@ echo "
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset=\"uft-8\">
+		<meta charset=\"utf-8\">
 		<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/style.css\" />
-		<link rel=\"stylesheet\" media=\"all and (max-width: 1600px)\" href=\"/css/style_medium.css\" />
+		<link rel=\"stylesheet\" media=\"all and (max-width: 1655px)\" href=\"/css/style_medium.css\" />
 		<link rel=\"stylesheet\" media=\"all and (max-width: 1100px)\" href=\"/css/style_small.css\" />
 	</head>
 	<body id=\"debut\">
@@ -23,6 +23,7 @@ echo "
                 <li><a href=\"index.php?page=pages/php/regex.php\">REGEX</a></li>
                 <li><a href=\"index.php?page=pages/html/html.php\">html et css</a></li>
                 <li><a href=\"index.php?page=pages/javascript/javascript.php\">Javascript</a></li>
+				<li><a href=\"index.php?page=pages/AJAX/ajax.php\">AJAX</a></li>
                 <li><a href=\"index.php?page=pages/vim/vim.php\">VIM</a></li>
                 <li><a href=\"index.php?page=pages/git/Git et Github\">git et GitHub</a></li>
                 <li><a href=\"index.php?page=pages/language_c/langage_c.php\">Langage C</a></li>
@@ -48,13 +49,22 @@ echo "
 	 </section>
      <aside id=\"chat\">
         <p><u>Petit chat pour dialoguer entre utilisateur :</u></p>
-        <form method='post'>
-            <label for='pseudo'>Pseudo : </label><input type='text' name='pseudo' id='pseudo' /><br/>
-            <label for='Message'>Message : </label><textarea name='message' id='message' rows='20' cols='45'></textarea><br/>
-            <input type='submit' value='Envoyer' />
-        </form>";
-        include("bdd/affiche_message.php");
-     echo "</aside>
+        <form action=\"bdd/insert_donnee.php\" method=\"post\" id=\"form_chat\" >
+			<fieldset id=\"input_chat\">
+				<legend>Mini chat : </legend>
+				<fieldset><label for='pseudo'>Pseudo : </label><input type='text' name='pseudo' id='pseudo' /></fieldset>
+				<fieldset><label for='Message'>Message : </label><textarea name='message' id='message'></textarea></fieldset>
+				<input id=\"chat_submit\" type='submit' value='Envoyer' />
+		</form>
+		<fieldset id=\"message_chat\">
+			";
+			include("bdd/affiche_message.php");
+			 echo "
+				</fieldset>
+			</fieldset>
+	</aside>
+		<script src=\"javascript/refresh.js\"></script>
 	 </body>
 </html>";
+mysql_close();
 ?>

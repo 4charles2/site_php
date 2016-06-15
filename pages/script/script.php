@@ -76,7 +76,7 @@
 						</tr>
 						<tr>
 							<td>$1 jusqu'à $9</td>
-							<td>Contient respectivement l'argument 1 pour $1 et argument 9 pour $9.</br>Pour les arguments situé après la 9 place</br>On delimite ${10} sinon sa sera l'argument 1 suivie de 0</td>
+							<td>Contient respectivement l'argument 1 pour $1 et argument 9 pour $9.<br/>Pour les arguments situé après la 9 place<br/>On delimite ${10} sinon sa sera l'argument 1 suivie de 0</td>
 						</tr>
 						<tr>
 							<td>$#</td>
@@ -84,11 +84,11 @@
 						</tr>
 						<tr>
 							<td>$*</td>
-							<td>Permet de selectionné tous les arguments OBSELETE</br>Si un argument contient des espaces alors scinder en plusieurs argument</br>Même si celui-ci est entouré de ""</td>
+							<td>Permet de selectionné tous les arguments OBSELETE<br/>Si un argument contient des espaces alors scinder en plusieurs argument<br/>Même si celui-ci est entouré de ""</td>
 						</tr>
 						<tr>
 							<td>$@</td>
-							<td>Même utilisation que $* sauf que si un argument est entre " " alors il est toujours consideré comme un seul argument</br>Utiliser "$@" afin de conserver parfaitement le style</td>
+							<td>Même utilisation que $* sauf que si un argument est entre " " alors il est toujours consideré comme un seul argument<br/>Utiliser "$@" afin de conserver parfaitement le style</td>
 						</tr>
 					</tbody>
 				</table>
@@ -138,10 +138,10 @@
 				<p><strong>Si on spécifie un nombre apres la commande shift exemple <code>&gt;shift 3</code></strong></p>
 				<p>Alors l'argument $1 sera égal à l'argument $3 et $2 sera égal à $4</p>
 				<p><u>>Exemple d'utilisation de shift pour lire tous les arguments possible existant</u></p>
-				<p><pre><code>&gt;while [ -n $1 ] ; do</br>	&gt;echo $1</br>	&gt;shift</br>&gt;done</code></pre></p>
+				<p><pre><code>&gt;while [ -n $1 ] ; do<br/>	&gt;echo $1<br/>	&gt;shift<br/>&gt;done</code></pre></p>
 				<p>La boucle lit tous les arguments jusqu'à ce que $1 soit NULL</p>
 				<p><u>Autre exemple de lecture des arguments</u></p>
-				<p><pre><code>&gt;while [ $# -ne 0 ] ; do</br>	&gt;echo $1</br>	&gt;shift</br>&gt;done</code></pre></p>
+				<p><pre><code>&gt;while [ $# -ne 0 ] ; do<br/>	&gt;echo $1<br/>	&gt;shift<br/>&gt;done</code></pre></p>
 				<p>La boucle va continuer tant que $# n'est pas égal à zéro</p>
 			</article>
 		</section>
@@ -158,7 +158,7 @@
 			<article>
 				<p>Si une variable GLOBAL ou local reçoit une affectation alors qu'une commande est utilisé sur la même ligne la valeur de la variable n'est valide que jusqu'à la fin de l'éxecution de la ligne</p>
 				<p>Si vous rappelez la variable ultérieurement elle aura gardé sa valeur d'origine</p>
-				<p>Exemple de code : <pre><code>&gt;echo $LANG</br>&gt;fr_FR</br>&gt;date</br>&gt;dim oct 7 08:55:51 CEST 2007</br>&gt;$LANG=en_US date</br>&gt;Sun Oct 7 08:55:54 CEST 2007</br>&gt;echo $LANG</br>&gt;fr_FR</code></pre></p>
+				<p>Exemple de code : <pre><code>&gt;echo $LANG<br/>&gt;fr_FR<br/>&gt;date<br/>&gt;dim oct 7 08:55:51 CEST 2007<br/>&gt;$LANG=en_US date<br/>&gt;Sun Oct 7 08:55:54 CEST 2007<br/>&gt;echo $LANG<br/>&gt;fr_FR</code></pre></p>
 				<p>On verifie la valeur de $LANG et on voit qu'elle est réglé sur fr_FR (Français) on affiche ensuite la date du jour au format français</p>
 				<p>Ensuite on affecte la valeur en_US à la variable GLOBAL $LANG suivi de la commande date. Se qui va afficher la date au format englais</p>
 				<p>On revérifie la valeur de $LANG après l'execution de la commande date et on voit que la valeur n'a pas changé elle toujours sur fr_FR</p>
@@ -192,10 +192,10 @@
 				<p>Pour utiliser une variable dans <em>echo</em> par exemple on utlise le signe $</p>
 				<p><u>Exemple de manipulation de variable : </u></p>
 				<ul>
-					<li>pour delimiter le nom d'une variable lors de l'utilisation de caractète suplementaire</br>
+					<li>pour delimiter le nom d'une variable lors de l'utilisation de caractète suplementaire<br/>
 					ont peut utiliser les accolodes ${variable}</li>
-					<li>Si l'ont souhaite séparer les variables avec des caractères interdit dans le nom des </br>
-					variable ont les séparées avec les symboles interdit</br>
+					<li>Si l'ont souhaite séparer les variables avec des caractères interdit dans le nom des <br/>
+					variable ont les séparées avec les symboles interdit<br/>
 					Exemple de caractère : @ . -</li>
 					<li>Sinon On peut entourer les caractère des "texte"$variable</li>
 				</ul>
@@ -208,7 +208,7 @@
 		&gt;echo ${variable:20} #Affichera les 6 dernieres lettre de ma variable elle en contient 26
 		&gt;UVWXYZ</code></pre>
 		Les : fonctionne dans les shells récent et sa portabilité n'est pas garantie</p>
-				   <p>Le caractere # fonctionne comme les : mais possede plus d'option et une meilleur portabilite</br>
+				   <p>Le caractere # fonctionne comme les : mais possede plus d'option et une meilleur portabilite<br/>
 				   <h3><u>Le signe # pour prefixe et ## pour PREFIXE le plus long</u></h3>
 				   il permet l'extraction de sous chaine defini ${variable#motif}</p>
 				<p><u>Fonctionne avec les options suivantes :</u></p>
@@ -241,7 +241,7 @@
 							<tr>
 								<td>${variable#*[MNOP]}</td>
 								<td>PAZERTYUIOP</td>
-								<td>Parcour la chaine jusqu'à trouver un caractere corespondant</br>
+								<td>Parcour la chaine jusqu'à trouver un caractere corespondant<br/>
 								ici O</td>
 							</tr>
 							<tr>
@@ -276,7 +276,7 @@
 							<tr>
 								<td>${variable##*[MNOP]}</td>
 								<td></td>
-								<td>Enleve tout car la chaine se termine par un P</br>
+								<td>Enleve tout car la chaine se termine par un P<br/>
 								derniere occurence de l'intervale</td>
 							</tr>
 							<tr>
@@ -304,17 +304,17 @@
 			<article>
 				<p><u>Script qui met le contenu d'un fichier en majuscule ou en minuscule donné en paramètre</u></p>
 				<p>Le script suivant va mettre tous le contenu du fichier en minuscule</p>
-				<p><pre><code>&gt;while [ -n "$1" ]; do</br>	&gt;content=$(tr [a-z] [A-Z]) &lt; $1)</br>	&gt;echo "$content" &gt; $1</br>	&gt;shift</br>&gt;done</code></pre></p>
+				<p><pre><code>&gt;while [ -n "$1" ]; do<br/>	&gt;content=$(tr [a-z] [A-Z]) &lt; $1)<br/>	&gt;echo "$content" &gt; $1<br/>	&gt;shift<br/>&gt;done</code></pre></p>
 				<p>Le script suivant va mettre tous le contenu du fichier en Majuscule</p>
-				<p><pre><code>&gt;while [ -n "$1" ]; do</br>	&gt;content=$(tr [A-Z] [a-z])&lt; $1)</br>	&gt;echo "$content" &gt; $1</br>	&gt;shift</br>&gt;done</code></pre></p>
+				<p><pre><code>&gt;while [ -n "$1" ]; do<br/>	&gt;content=$(tr [A-Z] [a-z])&lt; $1)<br/>	&gt;echo "$content" &gt; $1<br/>	&gt;shift<br/>&gt;done</code></pre></p>
 				<p><u>Mettre le nom d'un fichier en MAJUSCULE ou minuscule</u></p>
 				<p>Ce script va mettre le nom du fichier transmit en argument en Majuscule sans toucher à l'extention</p>
-				<p><pre><code>&gt;while [ -n "$1" ]; do</br>	&gt;suffixe=${1#*.}</br>	&gt;mv $1 $(echo ${1%%.*} | tr [A-Z] [a-z]).$suffixe</br>	&gt;shift</br>&gt;done</code></pre></p>
+				<p><pre><code>&gt;while [ -n "$1" ]; do<br/>	&gt;suffixe=${1#*.}<br/>	&gt;mv $1 $(echo ${1%%.*} | tr [A-Z] [a-z]).$suffixe<br/>	&gt;shift<br/>&gt;done</code></pre></p>
 				<p>Ce code va mettre le nom du fichier en minuscule</p>
-				<p><pre><code>&gt;while [ -n "$1" ]; do</br>	&gt;suffixe=${1#*.}</br>	&gt;mv $1 $(echo ${1%%.*} | tr [a-z] [A-Z]).$suffixe</br>	&gt;shift</br>&gt;done</code></pre></p>
+				<p><pre><code>&gt;while [ -n "$1" ]; do<br/>	&gt;suffixe=${1#*.}<br/>	&gt;mv $1 $(echo ${1%%.*} | tr [a-z] [A-Z]).$suffixe<br/>	&gt;shift<br/>&gt;done</code></pre></p>
 				<p><u>La ligne suivante rennomer tous les fichiers du répertoire courant qui ont l'extention .TGZ en .tar.gz</u></p>
 				<p><pre><code>for i in *.TGZ ; do mv $i ${i%.*}tar.gz ; done</code></pre></p>
-				<p>Ici on mais dans la variable i les fichier .TGZ et on utilise la commande mv pour la rennomer </br>
+				<p>Ici on mais dans la variable i les fichier .TGZ et on utilise la commande mv pour la rennomer <br/>
 				en selectionant la partie du nom de la variable qui nous interesse puis on ajoute tar.gz a la fin</p>
 			</article>
 		</section>
@@ -322,29 +322,29 @@
 			<h1><u>Calculer la longueur d'une chaine de caractère</u></h1>
 			<article>
 			<p>l'opérateur $ nous permet de calculer la longueur d'une chaine de caractere</p>
-			<p><u>Voici un exemple :</u><pre><code>&gt;variable=azertyuiop</br>&gt;echo "La variable est composée de ${#variable} caracteres"</br>&gt;La variable est composée de 10 caracteres</code></pre></p>
+			<p><u>Voici un exemple :</u><pre><code>&gt;variable=azertyuiop<br/>&gt;echo "La variable est composée de ${#variable} caracteres"<br/>&gt;La variable est composée de 10 caracteres</code></pre></p>
 			</article>
 		</section>
 		<section id="defaut_valeur_variable">
 			<h1><u>Retourner une valeur par défaut si une variable est non définie ou inexistante</u></h1>
 			<article>
-				<p><u>Exemple :</u><pre><code>&gt;var=coucou</br>&gt;echo ${var:-defaut}</br>&gt;coucou</br>&gt;variable=</br>&gt;echo ${variable:-defaut}</br>&gt;defaut</br>&gt;echo ${inexistante:-defaut}</br>&gt;defaut</code></pre></p>
+				<p><u>Exemple :</u><pre><code>&gt;var=coucou<br/>&gt;echo ${var:-defaut}<br/>&gt;coucou<br/>&gt;variable=<br/>&gt;echo ${variable:-defaut}<br/>&gt;defaut<br/>&gt;echo ${inexistante:-defaut}<br/>&gt;defaut</code></pre></p>
 				<p>Ici on retourne la valeur defaut quand la variable n'est pas initialise ou existante</p>
 				<p>Sa ne modifie pas ou ne créer pas la variable</p>
 				<p><u>Autre exemple avec cette une attribution de la valeur à la variable ou une création si celle-ci n'éxiste pas</u></p>
-				<p><pre><code>&gt;var=coucou</br>&gt;echo ${var:=defaut}</br>&gt;coucou</br>&gt;variable=</br>&gt;echo ${variable:=defaut}</br>&gt;defaut</br>&gt;echo ${inexistante:=defaut}</br>&gt;defaut</code></pre></p>
+				<p><pre><code>&gt;var=coucou<br/>&gt;echo ${var:=defaut}<br/>&gt;coucou<br/>&gt;variable=<br/>&gt;echo ${variable:=defaut}<br/>&gt;defaut<br/>&gt;echo ${inexistante:=defaut}<br/>&gt;defaut</code></pre></p>
 				<p><u>Autre exemple pour afficher un message dans le cas la variable n'est pas definei sans affecter la variable</u></p>
-				<p><pre><code>&gt;: ${variable:?"n'ont definie"}</br>&gt;echo variable = $variable</br>&gt;variable = n'ont definie</code></pre></p>
+				<p><pre><code>&gt;: ${variable:?"n'ont definie"}<br/>&gt;echo variable = $variable<br/>&gt;variable = n'ont definie</code></pre></p>
 				<p>Si je rapelle la variable ultérieurement elle n'existera toujours pas pas comme avec le signe =</p>
 				<p>Si aucun message n'est précisé <code>echo ${variable:?}</code> C'est le shell qui en fournira un par defaut</p>
 				<p><u>Modifer la valeur d'une variable si celle-ci et declarer et non vide sinon renvoyer null</u></p>
-				<p>Avec le signe +</br> <code>&gt;variable=4</br>&gt;echo ${variable:+2}</br>&gt;2</code></p>
+				<p>Avec le signe +<br/> <code>&gt;variable=4<br/>&gt;echo ${variable:+2}<br/>&gt;2</code></p>
 				<p>Ici le shell renvera la valeur 2 puisque la variable est bien definie et initialise a 4</p>
 				<p>Si la variable n'existait pas ou qu'elle n'avait pas été initialisé alors le résultat aurai été null</p>
-				<p><strong>Les quatre modificateurs précédents considèrent au même titre les variables indéfinies et</br>
-					les variables contenant une chaîne vide.</strong></br>
-					Il existe quatre modificateurs similaires qui</br>
-					n’agissent que si la variable est vraiment indéfinie ;</br> il s’agit de ${ - } , ${ = } , ${ ? } , et ${ + }</p>
+				<p><strong>Les quatre modificateurs précédents considèrent au même titre les variables indéfinies et<br/>
+					les variables contenant une chaîne vide.</strong><br/>
+					Il existe quatre modificateurs similaires qui<br/>
+					n’agissent que si la variable est vraiment indéfinie ;<br/> il s’agit de ${ - } , ${ = } , ${ ? } , et ${ + }</p>
 			</article>
 		</section>
 		<section id="calcul_arithmetique">
@@ -352,9 +352,9 @@
 			<article>
 				<p>Pour effectuer des calculs arithmetique de nombre entier</p>
 				<p>Pour les calculs arithmetique voici la construction : $((calcul)) d'autre parenthèse peuvent être utilisées dans le calcul</p>
-				<p>Les opérateurs arithmétiques disponibles sont les mêmes que dans la plupart des langages </br>de programmation : <strong>+ , - , * , et /</strong> pour les quatre opérations de base ; <strong>%</strong> pour le modulo ;</br></br>
-				<strong>&lt;&lt; et &gt;&gt; </strong>pour les décalages binaires à gauche et à droite <strong> &amp; , | , et ^ </strong></br>pour les opérateurs
-				binaires ; Et, Ou et Ou Exclusif ; et finalement <strong>~</strong> pour la négation binaire. Les opérateurs peuvent être regroupés entre parenthèses pour des questions de priorité.</br> On peut
+				<p>Les opérateurs arithmétiques disponibles sont les mêmes que dans la plupart des langages <br/>de programmation : <strong>+ , - , * , et /</strong> pour les quatre opérations de base ; <strong>%</strong> pour le modulo ;<br/><br/>
+				<strong>&lt;&lt; et &gt;&gt; </strong>pour les décalages binaires à gauche et à droite <strong> &amp; , | , et ^ </strong><br/>pour les opérateurs
+				binaires ; Et, Ou et Ou Exclusif ; et finalement <strong>~</strong> pour la négation binaire. Les opérateurs peuvent être regroupés entre parenthèses pour des questions de priorité.<br/> On peut
 				placer des blancs (espaces) à volonté pour améliorer la lisibilité du code.</p>
 				<p><u>Liste des opérateurs arithmétique :</u></p>
 				<ul>
@@ -375,13 +375,13 @@
 			avec $((10#$x+1)) . Ceci est utile lorsqu’on récupère des nombres provenant de fichiers
 			formatés avec des colonnes de chiffres complétés à gauche par des zéros.</p>
 				<p><u>Exemple de code pour des calculs arithmetique : </u></p>
-				<p><pre><code>&gt;echo $((2 * (4 + (10/2)) - 1))</br>&gt;17</br>&gt;echo $((7%3))</br>&gt;1</code></pre></p>
+				<p><pre><code>&gt;echo $((2 * (4 + (10/2)) - 1))<br/>&gt;17<br/>&gt;echo $((7%3))<br/>&gt;1</code></pre></p>
 				<p><u>Calcul dans le lequel il est spécifié que c'est une valeur de base 2 : </u></p>
-				<p><pre><code>&gt;masque=2#000110</br>&gt;capteur=2#001010</br>&gt;echo $(($masque &amp; $capteur))</br>&gt;2</br>&gt;echo $(($masque | $capteur))</br>&gt;14</br>&gt;echo $(($masque ^ $capteur))
-	&gt;12</br>&gt;echo $(($masque &amp;&amp; 2))</br>&gt;12
+				<p><pre><code>&gt;masque=2#000110<br/>&gt;capteur=2#001010<br/>&gt;echo $(($masque &amp; $capteur))<br/>&gt;2<br/>&gt;echo $(($masque | $capteur))<br/>&gt;14<br/>&gt;echo $(($masque ^ $capteur))
+	&gt;12<br/>&gt;echo $(($masque &amp;&amp; 2))<br/>&gt;12
 				</code></pre></p>
 				<p><u>Les variables qui se trouve dans la structure de calcul se diffèrament selon qu'il y est l"opérateur $ ou pas</u></p>
-				<p>Exemple : <pre><code>&gt;a=1+2</br>&gt;echo $(($a*2))</br>&gt;5</br>&gt;echo $((a*2))</br>&gt;6</code></pre></p>
+				<p>Exemple : <pre><code>&gt;a=1+2<br/>&gt;echo $(($a*2))<br/>&gt;5<br/>&gt;echo $((a*2))<br/>&gt;6</code></pre></p>
 				<p>Dans cette exemple on voit la diffèrences entre le résultat avec et sans le $</p>
 				<p>Avec le signe $ la variable et placé littéralement alors que la variable sans le signe $ retourne la resultat de l'expression qu'elle contient</p>
 				<p>Voici le deroulement de la première opération : <code>1+2*2 = 5</code> Alors que dans la deuxième opération le déroulement est : <code>(1+2)*2 = 6</code></p>
@@ -395,7 +395,7 @@
 	l’égalité et != pour la différence. Les conditions peuvent être associées par un Et Logique
 	&amp;&amp; ou un Ou Logique || , ou encore être niées avec ! .</p>
 				<p>Exemple de condition :
-				<pre><code>&gt;echo $(((25 + 2) &amp; 28))</br>&gt;1</br>&gt;echo $(((12 + 4) == 17))</br>&gt;0</br>&gt;echo $(((1 == 1) &amp;&amp; (2 &amp; 3)))</br>&gt;1</code></pre></p>
+				<pre><code>&gt;echo $(((25 + 2) &amp; 28))<br/>&gt;1<br/>&gt;echo $(((12 + 4) == 17))<br/>&gt;0<br/>&gt;echo $(((1 == 1) &amp;&amp; (2 &amp; 3)))<br/>&gt;1</code></pre></p>
 				<p><u>Voici un petit script qui affiche le calendrier de l'année prochaine</u></p>
 				<p><code>&gt;cal $(($(date +%Y)+1))</code>
 				</article>
@@ -414,7 +414,7 @@
 				commande</p>
 				<p>Pour afficher le résultat précedent avec les saut de ligne et autre placer la variable entre "" </p>
 				<p>Sinon le resultat sera affiché brut</p>
-				<p>Démonstration : </br><code>&gt;echo "$variable"</code></p>
+				<p>Démonstration : <br/><code>&gt;echo "$variable"</code></p>
 			</article>
 		</section>
 		<section id="porte_variable">
@@ -449,11 +449,11 @@
 			<h1><u>Utilisation de la commande eval</u></h1>
 			<article>
 				<p>Shell est un langage interpreté, il n'est pas compilé</p>
-				<p>Cela permet de construire une expression de toutes pièce</br>et de l'évaluer comme s'il s'agissait d'un morceau du programme en cours d'execution</p>
-				<p>Exemple : <pre><code>&gt;A="contenu de A"</br>&gt;B="A = \$A"</br>&gt;echo $B</br>&gt;A = $A</br>&gt;eval echo $B</br>&gt;A = contenu de A</code></pre></p>
+				<p>Cela permet de construire une expression de toutes pièce<br/>et de l'évaluer comme s'il s'agissait d'un morceau du programme en cours d'execution</p>
+				<p>Exemple : <pre><code>&gt;A="contenu de A"<br/>&gt;B="A = \$A"<br/>&gt;echo $B<br/>&gt;A = $A<br/>&gt;eval echo $B<br/>&gt;A = contenu de A</code></pre></p>
 				<p>Le contenu de A n'est pas enregistrer dans la variable B</p>
 				<p>Si on modifie la variable A et que l'ont reconsulte la variable B avec eval, c'est alors le contenu modifié de A qui sera visible</p>
-				<p>Exemple on modifie $A : <pre><code>&gt;A="nouveau contenu"</br>&gt;eval echo $B</br>&gt;A = nouveau contenu</code></pre></p>
+				<p>Exemple on modifie $A : <pre><code>&gt;A="nouveau contenu"<br/>&gt;eval echo $B<br/>&gt;A = nouveau contenu</code></pre></p>
 			</article>
 		</section>
 		<section id="espace_disck">
@@ -461,11 +461,11 @@
 			<article>
 				<p>On va utiliser la commande df afin d'obtenir des stats sur le disque</p>
 				<p>Puis grâce aux commande sed, cut et tail on affine notre recherche afin d'afficher le résultat voulu</p>
-				<p><code>&gt;df -k . | tail -1 | sed "s/  */ /g" | cut -d " " -f 4</br>&gt;98456678</code></p>
+				<p><code>&gt;df -k . | tail -1 | sed "s/  */ /g" | cut -d " " -f 4<br/>&gt;98456678</code></p>
 				<p>L'option -K affiche le resultat en kilo octet tail selectionne une ligne(option -1) en partant de la fin, et sed remplace les double espaces par un simple espace et cut selectionne le champ 4 celui de l'espace restant dans le resultat de la commande de df</p>
 				<p>Si l'on souhaite on peut afficher le résultat en Mo. Il nous suffit de placer l'option --block-size=1000K pour 1000kilo octet (1 bloc = 1Mo) Par default un bloc = 1000ko</p>
 				<p>Pareil pour les Giga octets avec l'option --block-size=1000000K (1 block = 1 Go) ! Option pour la commande <strong>df</strong></p>
-				<p>Exemple qui affiche la place libre sur le disque pour le home en Giga bite : </br><code>&gt;df -block--size=1000000K . | tail -1 | sed "s/  */ /g" | cut -d " " -f 4</br>&gt;98</code></p>
+				<p>Exemple qui affiche la place libre sur le disque pour le home en Giga bite : <br/><code>&gt;df -block--size=1000000K . | tail -1 | sed "s/  */ /g" | cut -d " " -f 4<br/>&gt;98</code></p>
 				<p>Il reste 98 Go de libre pour le répertoire home de l'utilisateur connecté</p>
 			</article>
 		</section>
@@ -509,7 +509,7 @@
 			<article>
 				<p>Lorsque qu'il y a un signal d'interuption d'execution avec crtl + C notament le résultat diverge selon les SHELL en cours</p>
 				<p>Un exemple lorsque que l'ont coupe l'execution de sleep dans un papeline</p>
-				<p><code>&gt;echo debut ; sleep 20 ; echo fin</br>&gt;debut</br>&gt;Je coupe l'execution de sleep avec ctrl c</br>&gt;fin</code></p>
+				<p><code>&gt;echo debut ; sleep 20 ; echo fin<br/>&gt;debut<br/>&gt;Je coupe l'execution de sleep avec ctrl c<br/>&gt;fin</code></p>
 				<p>On voit que dans ce cas la echo echo qui affiche le message fin s'éxecute correctement</p>
 				<p>Se comportement peut varier selon la version du SHELL utilisé</p>
 				<p>Lorsqu'une commande est interompu volontairement avec bash interactif la commande reçoit le signal SIGINT ce qui tue la commande</p>
@@ -562,7 +562,7 @@
 			<article>
 				<p>Si l'ont souhaite éxecuter un groupe de commande dans un sous-shell on utilise les parenthèses</p>
 				<p>Cette fois les parenthèses peuvent être collé aux commandes</p>
-				<p>Exemple de code : <code>&gt;A=1 ; B=2 ; export A</br>&gt;echo Sh1 $A $B; (echo Sh2 $A $B; A=3; B=4) ; echo Sh1 $A $B</br>&gt;Sh1 1 2</br>&gt;Sh2 1 2</br>&gt;Sh1 1 2</code></p>
+				<p>Exemple de code : <code>&gt;A=1 ; B=2 ; export A<br/>&gt;echo Sh1 $A $B; (echo Sh2 $A $B; A=3; B=4) ; echo Sh1 $A $B<br/>&gt;Sh1 1 2<br/>&gt;Sh2 1 2<br/>&gt;Sh1 1 2</code></p>
 				<p>Ici on peut voir que malgré les initialisations de $A et $B dans les parenthèses leur valeur ne change pas dans la commande suivante qui n'est plus entre parenthèse et donc pas éxecuté par le même shell</p>
 				<p>La partie se lance dans un sous-shell indépandament des autres</p>
 			</article>
@@ -573,9 +573,9 @@
 				<p><u>Portée des variables modifié pendant un processus</u></p>
 				<p>Si l'ont modifie une variable et que l'ont souahite la réutiliser utltérieurement il faut se trouver dans le même shell</p>
 				<p>Toutes les commandes situé entre parenthèse peuvent avoir accès aux même variables puisque éxecuté dans le même processus</p>
-				<p>Exemple de code : <code>&gt;echo "Mon message" | read VAR ; echo "VAR = $VAR"</br>&gt;</code></p>
+				<p>Exemple de code : <code>&gt;echo "Mon message" | read VAR ; echo "VAR = $VAR"<br/>&gt;</code></p>
 				<p>Dans cette ligne le résultat sera vide car la variable $VAR a été initialisé dans un autre processus puisque ; sépare les commandes</p>
-				<p>Alors que avec cette ligne : <code>&gt;echo "Mon message" | (read VAR ; echo "VAR = $VAR")</br>&gt;Mon message</code></p>
+				<p>Alors que avec cette ligne : <code>&gt;echo "Mon message" | (read VAR ; echo "VAR = $VAR")<br/>&gt;Mon message</code></p>
 				<p>Maintenant grâce aux parenthèses nous avons accès à la variable puisque les deux commandes read et echo sont éxecuté dans le même Shell</p>
 				<p><strong>Dans certain shell comme Ksh execute la derniere commande d'un pipeline dans le shell père et les variables peuvent être disponible</strong></p>
 			</article>
@@ -586,13 +586,13 @@
 				<p>Très utilies les redirections des entrées et sorties standart</p>
 				<p>Il y à le pipe | qui relie directement la sortie standart du premier argument à la l'entré standart du deuxieme argument</p>
 				<p> Pour envoyé le contenu d'un fichier en entré standart d'une commande opérateur </p>
-				<p>Exemple : <code>&gt;read LIGNE &lt; fichier.txt</br>&gt;1er ligne du fichier</code></p>
+				<p>Exemple : <code>&gt;read LIGNE &lt; fichier.txt<br/>&gt;1er ligne du fichier</code></p>
 				<p>Redirigé la sortie standart d'une commande dans un fichier avec  &gt; ou &gt;&gt;</p>
 				<p>l'opérateur &gt; permet d'envoyez la sortie standart dans le fichier en écrasant le contenu déjà existant et créer le fichier si il n'existe pas</p>
 				<p>l'opérateur &gt;&gt;Permet d'envoyez la sortie standart dans le fichier en ajoutant à la fin du contenu déjà éxistant</p>
 				<p><u>La sortie d'erreur : </u></p>
 				<p>Pour redirigé la sortie standart d'erreur c'est l'opérateur 2&gt;</p>
-				<p>Exemple de code : </br><code>&gt;find / -name passwd 2&gt;/dev/null</br>&gt;Ne renverra que les lignes ok les lignes d'erreur comme acces refusé seront envoyé vers /dev/null</code></p>
+				<p>Exemple de code : <br/><code>&gt;find / -name passwd 2&gt;/dev/null<br/>&gt;Ne renverra que les lignes ok les lignes d'erreur comme acces refusé seront envoyé vers /dev/null</code></p>
 				<p>Sans la redirection de la sortie d'erreur dans /dev/null une multitude de message d'erreur serait venu poluer la sortie standart (Dans le terminal)</p>
 				<p>Pour redirigé les deux sortie erreur et standart dans le même fichier ou sur un pipe</p>
 				<p>Opérateur 2&gt;&amp;1 effectue une copie de la sortie standart sur la sortie d'erreur</p>
@@ -600,20 +600,20 @@
 				<p>En général en place cette redirection à la fin après toutes les autres redirection</p>
 				<p>Les diffèrentes sortie ne fonctionne pas pareils la sortie standart utilise un buffer fonctionnant ligne par ligne sauf en cas de redirection vers un fichier qui dans ce cas envoie des blocs brute</p>
 				<p><u>Fonctionnement des buffers : </u></p>
-				<p>Exemple avec le code : </br><code>&gt;grep snmp /etc/* &gt; fichier 2&gt;&amp;1 #La sortie standard et la sortie d'erreur sera envoyé dans le fichier</code></p>
+				<p>Exemple avec le code : <br/><code>&gt;grep snmp /etc/* &gt; fichier 2&gt;&amp;1 #La sortie standard et la sortie d'erreur sera envoyé dans le fichier</code></p>
 				<p>Dans cette exemple la commande grep en retourne pas beaucoup de résultat et sont donc tous stockés dans le buffer jusqu'à la fin de l'éxécution de la commande</p>
 				<p>La sortie standard ne possède pas de buffer les messages d'erreur sont donc écrit instantanement dans le fichier</p>
 				<p>Le résultat dans le fichier affichera en premier les messages d'erreurs puis à la fin le buffer de sortie standard sera copier</p>
-				<p>Par contre avec cette exemple : <code></br>&gt;grep root /etc/* 2&gt;&amp;1</br>&gt;#La sortie d'erreur et la sortie standard seront envoyé dans le fichier</code></p>
+				<p>Par contre avec cette exemple : <code><br/>&gt;grep root /etc/* 2&gt;&amp;1<br/>&gt;#La sortie d'erreur et la sortie standard seront envoyé dans le fichier</code></p>
 				<p>Ici le cas est diffèrent car les résultats de la commande seront plus élevés. Le buffer sera rempli à plusieurs reprise</p>
 			</article>
 			<h1 id="commande_silencieuse"><u>Rendre l'éxécution d'une commande silencieuse</u></h1>
 			<article>
 				<p>Envoyer la sortie d'erreur et standard vers /dev/null avec une redirection 2&gt;&amp;1 /dev/null</p>
 				<p><strong>Il existe un raccourci de 2&gt;&amp;1 qui et &amp;&gt;fichier</strong>
-				<p>Exemple de commande : <code></br>&gt;grep root &amp;&gt;/etc/null</code></p>
+				<p>Exemple de commande : <code><br/>&gt;grep root &amp;&gt;/etc/null</code></p>
 				<p>Ne renverra rien car les deux sorties (erreur et standard) sont envoyé vers /dev/null</p>
-				<p><u>Beaucoup plus court que : </u><code></br>&gt;grep root &gt; /etc/null 2&gt;&amp;1	#Pour  les deux sorties vers /dev/null</code></p>
+				<p><u>Beaucoup plus court que : </u><code><br/>&gt;grep root &gt; /etc/null 2&gt;&amp;1	#Pour  les deux sorties vers /dev/null</code></p>
 			</article>
 			<h1 id="redirection_avancee"><u>Les redirections avancées</u></h1>
 			<article>
@@ -663,7 +663,7 @@
 					</tbody>
 				</table>
 				<p>Le fichier .netrc doit être composé de la façon suivante</p>
-				<p>machine adresse de la machone</br>login votre login</br>password votre mot de passe</p>
+				<p>machine adresse de la machone<br/>login votre login<br/>password votre mot de passe</p>
 				<p><u><strong>Voici un exemple de programme qui prend en argument La liste suivante :</strong></u></p>
 				<ol>
 					<li>Machine à contacter</li>
@@ -727,7 +727,7 @@
 			<h1><u>Les conditions de structure if_then_elif_then_else_fi</u></h1>
 			<article>
 				<p><strong>Pour connaitre les options des conditions man test</strong></p>
-				<p>La structure :<code></br>&gt;if condition1 ; then</br>	&gt;instruction</br>&gt;elif condition2 ; then</br>	&gt;instruction</br>&gt;else</br>	&gt;instruction</br>&gt;fi</code></p>
+				<p>La structure :<code><br/>&gt;if condition1 ; then<br/>	&gt;instruction<br/>&gt;elif condition2 ; then<br/>	&gt;instruction<br/>&gt;else<br/>	&gt;instruction<br/>&gt;fi</code></p>
 				<p>Il est recommandé d'utiliser les [ ] pour entourer les conditions</p>
 				<p>then peut se mettre à la ligne le ; n'est plus necessaire dans ce cas</p>
 				<p><u>LE Shell offre la possibilité de faire certain test avec l'opérateur internet test avec les arguments suivants :</u></p>
@@ -740,7 +740,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>-a fichier</br>-e fichier</td>
+							<td>-a fichier<br/>-e fichier</td>
 							<td>Si le fichier indiqué existe. L'option -a n'est pas définie dans Single UNIX version 3 on préfèrera utilisé l'option -e </td>
 						</tr>
 						<tr>
@@ -764,7 +764,7 @@
 							<td>Le Set-GID du fichier indiqué et positionné</td>
 						</tr>
 						<tr>
-							<td>-h fichier</br>-L fichier</td>
+							<td>-h fichier<br/>-L fichier</td>
 							<td>Le fichier indiqué et un lien symbolique</td>
 						</tr>
 						<tr>
@@ -952,7 +952,7 @@
 			<h1><u>Utilisation des structures de condition case esac</u></h1>
 			<article>
 				<p><u>Voici la structure de case : </u></p>
-				<p><pre><code>&gt;case expression in</br>	&gt;motif 1) commande_1;;</br>	&gt;motif 2) commande_2;;</br>	&gt;motif 3) commande_3;;</br>&gt;esac</code></pre></p>
+				<p><pre><code>&gt;case expression in<br/>	&gt;motif 1) commande_1;;<br/>	&gt;motif 2) commande_2;;<br/>	&gt;motif 3) commande_3;;<br/>&gt;esac</code></pre></p>
 				<p>L'expréssion est évalué puis comparé en tant que chaine de caractère aux diffèrents motif</p>
 				<p>Si correspondance avec le motif la commande qui suit et éxecuté et passe la fin de case à la ligne esac</p>
 				<p>Les motifs peuvent être des caractères générique du Shell. Comme l'astérix qui permet de désigner tout caractère ou le point d'interogation qui remplace un unique caractère</p>
@@ -996,7 +996,7 @@
 			<h1><u>Les boucles de répétition while_do_done et until_do_done</u></h1>
 			<article>
 				<p><u>La boucle while_do_done</u></p>
-				<p>Structure de la boucle : <code></br>&gt;while condition ; do</br>&gt;instruction</br>&gt;done</code>
+				<p>Structure de la boucle : <code><br/>&gt;while condition ; do<br/>&gt;instruction<br/>&gt;done</code>
 				<p>Code d'exemple qui calcul la factorielle d'un nombre :</p>
 				<p><pre><code>
 &gt;#!/bin/bash
@@ -1012,7 +1012,7 @@
 &gt;echo "$n! =$f"
 				</code></pre></p>
 				<p><u>La boucle until_do_done</u></p>
-				<p>Structure de la boucle : <code></br>&gt;until condition ; do</br>&gt;instruction</br>&gt;done</code>
+				<p>Structure de la boucle : <code><br/>&gt;until condition ; do<br/>&gt;instruction<br/>&gt;done</code>
 				<p>Fonctionne sur le même principe que while_do_done</p>
 			</article>
 			<h1><u>Rupture de séquence avec les instructions <code>continue et break</code></u></h1>
@@ -1052,12 +1052,12 @@
 		<section id="for_do">
 			<h1><u>La boucle de répétition avec condition for_do_done</u></h1>
 			<article>
-				<p>La structure de la boucle for : <code>&gt;for variable in liste_de_mot ; do</br>&gt;commandes</br>&gt;done</code></p>
+				<p>La structure de la boucle for : <code>&gt;for variable in liste_de_mot ; do<br/>&gt;commandes<br/>&gt;done</code></p>
 				<p>Son fonctionnement diffèrent de l'utilisation que l'on en fait dans les autre langage courant comme le C</p>
 				<p>La variable va prendre une à une successivement tous les mots qui son contenu dans la liste</p>
 				<p>Le corp de la boucle sera répété pour chaque valeur de variable</p>
 				<p>Exemple de script qui calcule le carré des entiers indiqué</p>
-				<p><pre><code>&gt;for i in 1 2 3 5 7 11 13; do</br>&gt;	echo "${i}2 = $((i * i))"</br>&gt;done</code></pre></p>
+				<p><pre><code>&gt;for i in 1 2 3 5 7 11 13; do<br/>&gt;	echo "${i}2 = $((i * i))"<br/>&gt;done</code></pre></p>
 				<p>La boucle for est souvent utilisé avec les listes "$@" et *</p>
 				<p>$@ represente la liste des arguments passé en ligne de commande et * la liste des fichiers présent dans le répertoire courant en cour</p>
 				<p>Par defaut for utilise "$@" comme liste si aucune n'est renseigné</p>
@@ -1074,7 +1074,7 @@
 			<h1><u>La boucle de selection select_do_done</u></h1>
 			<article>
 				<p>La structure de condition et assez originale et peut être très utile dans certain script</p>
-				<p>Structure de select : <code>&gt;select variable in liste_de_mot; do</br>&gt;commande</br>&gt;done</code></p>
+				<p>Structure de select : <code>&gt;select variable in liste_de_mot; do<br/>&gt;commande<br/>&gt;done</code></p>
 				<p>Le shell développe et affiche la liste des mots sur la sortie standard d'erreur</p>
 				<p>Il affiche ensuite le symbole d'invite representer par la variable PS3 et lit une ligne depuis son entrée standard</p>
 				<p>SI elle contient qui représentent l'un des mots affichés, ce dernier et placé dans la variable dont le nom et précisé après select.</p>
@@ -1158,7 +1158,7 @@
 				<p><strong>Attention un return dans une boucle de sélection select ne fait pas quitter la fonction mais uniquement la boucle select</strong></p>
 				<p>La boucle while tout à la fin du script ne vérifie qu'une valeur tant que la fonction liste_fichiers renvoie null (pas d'erreur)</p>
 				<p>Les deux points dans la boucle while signifie ne rien faire</p>
-				<p>ici quelque exemple de résultat du script :</br><pre><code>
+				<p>ici quelque exemple de résultat du script :<br/><pre><code>
 &gt;./menu_fichier.sh
 &gt;*********************************************
 &gt;1) doc.tgz
@@ -1229,9 +1229,9 @@
 			<article>
 				<p>Il est possible d'utiliser des fonctions dans les scripts</p>
 				<p>D'une manière général les fonctions se déclare de la manière suivante :</p>
-				<p><code>&gt;function nom_de_la_fonction ()</br>&gt;{</br>&gt;Commande</br>&gt;}</code></p>
+				<p><code>&gt;function nom_de_la_fonction ()<br/>&gt;{<br/>&gt;Commande<br/>&gt;}</code></p>
 				<p>Il possible de prendre des raccourcis par exemple en ne mettant pas function mais juste le nom de la fonction suivi des () ou alors de ne pas mettre de paranthèse mais le mot clé function</p>
-				<p><code>&gt;nom_de_la_fonction ()</br>&gt;{</br>&gt;Commande</br>&gt;}</code> ou <code>&gt;function nom_de_la_fonction</br>&gt;{</br>&gt;Commande</br>&gt;}</code></p>
+				<p><code>&gt;nom_de_la_fonction ()<br/>&gt;{<br/>&gt;Commande<br/>&gt;}</code> ou <code>&gt;function nom_de_la_fonction<br/>&gt;{<br/>&gt;Commande<br/>&gt;}</code></p>
 				<p>Si l'on souhaite que le script soit portable il vaut mieu prévilègié la méthode avec les parenthèse</p>
 				<p>L'accolade peut être placé juste après les parenthèse</p>
 				<p>Les arguments que l'on passe à une fonction sont placé à la suite de son nom lors de son invocation. Ils ne sont pas indiqué lors de la définition de la fonction</p>
@@ -1239,7 +1239,7 @@
 				<p>Une attitude défensive de programmation voudrai que l'on vérifie au moins que le bon nombre d'arguments à été passé</p>
 				<p>C'est possible grâce aux paramètres spécial $@ qui contient le nombre de paramètre positionnel reçu</p>
 				<p>Exemple de code dans une fonction qui vérife que l'on à bien 3 paramètres positionnel reçu</p>
-				<p><code>&gt;function trois_arg</br>&gt;{</br>&gt;#Cette runtime attend trois arguments</br>&gt;if [ $# -ne  3 ] ; then</br>&gt;echo "Nbr d'arguments erroné dans trois_arg()"</br>&gt;return</br>&gt;fi</br>&gt;echo "Traitement des arguments de trois_arg()"</code></p>
+				<p><code>&gt;function trois_arg<br/>&gt;{<br/>&gt;#Cette runtime attend trois arguments<br/>&gt;if [ $# -ne  3 ] ; then<br/>&gt;echo "Nbr d'arguments erroné dans trois_arg()"<br/>&gt;return<br/>&gt;fi<br/>&gt;echo "Traitement des arguments de trois_arg()"</code></p>
 				<p><u>Exemple de transmition des arguments passé en ligne de commande à une fonction</u></p>
 				<p><pre><code>
 &gt;#!/bin/bash
@@ -1539,7 +1539,7 @@
 				<p>Hélas ce code n'est pas portable car read sera éxécuté dans sous processus et ne modifie pas la variable ident du shell père</p>
 				<p>Mais dans certaine version de shell korn cette commande fonctionne car il considère qu'une commande read placé en dernière position d'un papeline doit être éxecuté par le shell père</p>
 				<p>Une solution consiste à stocker le résultat des commandes en amont dans des variables; puis envoyé les valeurs dans une entrée standard redirigé depuis cette variable au moyen d'un document en ligne</p>
-				<p>Exemple :</br><pre><code>
+				<p>Exemple :<br/><pre><code>
 &gt;/bin/sh: 1: Syntax error: redirection unexpected=$(grep $USER /etc/passwd)
 &gt;IFS=":"
 &gt;read ident passe uid gid nom restant &lt;&lt;FIN
@@ -2132,7 +2132,8 @@
 &gt;nohup: appending output to `nohup.out'
 &gt;$ (attente 40 secondes, puis Entrée)
 &gt;[1]+ Done
-&gt;Ici le processus et lancer dans un sous shell et la sortie standard et envoyé dans un fichier nommé nohup.out une fois lancé apuiyé sur entrè et le script continuera de s'éxécuté en fond sans pertubé le shell interactif
+&gt;Ici le processus et lancer dans un sous shell et la sortie standard et envoyé dans un fichier nommé nohup.out
+&gt;une fois lancé apuiyé sur entrè et le script continuera de s'éxécuté en fond sans pertubé le shell interactif
 &gt;$ cat nohup.out
 &gt;1
 &gt;2
@@ -2598,7 +2599,7 @@
 				<p>Toutefois, les scripts shell peuvent quand même bénéficier de l'arithmétique des nombre réel grâce à un outils standard nommé bc</p>
 				<p>Cette outil peût être utilisé de manière interactive (comme une calculatrice) ou dans un script</p>
 				<p>Dans la bibliothèque étendue de bc accessible via son option -l en ligne de commande. La fonction a(x) renvoie l'arc tangente de x.</p>
-				<p>Voici un exemple interactif :<code>&gt;bc -l</br>&gt;4*a(1)</br>&gt;3,14159265358979323844</br>&gt;quit</code></p>
+				<p>Voici un exemple interactif :<code>&gt;bc -l<br/>&gt;4*a(1)<br/>&gt;3,14159265358979323844<br/>&gt;quit</code></p>
 				<p>Et maintenant un exemple dans un script : </p>
 				<p><pre><code>
 &gt;#!/bin/bash
@@ -2662,10 +2663,10 @@
 				<p><u>Le symbôle générique .</u></p>
 				<p>Le caractère point . dans une expression, est un symbôle générique qui peut représenter n'importe quel caractère dans la chaîne</p>
 				<p>Exemple avec : <pre><code>&gt;./regexp.sh A.B AxB A.B AxyB</code></pre></p>
-				<p><pre><code>&gt;AxB : oui</br>&gt;A.B : oui</br>&gt;AxyB : non</code></pre></p>
+				<p><pre><code>&gt;AxB : oui<br/>&gt;A.B : oui<br/>&gt;AxyB : non</code></pre></p>
 				<p>La derniere chaîne à été rejeté car le point correspond sans problème au x, mais le y ne peut pas être associer à B</p>
 				<p>Si on aurait voulu introduire un point littéral dans l'expréssion rationelle il aurai fallu le faire précédé d'un \ (blackslash)</p>
-				<p>Exemple : <code>&gt;./regexp.sh "A\.B" AxB A.B</br>&gt;AxB : NON</br>&gt;A.B : OUI</code></p>
+				<p>Exemple : <code>&gt;./regexp.sh "A\.B" AxB A.B<br/>&gt;AxB : NON<br/>&gt;A.B : OUI</code></p>
 				<p>On notera l'emploi d'apostroĥe pour encadrer l'expression régulière, pour éviter que le shell n'intervienne et ne suprime le blackslash avant d'invoquer le script</p>
 				<p><u>Les caractère ^ et $ pour début et fin de chaine</u></p>
 				<p>Les deux symbôles spéciaux, ^ et $, représente respectivement début de chaine et fin de chaine</p>
@@ -2675,7 +2676,7 @@
 				<p>Une exprèssion ^$ représente une chaine vide, (dont la réprésentation ascii 0x0A)</p>
 				<p><u>Les alternatives avec le caractère | qui doit être précéde de \</u></p>
 				<p>Le caractère | lorsqu'il est précédé de \ indique une alternative entre deux caractère</p>
-				<p>Un exemple : <pre><code>&gt;./regexp.sh 'Ax\|yB' AxB AyB AzB</br>&gt;AxB : oui</br>&gt;AyB : OUI</br>&gt;AzB : non</code></pre></p>
+				<p>Un exemple : <pre><code>&gt;./regexp.sh 'Ax\|yB' AxB AyB AzB<br/>&gt;AxB : oui<br/>&gt;AyB : OUI<br/>&gt;AzB : non</code></pre></p>
 				<p><u>Les listes de caractères </u></p>
 				<p>Lorsque plusieurs caractères peuvent convenir à un emplacement donné, nous avons vu qu'il est possible d'enchaîner les alternatives, mais écrire : a\|b\|c\|d\|e n'est pas très pratique</p>
 				<p>Il est donc possible d'indiquer des listes de caractères suceptibles de correspondre à un caractère de la chaine. On regroupe la liste entre [ crochet ], et son contenu sera mis en corelation avec seul d'entre eux</p>
@@ -2692,9 +2693,9 @@
 				<p>Pour éviter d'avoir trop de caractères à écrire dans la liste comme par exemple [abcdefghijklmnopqrstuvwxyz], on peut utiliser une intervale. Pour ce faire on sépare les deux bornes avec un tiret,
 				et l'intervalle acceptera tous les caractères intermédiaire de la table ascii.</p>
 				<p>Par exemple avec deux intervalles une avec les caractères de l'alphabet et les caractères numérique</p>
-				<p><code>&gt;./regexp.bash 'A[a-z][0-9]B' Ac5B AC5B AczB</br>&gt;A5cB : OUI</br>&gt;AC5B : NON</br>&gt;AczB : NON</code></p>
+				<p><code>&gt;./regexp.bash 'A[a-z][0-9]B' Ac5B AC5B AczB<br/>&gt;A5cB : OUI<br/>&gt;AC5B : NON<br/>&gt;AczB : NON</code></p>
 				<p>Si le premier caractère après le crochet ouvrant est un ^ alors siginification est inversé; elle pourra correspondre à n'inporte quel caractère sauf ceux indiqué</p>
-				<p><code>&gt;./regexp 'A[a-z]B' 'A#B' A8B AcB</br>&gt;A#B : NON</br>&gt;A8B : NON</br>&gt;AcB : OUI</br>&gt;#Alors que avec cette requête : </br>&gt;./regexp 'A[^a-z]' 'A#B' A8B AcB</br>&gt;A#B : OUI</br>&gt;A8B : OUI</br>&gt;AcB : OUI</code></p>
+				<p><code>&gt;./regexp 'A[a-z]B' 'A#B' A8B AcB<br/>&gt;A#B : NON<br/>&gt;A8B : NON<br/>&gt;AcB : OUI<br/>&gt;#Alors que avec cette requête : <br/>&gt;./regexp 'A[^a-z]' 'A#B' A8B AcB<br/>&gt;A#B : OUI<br/>&gt;A8B : OUI<br/>&gt;AcB : OUI</code></p>
 				<p>A tout autre emplacement le caractère ^ reprend sa valeur littérale. Le tiret reprend sa signification litérale si il est placé en premier ou derniere position (ou jsute derrière ^)</p>
 				<p><u>Les classes</u></p>
 				<p>L'utilisation d'intervalles n'est pas très portable car il s'appuie uniquement sur l'ordre des caractères dans le jeu ascii qui est loin d'être le seul et qui ne contient pas les caractères accentué par exemple</p>
@@ -2800,11 +2801,11 @@
 				le mot aurait pu être composé de zéro lettre</p>
 				<p>Pour demander qu'il y ai au moins une lettre il faut utiliser le caractère \+ qui signifie une ou plusieurs occurence de l'élément précédent</p>
 				<p>Ce qui donnerai : <code>[[:blank:]]*[[:alpha:]]\+[[:blank:]]*</code> Dans cette expression le mot sera au minimum composé d'un caractère alphabétique dans la localisation en cour</p>
-				<p>Exemple <code>&gt;./regexp 'ab\+c' ac abc abbbc</br>&gt;ac : non</br>&gt;abc : OUI</br>&gt;abbbc : OUI</code></br>Il peut y avoir une ou plusieur fois la lettre b </p>
+				<p>Exemple <code>&gt;./regexp 'ab\+c' ac abc abbbc<br/>&gt;ac : non<br/>&gt;abc : OUI<br/>&gt;abbbc : OUI</code><br/>Il peut y avoir une ou plusieur fois la lettre b </p>
 				<p>Il existe également l'opérateur de répétition \? qui signifie zéro ou une fois occurence du caractère précédent</p>
-				<p>Exemple : <code>&gt;./regexp 'ab\?c' ac abc abbbc</br>&gt;ac : OUI</br>&gt;abc : OUI</br>&gt;abbbc : NON</code></br>Il peut y  avoir zéro ou une fois la lettre b</p>
+				<p>Exemple : <code>&gt;./regexp 'ab\?c' ac abc abbbc<br/>&gt;ac : OUI<br/>&gt;abc : OUI<br/>&gt;abbbc : NON</code><br/>Il peut y  avoir zéro ou une fois la lettre b</p>
 				<p>Et enfin il y a l'opérateur \{n,m\} qui signifie au moin n fois et au plus m fois le caractère précédent</p>
-				<p>Un exemple : <code>&gt;./regexp 'ab\{4,6\}c' abbc abbbbc abbbbbbc abbbbbbbc</br>&gt;abbc : NON</br>&gt;abbbbc : OUI</br>&gt;abbbbbbc : OUI</br>&gt;abbbbbbbc : NON</code></br>Il peut y avoir 4 5 ou 6 fois la lettre b</p>
+				<p>Un exemple : <code>&gt;./regexp 'ab\{4,6\}c' abbc abbbbc abbbbbbc abbbbbbbc<br/>&gt;abbc : NON<br/>&gt;abbbbc : OUI<br/>&gt;abbbbbbc : OUI<br/>&gt;abbbbbbbc : NON</code><br/>Il peut y avoir 4 5 ou 6 fois la lettre b</p>
 				<p><u>Il existe plusieurs varainte de \{ et \} : </u></p>
 				<ul>
 					<li>\{n,\} au moins n fois</li>
@@ -2812,19 +2813,19 @@
 					<li>\{n\} exactement n occurences</li>
 				</ul>
 				<p>Si un opérateur de répétition se trouve à la suite d'un caractère générique comme . alors on ne demande pas la répétition du même caractère mais une séquence de caractère.</p>
-				<p>Par exemple : <code>&gt;./regexp.sh 'A.\{3\}C' AxyzC</br>&gt;AxyzC : OUI</code></br>Indique une suite de 3 caractère car le point indique n'importe quel caractère</p>
+				<p>Par exemple : <code>&gt;./regexp.sh 'A.\{3\}C' AxyzC<br/>&gt;AxyzC : OUI</code><br/>Indique une suite de 3 caractère car le point indique n'importe quel caractère</p>
 				<p><u>Le groupement de caractère ou de sous expression</u></p>
 				<p>S'il est pratique de pouvoir indiquer une répétition de caractère, on peut aussi être ammenez à rechercher des répétitions de séquences de caractères, ou de sous expréssions rationelles.</p>
 				<p>On peut ainsi définir un groupement de caractère à l'aide des symboles \( et \). Lorsqu'un opérateur de répétition est placé à la suite d'un groupement, il agit sur l'enssemble de la séquence.</p>
-				<p>Par exemple, l'expression rationnelle \(123\)\{2\} demande deux fois la répétition de 123 : <code>&gt;./regexp 'A\(123\)\{2\}' A123B A123123B</br>&gt;A123B : NON</br>&gt;A123123B : OUI</code> Dans la seconde suite de caractère il y à bien deux fois de suite le groupement de caractère 123 alors que pas dans la premiere suite de caractère</p>
+				<p>Par exemple, l'expression rationnelle \(123\)\{2\} demande deux fois la répétition de 123 : <code>&gt;./regexp 'A\(123\)\{2\}' A123B A123123B<br/>&gt;A123B : NON<br/>&gt;A123123B : OUI</code> Dans la seconde suite de caractère il y à bien deux fois de suite le groupement de caractère 123 alors que pas dans la premiere suite de caractère</p>
 				<p>Les groupements peuvent eux-même être associer à une alternative \| :</p>
-				<p>Exemple <code>&gt;./regexp 'A\(12\)\|\(34\)B' A12B A34B A14B</br>&gt;A12B : OUI</br>&gt;A34B : OUI</br>&gt;A14B : NON</code></br>Il peut y avoir un groupement de 12 ou 34 entre les caractères A et B</p>
+				<p>Exemple <code>&gt;./regexp 'A\(12\)\|\(34\)B' A12B A34B A14B<br/>&gt;A12B : OUI<br/>&gt;A34B : OUI<br/>&gt;A14B : NON</code><br/>Il peut y avoir un groupement de 12 ou 34 entre les caractères A et B</p>
 				<p><u>Le référencement arrière :</u></p>
 				<p>Les regroupement peuvent servir losrque la même séquence de caractère doit se retrouver à plusieurs emplacements dans la même chaine. On peut alors insérer un indicateur qui fera référence à uine portion e l'expression régulière en correspondance. Le symbole \1 représente la sous-chaîne qui est mise n correspondance avec le premier regroupement e l'expression rationnelle, \2 la portion de la chaîne associé au deuxième regroupement, et ainsi de suite</p>
 				<p>Ainsi, si notre expression rationnelle commence par \(.\)x\(..\), le symbole \1 représentera le premier groupement qui en l'occurence ne représente qu'un caractère \(.\) et \2 représente le deuxième groupement qui représente dans ce cas deux caractère \(..\)</p>
 				<p>On remarquera que si la notation .\{3\} réclame 3 caractères quelconques, \(.\)\1\1 réclame 3 fois le même caractère, tout comme \(.\)\1\{2\}</p>
-				<p>Un exemple d'utilisation :<code>&gt;./regexp 'A.\{3\}B' A123B A222B</br>&gt;A123B : OUI</br>&gt;A222B : OUI</code></br>Demande 3 caractères quelconque entre les lettres A et B</p>
-				<p>Alors que : <code>&gt;./regexp 'A\(.\)\1\1B' A123B A222B</br>&gt;A123B : NON</br>&gt;A222B : OUI</code></br>On demande trois fois l'occurence du même caractère selectionner par le point</p>
+				<p>Un exemple d'utilisation :<code>&gt;./regexp 'A.\{3\}B' A123B A222B<br/>&gt;A123B : OUI<br/>&gt;A222B : OUI</code><br/>Demande 3 caractères quelconque entre les lettres A et B</p>
+				<p>Alors que : <code>&gt;./regexp 'A\(.\)\1\1B' A123B A222B<br/>&gt;A123B : NON<br/>&gt;A222B : OUI</code><br/>On demande trois fois l'occurence du même caractère selectionner par le point</p>
 			</article>
 		</section>
 		<section id="tableau_expression">
@@ -2972,9 +2973,9 @@
 &gt;done</code></pre>
 				<p>Ce script prend en argument l'expression régulière étendue puis les chaînes de caractères dans lesquel faire la recherche</p>
 				<p>Exemple d'utilisation de ce script : </p>
-				<p><code>&gt;./regexpext.bash 'A(12)|(34)B' A12B A34B A14B</br>&gt;A12B : OUI</br>&gt;A34B : OUI</br>&gt;A14B : NON</code></p>
-				<p><code>&gt;./regexpext.bash 'A.{3}B' A123B A222B</br>&gt;A123B : OUI</br>&gt;A222B : OUI</code></p>
-				<p><code>&gt;./regexpext.bash 'A.\1\1B A123B A222B</br>&gt;A123B : NON</br>&gt;A222B : OUI</code></p>
+				<p><code>&gt;./regexpext.bash 'A(12)|(34)B' A12B A34B A14B<br/>&gt;A12B : OUI<br/>&gt;A34B : OUI<br/>&gt;A14B : NON</code></p>
+				<p><code>&gt;./regexpext.bash 'A.{3}B' A123B A222B<br/>&gt;A123B : OUI<br/>&gt;A222B : OUI</code></p>
+				<p><code>&gt;./regexpext.bash 'A.\1\1B A123B A222B<br/>&gt;A123B : NON<br/>&gt;A222B : OUI</code></p>
 			</article>
 		</section>
 		<section id="find">
@@ -3023,8 +3024,8 @@
 				<p>La sélection peut également se faire sur une intervalles de ligne, en indiquant deux adresses séparées par une virgule</p>
 				<p>Des espaces ou des tabulations peuvent être insérés à volonté en début de ligne, ainsi qu'entre l'adresse et la commande</p>
 				<p>Exemple d'utilisation de sed avec la commande p (print) :</p>
-				<p><code>&gt;sed -n -e '2p' &lt; /etc/hosts.allow</code></br>affiche la deuxieme ligne du fichier /etc/hosts.allow</p>
-				<p><code>&gt;sed -n -e '/file/p' &lt; /etc/hosts.allow</code></br>affiche les lignes avec l'occurence file</p>
+				<p><code>&gt;sed -n -e '2p' &lt; /etc/hosts.allow</code><br/>affiche la deuxieme ligne du fichier /etc/hosts.allow</p>
+				<p><code>&gt;sed -n -e '/file/p' &lt; /etc/hosts.allow</code><br/>affiche les lignes avec l'occurence file</p>
 				<p><code>&gt;sed -n -e '2,4p' &lt; /etc/hosts.allow</code>Affiche les lignes 2 à 4 du fichier</p>
 				<p><code>&gt;sed -n -e '/hosts/,/services/p' &lt; /etc/hosts.allow</code>Affiche toutes les lignes correspondante entre l'occurence de la première expression rationnelle et la seconde</p>
 				<p>La sélection par intervalle se fait en fonction des règles suivantes :</p>
@@ -3187,7 +3188,7 @@
 				<p><u>Insértion de saut de ligne : </u></p>
 				<p>Lorsqu'il faut insérer un saut de ligne dans le cours d'une ligne sélectionnéer, la solution la plus portable est d'utiliser une substitution dans laquelle la seconde expression s'étend sur deux lignes,
 				la première étant terminé par un backslash \ on peut employer les références arrières pour replacer les motifs de l'expression régulière servant à trouver le point d'insertion</p>
-				<p>Voici le code qui insère un saut de ligne : </br><code>&gt;echo "Je souvent ce rêve étrange et pénétrant" | sed -e 's/\(rêve\) \(étrange\)/\1</br>&gt;\2/'</code></br> Le résultat : </br><code>&gt;Je fait souvent ce rêve</br>&gt;étrange et pénétrant</code>
+				<p>Voici le code qui insère un saut de ligne : <br/><code>&gt;echo "Je souvent ce rêve étrange et pénétrant" | sed -e 's/\(rêve\) \(étrange\)/\1<br/>&gt;\2/'</code><br/> Le résultat : <br/><code>&gt;Je fait souvent ce rêve<br/>&gt;étrange et pénétrant</code>
 			<h5><u>Les autres commandes de sed :</u></h5>
 			<p>Il éxiste une vingtaine de commande avec sed, rarement utilisé car très difficilement lisible</p>
 			<p>En voici quelque une dans le tableau ci-dessous : </p>

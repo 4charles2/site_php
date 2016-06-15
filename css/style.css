@@ -36,22 +36,12 @@ pre code{
 	background-color: black;
 	color: white;
 }
-#chat{
-    float: right;
-	position: fixed;
-    padding: 20px;
-    background-color: rgba(255, 255, 0, 0.2);
-    border: 2px solid black;
-    border-radius: 20px;
-    margin-top: 180px;
-	margin-left: 1350px;
-}
 #image{
     float: left;
 	height: 400px;
     position: fixed;
     margin: 10px;
-    margin-top: 180px;
+    margin-top: 150px;
 	background-color: rgba(0, 204, 0, 0.42);
 	border: 2px solid black;
 	border-radius: 20px;
@@ -78,13 +68,22 @@ section{
 }
 #first_section{
 	overflow: auto;
+	overflow-x: hidden;
 	width: 950px;
-	height: 700px;;
-	margin-top:180px;
+	height: 75%;
+	margin-top:150px;
 	position: absolute;
 	position: fixed;
 	margin-left: 300px;
 	z-index:5;
+/*Pour internet explorer v5+ à vérifier*/
+	-ms-scrollbar-3dlight-color: #4FBDDD;
+	-ms-scrollbar-arrow-color: #EEE1AE;
+	-ms-scrollbar-darkshadow-color: #000000;
+	-ms-scrollbar-face-color: #A0CCE0;
+	-ms-scrollbar-highlight-color: #F8F2DC;
+	-ms-scrollbar-shadow-color: #176F99;
+	-ms-scrollbar-track-color: #E7F2FA;
 }
 #first_page{
 	margin:5%;
@@ -139,4 +138,65 @@ thead{
 }
 #lien_visited:visited{
 	color: #AAA;
+}
+#chat{
+    float: right;
+	position: fixed;
+    padding: 20px;
+    background-color: rgba(255, 255, 0, 0.2);
+    border: 2px solid black;
+    border-radius: 20px;
+    margin-top: 150px;
+	margin-left: 72%;
+	margin-left: 1350px;
+}
+
+label{
+	display: block;
+}
+legend{
+	color: #DF3F3F;
+	font-weight: bold;
+}
+#pseudo{
+	height: 20px;
+	width: 200px;
+	margin-left: 10%;
+}
+#message{
+	height: 50px;
+	width: 200px;
+	margin-left: 10%;
+}
+#chat_submit{
+	width: 150px;
+	display: block;
+	margin: 10px;
+	margin-left: 25%;
+	box-shadow: 1px 1px 1px #D83F3D;
+	cursor: pointer;
+}
+#message, #pseudo{
+	padding: 3px;
+	border: 2px solid #F5C5C5;
+	border-radius: 5px;
+	box-shadow: 2px 2px 2px #C0C0C0 inset;
+}
+/*Essaie de modification de la scroll-bar*/
+/*Pour le navigateur google*/
+::-webkit-scrollbar{
+	width: 12px;
+}
+::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+}
+::-webkit-scrollbar-thumb{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+@media all and (max-width: 1685px){
+	#message, #pseudo{
+		margin-left: 5%;
+	}
 }
