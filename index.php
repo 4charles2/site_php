@@ -7,7 +7,7 @@ echo "
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset=\"utf-8\">
+		<meta http-equiv=\"Content-Type\" content=\"text/html\" charset=\"utf-8\">
 		<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/style.css\" />
 		<link rel=\"stylesheet\" media=\"all and (max-width: 1655px)\" href=\"/css/style_medium.css\" />
 		<link rel=\"stylesheet\" media=\"all and (max-width: 1100px)\" href=\"/css/style_small.css\" />
