@@ -57,9 +57,9 @@ echo "
 				<input id=\"chat_submit\" type='submit' value='Envoyer' />
 		</form>
 		<fieldset id=\"message_chat\">
-			";
+			<div>";
 			include("bdd/affiche_message.php");
-			 echo "
+			 echo "</div>
 				</fieldset>
 			</fieldset>
 	</aside>
