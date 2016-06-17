@@ -402,7 +402,7 @@ alert(xhr.getResponseHeader('Content-type')); // Affiche : text/html; charset=ut
 &gt;var string = 'Bonjour &lt;?php echo $_GET['nick'] ?&gt; !';
 &gt;receiveMessage(string);
 		</code></pre></p>
-		<p><u>Charger du JSON</p>
+		<p><u>Charger du JSON</u></p>
 		<p>On va utiliser une page PHP pour générer le contenu du fichier JavaScript, et donc le JSON(JavaScript Object Notation). Dans l'exemple suivant les données JSON contiennent une liste d'éditeurs et pour chacun une liste de programmes qu'ils éditent :</p>
 		<p><pre><code>
 &gt;&lt;?php

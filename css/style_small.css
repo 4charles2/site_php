@@ -1,17 +1,4 @@
-/*page style_small.css taille maximum 1100px*/
-#image{
-	display: none;
-}
-img{
-	display: none;
-}
-#first_section{
-	margin-top: 200px;
-	margin-left: 10px;
-	width: 93%;
-	height: 80%;
-	margin-right: 20px;
-}
+/*page style_small.css taille maximum 1280px*/
 #chat{
 	display: none;
 }
