@@ -1,0 +1,64 @@
+/*page style_medium.css taille maximum 1600px*/
+section{
+	width: auto;
+}
+article{
+	width: auto;
+}
+#first_section{
+	padding: 0px;
+	width: 760px;
+	margin-left: 250px;
+}
+#first_page{
+	margin: 10px;
+	width: auto;;
+}
+#first_page article{
+	width: auto;
+}
+img{
+	width: 150px;
+	height: 150px;
+}
+#image{
+	width: 200px;
+	height: 250px;
+}
+#chat{
+	margin-left: 1050px;
+}
+@media all and (max-width: 1360px){
+	#chat{
+		width: 250px;
+	}
+}
+@media all and (max-width: 1250px){
+	#image{
+		display: none;
+	}
+	#chat{
+		float: left;
+		margin-left: 1px;
+		margin-top: 150px;
+		width: 200px;
+
+	}
+	#pseudo{
+		width: 100px;
+	}
+	#message{
+		width: 100px;
+	}
+	#chat_submit{
+		margin-left: 10%;
+	}
+	#first_section{
+		padding: 10px;
+		width: 870px;
+		margin-top: 150px;
+	}
+	section{
+		width: auto;
+	}
+}
