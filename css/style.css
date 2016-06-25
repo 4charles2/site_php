@@ -38,6 +38,9 @@ pre code{
 	background-color: black;
 	color: white;
 }
+.citation{
+	border-right: 4px solid #c7c8c8
+}
 #image{
 	height: 400px;
 	width: 280px;
@@ -72,6 +75,7 @@ section{
 	width: 950px;
 	height: 750px;
 	margin: auto;
+	margin-top: 0px;
 	/*position: absolute;*/
 /*Pour internet explorer v5+ à vérifier*/
 	-ms-scrollbar-3dlight-color: #4FBDDD;

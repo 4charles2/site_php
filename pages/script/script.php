@@ -3362,7 +3362,187 @@
 			<h1><u>Utilisation de la commande awk</u></h1>
 			<article>
 				<p>Awk permet de réaliser des tâches encore plus complète que sed comme des calculs arithmétique, des séquences logiques complètes. De plus les fonctionnalités de awk sont décrite dans la norme UNIX-3 ce qui leur confère une bonne portabilité sur les systèmes UNIX</p>
-				<p>Si sed et souvent employé </p>
+				<p>Si sed et souvent employé pour rechercher et remplacer des sous-chaines dans des fichiers textes, awk pour sa part, est fréquement employé pour extraire les divers champs contenu dans chaque ligne d'enregistrement d'un fichier. </p>
+				<p>Ce sont en quelque sorte leur emploi naturels ceux pour lequel l'administrateur système les utiliseras sans hésiter au sein de ligne de commande shell</p>
+				<p><u>Le fonctionnement de AWK</u></p>
+				<p>Le principe générale de awk est principalement le même que sed : Lecture des lignes de texte sur l'entrée standard, traitement en fonction d'instruction regroupées sur la commande ou dans un fichier externe puis affiche le résultat sur la sortie standard.</p>
+				<p>Voici ma syntaxe de la commande awk : <code>motif { action }</code> ou l'action est appliqué à chaque ligne d'entrée qui permet une mise en correspondance avec le motif</p>
+				<p><u>Les motif : </u></p>
+				<p>Un motif peut être composé d'une expression régulière exprimé entre caractère slash /</p>
+				<p>Par exemple le code suivant affiche les lignes contenant le mot root dans le fichier /etc/passwd : </p>
+				<p><code>awk '/root/ {print}' &lt;/etc/passwd</code></p>
+				<p>Un motif de sélection peut aussi être représenter par une relation, c'est à dire un test réalisé sur un champ donné de la ligne.</p>
+				<p>Voici un exemple qui vérifie si le premier champ de la ligne (par défault les champs sont séparé par un espace) contient l'expression rationnelle tcp.</p>
+				<p><code>awk '$1~/tcp/ {print}' &lt; /etc/services</code></p>
+				<p>Seul les résultats avec tcp dans le premier champ sont affiché</p>
+				<p>Alors sans précision du premier champ <code>awk '/tcp/{print}' &lt;/etc/services</code></p>
+				<p>Affiche beaucoup plus de résultat car les lignes ou tcp n'apparaît que dans les autres colonnes que la première sont affiché également</p>
+				<p>Un motif de séléction peut être une combinaison logique de plusieurs expressions, à l'aide d'opérateurs booléens &amp;&amp;(ET), ||(OU), !(NON), et mêe un opérateur ? qui s"emplois sous
+				la forme motif1 ? motif2 : motif3. Qui signifie : Si le premier motif est validé, la mise en correspondance se fait avec le deuxième motif, sinon avec le troisième (Condition Ternaire)</p>
+				<p>On peut également écrire sous la forme ( motif1 &amp;&amp; motif2) || motif3.</p>
+				<p>Comme on le voit on peut regrouper les motifs de sélection entre parenthèse pour gérer les priorités</p>
+				<p>On peut également sélectionner des intervalles avec une forme motif1,motif2 c'est à dire un enssemble de lignes qui commence avec la première ligne correspondant au motif1 jusqu'à ce que soit rencontré une ligne (comprise) correspondant à motif2</p>
+				<p>Deux sélections particulière sont aussi disponible <code>BEGIN et END</code></p>
+				<p>Une instruction qui commence par BEGIN est éxécuté au démarrage du programme, avant toutes tentative de lecture</p>
+				<p>Symétriquement, une instruction END est éxecuté à la fin du programme juste avant la terminaison de la commande awk</p>
+				<p>Par exemple, la ligne suivante va afficher un message qu'elle que soit les donées fournies en entrée : (Même si on demande de prendre le repertoire /dev/null comme entré)</p>
+				<p>AWK va déjà éxécuté l'instruction BEGIN avant même d'aller lire son entré standard.</p>
+				<p><code>awk 'BEGIN{print "Hello Word ! \n"} &lt;/dev/null</code> Le message sera affiché.</p>
+				<p>La ligne BEGIN est très utile pour l'initialisation de awk, notament lorsqu'il s'agit de remplir les variables requises pour l'exécution du programme.</p>
+				<p><u>Les actions : </u></p>
+				<p>Une instruction awk est composé en premier lieu d'un motif de séléction et d'une seconde partie qui contient mes actions à entreprendre sur les lignes de l'entrée standard ainsi sélectionnées.</p>
+				<p>Les actions sont regroupées entre accolades, et séparées par points virgules et/ou des sauts de ligne : </p>
+				<p>Voici deux exemples qui affichent le même résultat : <code>awk 'BEGIN {print 1; print 2}'</code> ou <code>awk 'BEGIN {print 1</br>print 2}'</code></p>
+				<p>Affichera dans les deux cas comme réponses : <code></br>&gt;1</br>&gt;2</code></p>
+				<p>Un jeu complet d'action et disponible avec awk (entrées-sorties, opérations arithmétique, interactions avec le système, manipulations de chaînes de caractères ...), néanmoins force de constater qu'une grande majorité des script awk couramment employés se limite à l'action print.</p>
+				<p>Voici un exemple de script qui va prendre se que l'on écrit sur l'entrée standard et ajouté une étoile devant si l'on écrit kill alors le programme et arrêté : </p>
+				<p><pre><code>
+&lt;#! /usr/bin/awk -f
+&lt;BEGIN { print "****début****" }
+&lt;END {print "****fin****"}
+&lt;#Les instructions sans motif de sélection s'appliquent
+&lt;#à toutes les lignes de l'entrée standard.
+&lt;{ print "* " $0 }
+&lt;#Si kill est écrit sur l'entrée standard alors on quit le programme
+&lt;/kill/{exit}
+				</code></pre></p>
+				<p><u>Les variables : </u></p>
+				<p>Awk autorise la création et la consultation de variables, suceptible de contenir aussi bien des chaîne de caractère que des valeurs numériques en virgule flotante</p>
+				<p>Les variables sont créées dynamiquement sans nécessité de déclaration préalable</p>
+				<p>Une variable commence à exister des qu'on lui affecte une valeur. Lorsqu'une valeur doit être initialisé avec une valeur non nulle, on emploiera une instruction BEGIN.</p>
+				<p>Voici un appel de awk pour ajouter un numéro avant chaque ligne : </p>
+				<p><code>awk 'BEGIN { nb = 1 } {print nb $0; nb++}' &lt;/etc/passwd</code></p>
+				<p>La déclaration de la variable s'éffectue avant de lire l'entré standard puis on l'incremente après l'affichage de chaque ligne</p>
+				<p>On remarquera quelque points : </p>
+				<ul>
+					<li>L'utilisation des variables est simple et intuitive, awk assurant la convertion des données numériques en chaines de caractères (et inversement) suivant le contexte d'utilisation. Il 
+					n'est pas necessaire de rajouter un $ comme dans le shell pour accéder au contenu d'une variable.</li>
+					<li>Dans la commande print, nous avons affiché une variable particulière : $0. Elle représente toujours la ligne qui vient d'ếtre lu sur l'entré standard.</li>
+					<li>La notation de nb++ est un raccourci pour dire incrémenter la variable nb .</li>
+				</ul>
+				<p><u>Enregistrement et champs : </u></p>
+				<p>Les enregistrements : </p>
+				<p>On considère que le fichier d'entrée est constitué d'une suite d'enregistrements, eux-mêmes composés de plusieurs champs. Par défaut les enregistrement correspondent aux lignes du fichier d'entrée, séparés donc par un caractère de saut de ligne, mais on peut modifier ce séparateur pour lire des fichiers organisé autrement. La variable spéciale RS (reccord separator) décrit la séparation entre les enregistrements : </p>
+				<ul>
+					<li>Lorsque RS est vide la séparation se fait sur des lignes blanches, ce qui veut servir à traiter un fichier de texte paragraphe par paragraphe</li>
+					<li>Lorsque RS contient un seul caractère, celui-ci sert de séparateur d'enregistrement; par defaut c'est le saut de ligne </li>
+					<li>Lorsque RS contient plusieurs caractère, sa valeur et considéré comme une expression rationnelle décrivant les séparations. Si on veut indiquer plusieurs séparateur possible, il faut donc les regrouper entre crochets, en mentionnant ainsi une alternative.</li>
+				</ul>
+				<p>Voici un exemple de script qui prend en argument une base de données dont les enregistrements sont séparés par des caractères #. Chaque enregistrement est composé de champs séparés par des espaces :</p>
+				<p>Voici ce que contien le fichier de base de données : <code>champ1.1 champ1.2 champ1.3#champ2.1 champ2.2 champ2.3#champ3.1 champ3.2#champ4.1 champ4.2 champ4.3</code></p>
+				<p>Puis on va afficher les enregistrement un à un en mettant comme séparateur à la variable RS le caractrèe #</p>
+				<p><code>&gt;awk 'BEGIN{RS="#"} {print "&gt;&gt; "  $0}' base_1.txt</code></p>
+				<p>Voici la deuxième base de donnée avec des séparateur diffèrents : </p>
+				<p><pre><code>
+&gt;{
+&gt;	champ1.1 champ1.2
+&gt;
+&gt;	champ1.3
+&gt;	champ1.4
+&gt;}
+&gt;	{
+&gt;	champ2.1 champ2.2 champ2.3 champ2.4
+&gt;	}
+&gt;	{champ3.1
+&gt;	 champ3.2
+&gt;	 champ3.3
+&gt;	 champ3.4
+&gt;	}
+&gt;	{champ4.1 champ4.2 champ4.3 champ4.4} {champ5.1 champ5.2 champ5.3 champ5.4}
+				</code></pre></p>
+				<p>Ici comme les séparateurs sont diffèrents on va utiliser une expression régulière exprimons la d'abord en français</p>
+				<ul>
+					<li>La séparation commence par un } facultatif. En effet, pour le premier enregistrement, ce caractère est absent. Nous aurons donc une expression }*. </li>
+					<li>Ensuite peuvent venir autant d'espaces, tabulation ou de saut de ligne que necessaire. On écrira donc [\n\t ]*</li>
+					<li>On rencontre ensuite un caractère {, sauf pour le dernier enregistrement.</li>
+					<li>Enfin on peut rencontrer un ou plusieur caractère blancs.</li>
+				</ul>
+				<p>Voici à quoi va ressembler notre première expression (}*[\n\t ]*{[\n\t ]*) | }</p>
+				<p><code>awk 'BEGIN{RS="(}*[\n\t ]*{[\n\t ]*) | }"} {print "&gt;&gt; " $0}' base_2.txt</code></p>
+				<p>Le résultat correspond à notre demande mais nous avons un enregistrement vide à la première ligne et la dernière ligne.</p>
+				<p>Pour régler cela nous pouvons utiliser une instruction supplémentaire qui utilise la commande next, laquelle demande de passer à l'enregistrement suivant en abandonnant celui qui est en cours lorsqu'il 
+				ne contient aucun champ. Le nombre de champs st automatiquement inscrit par awk dans une variable spéciale nommée NF(Number of fields).</p>
+				<p>Nous ajoutons donc une instruction avec un test de sélection qui vérifie si la variable NF est nulle</p>
+				<p>awk 'BEGIN{RS="({*[\n\t ]*{[\n\t]*)|}"} NF==0{next} {print "&gt;&gt; " $0}' base_2.txt</p>
+				<p>Cette fois ci les enregistrement sont parfaitement définie</p>
+				<p><u>Les champs</u></p>
+				<p>Lorsque l'interpreteur awk reçoit un enregistrement, il le decoupe automatiquement en champs. L'enregistrement lui même est représenté par la variable spéciale $0.</p>
+				<p>Les champs sont disponible dans les variables $1 $2 $3 $4 ... jusqu'au dernier. Le nombre de champs détectés est inscrit dans la variable NF, il est ainsi possible d'accéder directement au derneir champ
+				avec l'expression $NF ou à l'avant dernier avec $(NF-1), etc ...</p>
+				<p>Par defaut les champs sont séparés par des caratères blancs (espaces ou tabulations), mais cela peut être modifé par l'intermediaire de la variable FS (fiels separator) avec les conventions suivantes : </p>
+				<ul>
+					<li>Lorsque FS est vide, chaque caractère est considéré comme un champ indépendant; $1 contiendra le premier caractère, $2 le suivant, et ainsi de suite;</li>
+					<li>Lorsque FS que contient un seul caractère, il est considére comme étant un séparateur de champs;</li>
+					<li>Lorsque FS contient plusieur caractère, il s'agit d'une expréssion régulière qui décrit la séparation </li>
+				</ul>
+				<p>Par exemple avec le fichier /etc/passwd les enregistrement sont séparé par des saut de ligne, ce qui correspond au fonctionnement par défaut. Nous ne devrons pas modifier RS.</p>
+				<p>En revanche, les séparations de champs se font sur des caractères : . Nous pouvons donc examiner les champs avec un script comme : </p>
+				<p><code>awk 'BEGIN{FS=":"} {print "nom=" $1 " uid=" $3 " home=" $6 }' /etc/passwd</code></p>
+				<p>Les variables $1, $2 ..., $NF contiennent les diffèrents champs, mais il faut savoir que la gestion de la variable NF par l'interpréteur est particulièrement intelligente. Plusieurs points doivent être notés</p>
+				<ul>
+					<li>La modification des variables $1 à $NF agit sur le contenu de la variable $0 qui représente l'enssemble de l'enregistrement.</li>
+					<li>La consultation d'un champ d'indice supérieur à NF renvoie une chaine vide sans autre effets de bord</li>
+					<li>L'écriture dans un champ supérieur à NF augmente cette dernière variable en conséquence et modifie $0</li>
+					<li>L'augmentation de la valeur de NF n'a pas d'effet direct, les champs supplémentaires contenant des chaînes vides comme lorsqu'on accede aux champs d'indice supérieur à NF</li>
+					<li>La diminution de la valeur de NF détruit les champs concernés et modifie la variable $0</li>
+				</ul>
+				<p>Lorsque le nombre de champ est modifié, la variable $0 est mise à jour en conséquence, et le contenu de la variable spéciale OFS (Output Field Separator) est utilisé pour y séparer les champs.</p>
+				<p>Si on veut contraindre awk à reconstituer la variable $0 avec les séparateurs OFS, il suffit d'écrire dans NF, même sans en modifier le contenu.</p>
+				<p>Voici un exemple de script : </p>
+				<p><code>awk 'BEGIN {FS=":"; OFS="#"} {NF=NF ; print $0}' /etc/passwd</code></p>
+				<p>Cette ligne de code va demander de remplacer le field separator par # indiquer par OFS Output Field Separator ensuite on indique le nouveau nombre de champ avec NF (Number Fields) et on affiche le résultat avec print $0 pour la ligne d'enregistrement.</p>
+				<p>De même le contenu de la variable spéciale ORS (Output Reccord Separator) est automatiquement ajouté pour indiquer le fin d'un enregistrement. Par défaut, il s'agit du saut de ligne, mais nous pouvons le modifier </p>
+				<p><code>awk 'BEGIN {ORS="#"} {print}' /etc/passwd</code></p>
+				<p>Ici toutes les fin d'enregistrement seront terminés par un #</p>
+				<p>Pour connaître le nombre d'enregistrement nous créer une variable puis l'avons incrémenter à chaque enregistrement. Mais il existe une autre solution plus simple</p>
+				<p>En réalité l'interpréteur awk tient à jour automatiquement ce compte dans une variable spéciale nommée NR (Number of Reccords)</p>
+				<p>Un exemple de script qui affiche le numéro de l'enregistrement devant la ligne de sortie</p>
+				<p>awk '{print NR " : " $0 }' /etc/passwd</p>
+				<p>Cette variable et également accesible en écriture, ce qui nous permet par exemple de la décrementer lorsque nous rencontrons un enregistrement vide.</p>
+				<p>Voici un exmple qui décremente lorsqu'on rencontre une ligne vide (blanche) ou un commentaire commençant par le caractère #</p>
+				<p><code>&gt;awk '/^$|^#/{NR--;next}{print NR " : " $1}' &lt; /etc/services</code></p>
+				<p>On commence par une expression régulière qui indique que si une commence et fini sans rien au milieu ou que elle commence par le caractère # alors on decremente NR et on passe à la ligne suivante grâce à next pour ne pas afficher cette ligne avec l'instruction qui suit print qui affiche dans ce cas le premier champ rencontré séparer par un espace blanc (réglége par defaut.</p>
+				<p>Lorsque plusieurs fichier sont examiné à la suite les uns des autres, l'interpreteur awk renseigne la variable FILENAME avec le nom du fichier en cours et la variable spécial FNR avec le numéro d'enregistrement au sein du fichier courant (la variable NR n'est pas réinitialisée lors du passage au fichier suivant). Si la lecture des enregistrement se fait depuis l'entré standard, la variable FILENAME contient un tiret -</p>
+				<p><code>awk '(FNR == 1) {print FILENAME}' /etc/passwd</code> résultat : <code>/etc/passwd</code></p>
+				<p><code>awk '(FNR == 1){print FILENAME}' /etc/passwd</code> résultat : <code>/etc/passwd</code></p>
+				<p>Si la lecture se fait depuis l'entrée standard alors FILENAME contient un tiret exemple : </p>
+				<p><code>&gt;ls | awk '(FNR == 1){print FILENAME}'</code></p>
+				<p><u>Les structures de contrôle</u></p>
+				<p>Le langage awk permet d'utiliser des structures de controle variées, mais elles sont très peu utilisées dans son emploi habituel </p>
+				<p>Voici les structures de contrôle awk : </p>
+				<p>Les Tests</p>
+				<p class="citation">
+				if (condition) {
+					action
+				} else {
+					action
+				}
+				</p>
+				<p>Les Boucles for</p>
+				<p class="citation">
+				for(initialisation; test; iteration)
+				{
+					action
+				}
+				</p>
+				<p>Boucles While</p>
+				<p class="citation">
+				while (condition) {
+					action
+				}
+				</p>
+				<p>Les fonctions</p>
+				<p class="citation">
+				function nom (argument)
+				{
+					action
+				}
+				</p>
+				<p>Nom seulement awk fournit des variables de type chaîne de caractère et des variables entières, mais il est propose également des tableaux associatifs. Les éléments de ces derniers sont indexés par des chaînes de caractère plutôt que par des indices entiers, comme on l'a rencontré avec le shell. La définition et la consultation d'un élement d'un tableau se font simplement en indiquant l'indice entre crochets. Ainsi peut-on écrire :</p>
+				<p><code>&gt;awk 'BEGIN {t[1]="un"; t[2]="deux"; print t[1]", " t[2]}'</code> donne comme résultat : <code>&gt;un, deux</code></p>
+				<p>L'indice étant en réalité une chaine de caractères, on peut aussi écrire :</p>
+				<p><code>&gt;awk 'BEGIN {t["un"]=1; t["deux"]=2; print t["un"], t["deux"]}'</code>donne comme résultat : <code>&gt;1, 2</code></p>
+				<p>Les possibilités offertes par les tableaux associatifs sont très nombreuses.</p>
 			</article>
 		</section>
 		<section id="xwininfo">
