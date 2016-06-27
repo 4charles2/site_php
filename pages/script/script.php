@@ -3543,6 +3543,464 @@
 				<p>L'indice étant en réalité une chaine de caractères, on peut aussi écrire :</p>
 				<p><code>&gt;awk 'BEGIN {t["un"]=1; t["deux"]=2; print t["un"], t["deux"]}'</code>donne comme résultat : <code>&gt;1, 2</code></p>
 				<p>Les possibilités offertes par les tableaux associatifs sont très nombreuses.</p>
+				<p><u>Les Expressions : </u></p>
+				<p>Voici la liste des expressions comprises par le langage Awk.</p>
+				<p>Elles ont une syntaxe très proche de celle du langage C. Classer par ordre croissant de préséance :</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Opérateur</th>
+							<th>Nom</th>
+							<th>Signification</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>cond ? val_1 : val_2</td>
+							<td>valeur conditionnelle</td>
+							<td>renvoie val_1 si la condition cond est vérifiée, et val_2 sinon</td>
+						</tr>
+						<tr>
+							<td>a || b</td>
+							<td>OU logique</td>
+							<td>renvoie une valeur vraie si a ou si b sont nulles</td>
+						</tr>
+						<tr>
+							<td>a &amp;&amp; b</td>
+							<td>Et logique</td>
+							<td>renvoie une valeur si a est non nulle ainsi que b</td>
+						</tr>
+						<tr>
+							<td>a == b</td>
+							<td>Egalité</td>
+							<td>vraie si a est égale à b</td>
+						</tr>
+						<tr>
+							<td>a != b</td>
+							<td>Inégalité</td>
+							<td>Vraie si a est diffèrente de b</td>
+						</tr>
+						<tr>
+							<td>a &lt;= b</td>
+							<td>Infériorité</td>
+							<td>Vraie si a est inférieure à b</td>
+						</tr>
+						<tr>
+							<td>a &gt;= b</td>
+							<td>Supériorité</td>
+							<td>Vraie si a est Supérieure à b</td>
+						</tr>
+						<tr>
+							<td>a &lt; b</td>
+							<td>Infériorité stricte</td>
+							<td>vraie si a est strictement inférieure à b</td>
+						</tr>
+						<tr>
+							<td>a &gt; b</td>
+							<td>Supériorité stricte</td>
+							<td>vraie si a est strictement supérieure à b</td>
+						</tr>
+						<tr>
+							<td>a + b</td>
+							<td>addition</td>
+							<td>renvoie la somme de a et de b</td>
+						</tr>
+						<tr>
+							<td>a - b</td>
+							<td>soustraction</td>
+							<td>renvoie la diffèrence entre a et b</td>
+						</tr>
+						<tr>
+							<td>a * b</td>
+							<td>multiplication</td>
+							<td>renvoie le produit de a et de b</td>
+						</tr>
+						<tr>
+							<td>a / b</td>
+							<td>division</td>
+							<td>renvoie le quotient de a par b</td>
+						</tr>
+						<tr>
+							<td>a % b</td>
+							<td>modulo</td>
+							<td>renvoie le reste de la division entière de a par b</td>
+						</tr>
+						<tr>
+							<td>-a</td>
+							<td>opposition</td>
+							<td>renvoie le nombre de signé opposé et de même valeur absolue que a</td>
+						</tr>
+						<tr>
+							<td>! a</td>
+							<td>négation logique</td>
+							<td>renvoie la négation logique de a</td>
+						</tr>
+						<tr>
+							<td>a ^ b</td>
+							<td>exponentiation</td>
+							<td>renvoie a élevée à la puissance b</td>
+						</tr>
+						<tr>
+							<td>a ++</td>
+							<td>post-incrémentation</td>
+							<td>renvoie la valeur de a, puis l'incrémente si c'est une variable</td>
+						</tr>
+						<tr>
+							<td>++ a</td>
+							<td>pré-incrémentation</td>
+							<td>incrémente a si c'est une variable, puis en renvoie la valeur</td>
+						</tr>
+						<tr>
+							<td>a --</td>
+							<td>post-décrémentation</td>
+							<td>renvoie la valeur de a, puis la décremente si c'est une variable</td>
+						</tr>
+						<tr>
+							<td>-- a</td>
+							<td>pré-décrémentation</td>
+							<td>décrémente a si c'est une variable, puis en renvoie la valeur</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>Les expressions peuvent être groupées entre parenthèses pour résoudre les problèmes de priorités des opérateurs. Les expressions logiques sont fausses si elles sonnt nulles et vraies sinon
+				Lors d'une affectation de variable, il est possible d'utiliser les raccourcis suivants : </p>
+				<table>
+					<thead>
+						<tr>
+							<th>Raccourcis</th>
+							<th>Développement</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>a += expr</td>
+							<td>a = a + expr</td>
+						</tr>
+						<tr>
+							<td>a -= expr</td>
+							<td>a = a - expr</td>
+						</tr>
+						<tr>
+							<td>a *= expr</td>
+							<td>a = a * expr</td>
+						</tr>
+						<tr>
+							<td>a /= expr</td>
+							<td>a = a / expr</td>
+						</tr>
+						<tr>
+							<td>a %= expr</td>
+							<td>a = a % expr</td>
+						</tr>
+						<tr>
+							<td>a ^= expr</td>
+							<td>a = a ^ expr</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>On notera également que les chaînes de caractètes disposent d'un opérateur de concaténation implicite : une expression qui contient deux chaînes séparées par une ou plusieurs espaces sera évaluée
+				en regroupant automatiquement les deux chaînes en une seule : </p>
+				<p><code>&gt;awk 'BEGIN{var="uiop" ; print "aze" "rty" var "qsdf"}'</code>Le résultat : <code>azertyuiopqsdf</code></p>
+				<p>Print va afficher en premier les deux chaines de caractère brut devant lui puis la variable déclaré avec BEGIN puis la dernière variable déclaré</p>
+				<p><u>Retour sur les affichages : </u></p>
+				<p>La fonction print évalue ses arguments et envoie le résultat sur la sortie standard, en ajoutant le caractère ORS qui sert à séparer les enregistrements en sortie (en principe, il s'agit du saut de ligne).</p>
+				<p>Il en existe toutefois une version plus performante, qui permet un affichage formaté : printf. Celle-ci prend en premier argument une chaîne de caractères qui décrit le format à utiliser pour présenter les
+				données. Ensuite viennent les variables à afficher suivant le format indiqué. Nous avons déjà mentionné l'existence d'une implémentation de cette routine sous forme d'utilitaire shell.</p>
+				<p>La chaîne de format décrit les  conversions à appliquer aux arguments avant de les afficher.</p>
+				<p>Voici quelles sont les conversions possibles : </p>
+				<table>
+					<thead>
+						<tr>
+							<th>Conversion</th>
+							<th>Signification</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>%c</td>
+							<td>Affichage du caractère dont le code ASCII est fourni en argument. Les valeurs sont automatiquement ramenées dans l'intervalle [0, 255] par une opération de modulo.</td>
+						</tr>
+						<tr>
+							<td>%d</td>
+							<td>Affichage du nombre sous forme entière en décimal</td>
+						</tr>
+						<tr>
+							<td>%e</td>
+							<td>Affichage du nombre sous forme réelle, avec une mantisse et un exposant : 1.23456+78</td>
+						</tr>
+						<tr>
+							<td>%E</td>
+							<td>Comme %e, avec une lettre E à la place de e (1.23456E+78)</td>
+						</tr>
+						<tr>
+							<td>%f</td>
+							<td>Affichage du nombre sous forme réelle, sans exposant 123456789.0123</td>
+						</tr>
+						<tr>
+							<td>%g</td>
+							<td>Affichage, sous forme %e ou %f, optimisé suivant la taille du chiffre à afficher</td>
+						</tr>
+						<tr>
+							<td>%G</td>
+							<td>Comme %g en invoquant %E à la place de %e</td>
+						</tr>
+						<tr>
+							<td>%i</td>
+							<td>Comme %d</td>
+						</tr>
+						<tr>
+							<td>%o</td>
+							<td>Affichage du nombre sous forme entière, non signée, en octal.</td>
+						</tr>
+						<tr>
+							<td>%s</td>
+							<td>Affichage d'une chaîne de caractères</td>
+						</tr>
+						<tr>
+							<td>%u</td>
+							<td>Affichage du nombre sous forme entière, non signée, en décimal</td>
+						</tr>
+						<tr>
+							<td>%x</td>
+							<td>Affichage du nombre sous forme entière, non signée, en héxadécimal</td>
+						</tr>
+						<tr>
+							<td>%X</td>
+							<td>Comme %x, avec les lettres ABCDEF à la place de abcdef</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>De plus, on notera que la chaine de format peut contenir les séquences suivantes, qui représentent des caractères spéciaux : </p>
+				<table>
+					<thead>
+						<tr>
+							<th>Séquence</th>
+							<th>Caractère</th>
+							<th>Code ASCII</th>
+							<th>Signification</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>%%</td>
+							<td>%</td>
+							<td>37</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>\\</td>
+							<td>\</td>
+							<td>92</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>\nnn</td>
+							<td></td>
+							<td>nnn(octal)</td>
+							<td>Le caractère dont le ASCII vaut <em>nnn</em> en octal (exemple \041 pour les guillements droits)</td>
+						</tr>
+						<tr>
+							<td>\xnnn</td>
+							<td></td>
+							<td>xxx(héxa)</td>
+							<td>Le caractère dont le code ASCII vaut <em>xxx</em> en héxadécimal (exemple \x01B pour le caractère Escape)</td>
+						</tr>
+						<tr>
+							<td>\a</td>
+							<td>Bell</td>
+							<td>7</td>
+							<td>Avertisseur sonore</td>
+						</tr>
+						<tr>
+							<td>\b</td>
+							<td>Backspace</td>
+							<td>8</td>
+							<td>Retour en arrière avec effacement</td>
+						</tr>
+						<tr>
+							<td>\f</td>
+							<td>Formfeed</td>
+							<td>12</td>
+							<td>Saut de page</td>
+						</tr>
+						<tr>
+							<td>\n</td>
+							<td>Newline</td>
+							<td>10</td>
+							<td>Saut de ligne</td>
+						</tr>
+						<tr>
+							<td>\r</td>
+							<td>Carriage ret.</td>
+							<td>13</td>
+							<td>Retour chariot</td>
+						</tr>
+						<tr>
+							<td>\t</td>
+							<td>H tab</td>
+							<td>9</td>
+							<td>Tabulation horizontale</td>
+						</tr>
+						<tr>
+							<td>\v</td>
+							<td>V tab</td>
+							<td>11</td>
+							<td>Tabulation verticale</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>Voici des exemples de conversions : </p>
+				<p>Avec le caractère %c</p>
+				<p><pre><code>
+&gt;awk '{printf "%c\n", $0}'
+&gt;65
+&gt;A
+&gt;97
+&gt;a
+&gt;250
+&gt;ú
+&gt;(Contrôle-D)
+				</code></pre></p>
+				<p>Les nombre entier :</p>
+				<p><pre><code>
+&gt;awk '{printf "%d\n", $0}'
+&gt;12
+&gt;12
+&gt;13.5
+&gt;13
+&gt;-15.7
+&gt;-15
+&gt;A
+&gt;0
+&gt;(Contrôle-D)
+				</code></pre></p>
+				<p>Les diffèrences d'affichage en décimal, octal et hexadécimal %u %o %X valeur non signé :</p>
+				<p><pre><code>
+&gt;awk '{printf "%d %u %o %X\n", $0, $0, $0, $0}'
+&gt;12.3
+&gt;12 12 14 C
+&gt;65
+&gt;65 65 101 41
+&gt;-1
+&gt;-1 4294967295 37777777777 FFFFFFFF
+&gt;(Contrôle-D)
+				</code></pre></p>
+				<p>Les affichages sous forme réelle :</p>
+				<p><pre><code>
+&gt;awk '{printf "%f %e %g\n", $0, $0, $0}'
+&gt;AAA
+&gt;0.000000 0.000000e+00 0
+&gt;1.234
+&gt;1.234000 1.234000e+00 1.234
+&gt;12345
+&gt;12345.000000 1.234500e+04 12345
+&gt;1.234e70
+&gt;123399999999999995924167152120652318521993671372752748551664
+&gt;59462549504.000000 1.234000e+70 1.234e+70
+&gt;(Contrôle-D)
+				</code></pre></p>
+				<p>Affichage des chaînes de caractère :</p>
+				<p><pre><code>
+awk '{printf "&gt;&gt; %s &lt;&lt;\n", $0}'
+azert yuiop
+&gt;&gt;azert yuiop &lt;&lt;
+12
+&gt;&gt; 12 &lt;&lt;
+(Contrôle-D)
+				</code></pre></p>
+				<p>Entre le signe % et le caractère qui décrit la conversion peuvent se trouver plusieurs éléments. Tout d'abord, on peut rencontrer un ou plusieurs caractères parmi les suivants : </p>
+			<table>
+				<thead>
+					<tr>
+						<th>Caractère</th>
+						<th>Signification</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>-</td>
+						<td>Justification à gauche. Cela concerne essentiellement les valeurs numériques</td>
+					</tr>
+					<tr>
+						<td>(espace)</td>
+						<td>Afficher un espace devant les nombres positifs, et un signe - devant les nombres négatifs.</td>
+					</tr>
+					<tr>
+						<td>+</td>
+						<td>Afficher un signe + devant les nombres positifs et un signe - devant les nombres négatifs</td>
+					</tr>
+					<tr>
+						<td>#</td>
+						<td>Modifier le format : afficher un préfixe 0 avec %o, OX avec %X. Laisser les zéros non significatifs avec %g et %G. Toujours afficher le point décimal pour %e, %E et %f</td>
+					</tr>
+					<tr>
+						<td>O</td>
+						<td>Compléter le champ avec des zéros plutôt que des espaces pour respecter la largeur demandée (voir ci-après).</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>Voici quelques exemple : </p>
+			<p><pre><code>
+&gt;awk '{printf "%d %+d % d \n", $0, $0, $0}' 
+&gt;12 
+&gt;12 +12 12 
+&gt;-12 
+&gt;-12 -12 -12
+&gt;(Contrôle-D)
+&gt;awk '{printf "%#x %#f %#g \n", $0, $0, $0}'
+&gt;12
+&gt;0xc 12.000000 12.0000
+&gt;123456
+&gt;0x1e240 123456.000000 123456
+&gt;(Contrôle-D)
+			</code></pre></p>
+			<p>Ensuite, on peut fournir une valeur qui indique la largeur minimale du champ. Ce dernier sera complété avec des espaces et des zéros : </p>
+			<p><pre><code>
+&gt;awk '{printf "%5d %5s %5f\n", $0, $0, $0}'
+&gt;12
+&gt;12
+&gt;12 12.000000
+&gt;(Contrôle-D)
+&gt;$ awk '{printf "%05d %05s %05f\n", $0, $0, $0}'
+&gt;12
+&gt;00012 00012 12.000000
+&gt;(Contrôle-D)
+			</code></pre></p>
+			<p>Etonnamment, le remplissage par des zéros à la place des espaces concerne aussi les affichages de chaînes de caractères : </p>
+			<p><pre><code>
+&gt;awk '{printf "%018s\n", $0}'
+&gt;hello, world!
+&gt;00000hello, world!
+&gt;(Contrôle-D)V
+			</code></pre></p>
+			<p>Attention sur mon pc ce n'est pas des zéros mais des espaces cela permet un alignement à droite du texte complété sur la gauche par des espaces ou des zéros selon configuration du système</p>
+			<p>On peut trouver une valeur de précision, précédée d'un point. Cette valeur a des significations diffèrentes en fonctions de la conversation demandée : </p>
+			<ul>
+				<li>pour %d, %i; %o, %u, %x et %X, il s'agit du nombre minimal de chiffres à afficher. Cette valeur n'est pas toujours redondante avec la largeur du champ car elle ne compte pas le caractère
+				correspondant au signe;</li>
+				<li>pour %e, %E et %f, il s'agit du nombre de décimales;</li>
+				<li>pour %g et %G, il s'agit du nombre total de chiffres significatifs;</li>
+				<li>pour %s, cette valeur représente le nombre maximal de caractères écrits; les caractères suivants de la chaîne seront ignorés.</li>
+			</ul>
+			<p><pre><code>
+&gt;awk '{printf "%.8s\n", $0}'
+&gt;azertyuiop
+&gt;azertyui
+&gt;qsdfghjklmwxcvbn
+&gt;qsdfghjk
+&gt;(Contrôle-D)
+			</code></pre></p>
+			<p>La fonction printf est donc sensiblement plus puissante que print. On notera que printf n'ajoute pas systématiquement le caractère ORS en fin de ligne.</p>
+			<p>Il existe une variante, nommée sprintf, qui n'affiche pas le résultat sur la sortie standard, mais le renvoie dans une chaîne de caractères. Ce comportement est très précieux pour construire des chaînes
+			précises, car l'opérateur de concaténation implicite ne permet pas de limiter le format. On peut par exemple limiter le nombre de caractères dans une ligne de saisie : </p>
+			<p><pre><code>
+&gt;awk ''saisie = sprintf ("%.8s", $0); print "&gt;&gt;" saisie "&lt;&lt;"}'
+&gt;azertyuiop
+&gt;&gt;&gt;azertyui&lt;&lt;
+&gt;(contrôle-D)
+			</code></pre></p>
+			<p><u>Conclusion : </p>
+			<p>Nous avons découvert dans ce chapitre les fonctionnalités de Awk utilisées dans les scripts courants. Toutefois, on notera bien que ce langage propose des fonctions internes bien plus complètes que les simples print et printf dont nous nous sommes contentés. Le lecteur intéressé pourra se reporter à la bibliographie ou à la paged e manuel de awk pour plus de détails.</p>
 			</article>
 		</section>
 		<section id="xwininfo">
