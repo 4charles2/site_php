@@ -1,3 +1,6 @@
+<?php
+	header('content-type:text/css');
+echo "
 #content{
 	display: flex;
 	width: 100%;
@@ -231,3 +234,5 @@ legend{
 		margin-left: 5%;
 	}
 }
+";
+?>

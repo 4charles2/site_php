@@ -1,3 +1,5 @@
+<?php
+echo "
 #content{
 	display: flex;
 	width: 100%;
