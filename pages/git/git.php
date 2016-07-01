@@ -45,6 +45,7 @@
 		<p>La commande <code>&gt;git checkout -b nomDeBranche</code></p>
 		<p>Cette commande est un raccourci de <code>&gt;git branch nomDeBranch</code> qui créer une branche et 
 			<code>&gt;git checkout nomdeBranch</code> qui sélectionne le nom de la branch fournie en argument</p>
+		<p>Pour qu'il n'y pas de probleme entre basculement de branche il faut s'assurer que notre copie de travail en local soit propre</p>
 	</article>
 </section>
 
