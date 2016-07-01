@@ -75,7 +75,35 @@
 &gt;#   unmerged:   nomDuFichier
 &gt;#
 		</code></pre></p>
-
+		<p>Tout ce qui comporte des conflits de fusion et n'a pas été résolu est listé comme unmerged. Git ajoute des marques de conflits standard das les fichiers qui comportent des conflits, pour que vous puissiez les ouvrir et résoudre les conflits manuellement. Votre fichiers contient des sections qui ressemblent à ceci :</p>
+		<p><pre><code>
+&gt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:nomduFichier
+&gt;&lt;div id="footer"&gt;contact : email.support@github.com&lt;/div&gt;
+&gt;=======
+&gt;&lt;div id="footer"&gt;
+&gt;  please contact us at support@github.com
+&gt;  &lt;/div&gt;
+&gt;  &gt;&gt;&gt;&gt;&gt;&gt;&gt; nomDeBranch:nomduFichier
+		</code></pre></p>
+		<p>Cette résolution comporte des parties de chaque section et des lignes &lt;&lt;&lt;&lt;&lt;&lt;&lt;, ======= et &gt;&gt;&gt;&gt;&gt;&gt;&gt; ont été complètement effacées. Après avoir résolu chacune de ces sections dans chaque fichier comportant un conflit, lancez git add sur chaque fichier pour le marquer comme résolu. Placer le fichier dans l'index marque le conflit comme résolu pour Git. SI vous souhaitez utiliser un outil graphique pour résoudre ces problèmes, vous pouvez lancer git mergetool qui démarre l'outil graphique de fusion approprié et vou spermet de naviguer dans les conflits : </p>
+		<p><pre><code>
+&gt;$ git mergetool
+&gt;
+&gt;This message is displayed because 'merge.tool' is not configured.
+&gt;See 'git mergetool --tool-help' or 'git help config' for more details.
+&gt;'git mergetool' will now attempt to use one of the following tools:
+&gt;opendiff kdiff3 tkdiff xxdiff meld tortoisemerge gvimdiff diffuse diffmerge ecmerge p4merge araxis bc3 codecompare vimdiff emerge
+&gt;Merging:
+&gt;nomDuFichier.format
+&gt;
+&gt;Normal merge conflict for 'nomDuFichier.format'
+&gt;  {local}: modified file
+&gt;    {remote}: modified file
+&gt;	Hit return to start merge resolution tool (opendiff):
+		</code></pre></p>
+		<p>SI vous souhaitez utiliser un outil de fusion autre que celui par défaut, vous pouvez voir tous les outils supportés après l'indication of the following tools. Tapez le nom de l'outil que vous préfèreriez utiliser.</p>
+		<p>Après avoir quitté l'outil de fusion, Git vous demande si la fusion a été réussie. Si vous répondez par la positive à l'outil, il indexe le fichier pour le marquer comme résolu.</p>
+		<p>Vous pouvez lancer à nouveau la commande git status pour vérifier que tous les conflits ont été résolus : </p>
 	</article>
 </section>
 
