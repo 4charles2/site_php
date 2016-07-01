@@ -46,6 +46,14 @@
 		<p>Cette commande est un raccourci de <code>&gt;git branch nomDeBranch</code> qui créer une branche et 
 			<code>&gt;git checkout nomdeBranch</code> qui sélectionne le nom de la branch fournie en argument</p>
 		<p>Pour qu'il n'y pas de probleme entre basculement de branche il faut s'assurer que notre copie de travail en local soit propre</p>
+		<p>Les fichiers et dossiers dans le dépôt local seront automatiquemet mise à jour lors d'un basculement d'une branche à l'autre</p>
+		<p><u>Pour Basculer d'une branche à l'autre</u></p>
+		<p>Pour obtenir la liste des branch existantent la commande <code>&gt;git branch</code> </p>
+		<p>Pour changer de branch git checkout nomDeBranch indique a head de pointer vers la branche fournie en argument.</p>
+		<p><u>Pour fusionner deux branches enssemble : </u></p>
+		<p>Une fois les modifications effectuées la fusion. se deplacer sur la branch master et executer la commande git merge nomDeBranch</p>
+		<p>Si la branche fusionné ne sert plus alors la suprimé avec la commande <code>&gt;git branch -d nomDeBranch</code></p>
+		<p><u>Si ont souhaite rapatrié la branche dans une autre branche faire la fusion de puis la branche devant recevoir la modif</p>
 	</article>
 </section>
 
