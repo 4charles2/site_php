@@ -53,7 +53,29 @@
 		<p><u>Pour fusionner deux branches enssemble : </u></p>
 		<p>Une fois les modifications effectuées la fusion. se deplacer sur la branch master et executer la commande git merge nomDeBranch</p>
 		<p>Si la branche fusionné ne sert plus alors la suprimé avec la commande <code>&gt;git branch -d nomDeBranch</code></p>
-		<p><u>Si ont souhaite rapatrié la branche dans une autre branche faire la fusion de puis la branche devant recevoir la modif</p>
+		<p>Si ont souhaite rapatrié la branche dans une autre branche faire la fusion de puis la branche devant recevoir la modif</p>
+		<p><u>Les conflits de fusion : </u></p>
+		<p>Si vous avez modifié différemment la même partie du même fichier dans les deux branches que vous souhaitez fusionner, Git ne 
+		sera pas capable de réaliser proprement la fusion.</p>
+		<p>Dans ce cas vous aurez un message d'erreur qui ressemble à ceci : <pre><code>
+&gt;Auto-merging nomDuFichier
+&gt;CONFLICT (content): Merge conflict in nomDuFichier
+&gt;Automatic merge failed; fix conflicts and then commit the result.
+		</code></pre></p>
+		<p>Git n'à pas créer automatiquement le git de fusion. Il a arrêté le processus le temps que vous résolviez le conflit. Lancez git status
+		pour voir à tout momment après l'apparition du conflit de fusion quels fichiers n'ont pas été fusionnés:</p>
+		<p>Message de git status après une erreur de fusion : <pre><code>
+&gt;[master*]$ git status
+&gt;nomDuFichier: needs merge
+&gt;# On branch master
+&gt;# Changes not staged for commit:
+&gt;#   (use "git add &lt;file&gt;..." to update what will be committed)
+&gt;#   (use "git checkout -- &lt;file&gt;..." to discard changes in working directory)
+&gt;#
+&gt;#   unmerged:   nomDuFichier
+&gt;#
+		</code></pre></p>
+
 	</article>
 </section>
 
