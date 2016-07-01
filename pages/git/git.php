@@ -5,8 +5,18 @@
 		<h1><u>Voici les commandes disponible sur terre :</u></h1>
 		<ul>
 			<li><a href="#compte">Création d'un compte</a></li>
+			<li><a href="#exclude">Exclure des dossiers ou fichiers depuis le fichier de configuration</a></li>
 			<li><a href="#command_basic">Les commandes basic de git</a></li>
 		</ul>
+	</article>
+</section>
+
+<section id="exclude">
+	<h1><u>Liste des noms a exclure de l'index</u></h1>
+	<article>
+		<p>On peut exclure des fichiers grâce au fichier .gitignore ou exclude qui se trouve dans le dossier .git/info/
+		grace à la variable core.excludesFile ou dans ~/.gitconfig</p>
+		<p>Soit en indiquant le chemin soit avec des expressions rationnelle</p>
 	</article>
 </section>
 
