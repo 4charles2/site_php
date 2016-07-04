@@ -77,11 +77,13 @@ section{
 	overflow: auto;
 	overflow-x: hidden;
 	width: 950px;
-	height: <php //mettre la hauteur de la fenetre reÁu par requÍte javascript avant l'envoie des ficchiers css;?>
+	height: 800px;
+	/*php mettre la hauteur de la fenetre reÔøΩu par requÔøΩte javascript avant lenvoie des ficchiers css;?>*/
 	margin: auto;
 	margin-top: 0px;
 	/*position: absolute;*/
 /*Pour internet explorer v5+ √† v√©rifier*/
+
 	-ms-scrollbar-3dlight-color: #4FBDDD;
 	-ms-scrollbar-arrow-color: #EEE1AE;
 	-ms-scrollbar-darkshadow-color: #000000;

@@ -1,8 +1,5 @@
 /*page style_medium.css taille maximum 1655px*/
-img{
-	width: 150px;
-	height: 150px;
-}
+
 #image{
 	width: 200px;
 	height: 250px;
@@ -27,9 +24,6 @@ img{
 	#image{
 		width: 150px;
 		height: 200px;
-	}
-	img{
-		margin: 0px;
 	}
 }
 @media all and (max-width: 1450px){

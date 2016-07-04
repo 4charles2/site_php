@@ -9,7 +9,7 @@ echo "
 	<head>
 		<meta http-equiv=\"Content-Type\" content=\"text/html\" charset=\"utf-8\">
 		<script type=\"text/javascript\" src=\"javascript/info_windows.js\"></script>
-		<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/style.php\" />
+		<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/style.css\" />
 		<link rel=\"stylesheet\" media=\"all and (max-width: 1655px)\" href=\"/css/style_medium.css\" />
 		<link rel=\"stylesheet\" media=\"all and (max-width: 1280px)\" href=\"/css/style_small.css\" />
 	</head>
@@ -32,6 +32,7 @@ echo "
                 <li><a href=\"index.php?page=pages/bashrc/bashrc.php\">bashrc</a></li>
                 <li><a href=\"index.php?page=pages/interface_GUI/gtk_GUI.php\">interface GUI gtk</a></li>
                 <li><a href=\"index.php?page=pages/interface_GUI/gui_sdl.php\">interface GUI SDL</a></li>
+		<lil><a href=\"index.php?page=pages/tcp_ip/tcp_osi_ip.php\">tcp_ip</a></li>
             </ul>
         </nav>
     </header>
@@ -42,7 +43,7 @@ echo "
      </aside>
      <section id=\"first_section\"> ";
 	//<div id=\"link_top_page\"><a href=\"#top_page\">Revenir en Haut de la page</a></div>
-//enlever echo suivant et ";// début de ligne
+//enlever echo suivant et ";// dï¿½but de ligne
 
 	 if (isset($_GET['page'])){
 		 $page_focus=$_GET['page'];

@@ -7,6 +7,7 @@
 					<li><a href="code_in_html.php">Afficher du code Ã  l'utilisateur dans html</a></li>
 					<li><a href="#entities">Les entities html lettres avec accents ou symbÃ´le comme &amp;</a></li>
 					<li><a href="#encode">DÃ©finir l'encodage du fichier avec la balise meta</a></li>
+					<li><a href="#figure">Les figures et figcaption pour attribuer une legende</a></li>
 				</ul>
             </article>
         </section>
@@ -81,3 +82,73 @@
 				</table>
 			</article>
 		</section>
+<section id="figure">
+	<h1><u>Utilisation de figure et figcaption</u></h1>
+	<article>
+		<p>Pour attribuer une legende à une image on utilise les balises figure et figcaption</p>
+		<p>La balise figure pour former un bloc des elements auquel on souhaite définir une legende</p>
+		<p>Pour attribuer la legende c'est la balise figcaption qui n'est pas obligatoire</p>
+		<p>Cela peut servir pour diffèrents élements comme les img mais aussi les blocs de code ou encore des schéma et autre ...</p>
+		<p>La diffèrence entre aside et figure : </p>
+		<p>Ces deux élements sont des unités de contenu mais n'ont pas le même rôle sémantique. Tandis qu'&lt;aside&gt; n'est pas essentiel pour la compréhension de la plage (il ne doit être qu'un apport tangentiel), &lt;figure&gt; est lié à celle-ci : il transmet un contenu pertinent, lié au contenu principal, comme le serait une image classique.</p>
+		<ul>
+			<h3>Nous pouvons donc résumer la chose comme suit : </h3>
+			<li>&lt;aside&gt; : son contenu est périphérique à la page, et son absence ne doit pas gêner la compréhension de celle-ci.</li>
+			<li>&lt;figure&gt; : son contenu contribue à donner du sens et de la compréhension à la page, et son emplacement n'est pas déterminant.</li>
+		</ul>
+		<table>
+			<caption>&lt;figure&gt;</caption>
+			<thead>
+				<tr>
+					<th>Propriété</th>
+					<th>Détails</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Modèles de contenu autorisés</td>
+					<td>Un élément &lt;figcaption&gt; optionnel, suivi par du contenu de flux.</td>
+				</tr>
+				<tr>
+					<td>Parents autorisés</td>
+					<td>Tout élément pouvant contenir des éléments du flux</td>
+				</tr>
+				<tr>
+					<td>Omission de balise</td>
+					<td>Les balises ouvrantes et fermantes sont obligatoires</td>
+				</tr>
+				<tr>
+					<td>Style par défaut</td>
+					<td>figcaption { display:bloc; margin:1em 40px; }</td>
+				</tr>
+			</tbody>
+		</table>	
+		<table>
+			<caption>&lt;figcaption&gt;</caption>
+			<thead>
+				<tr>
+					<th>Propiété</th>
+					<th>Détails</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Modèles de contenu autorisés</td>
+					<td>Contenu de flux</td>
+				</tr>
+				<tr>
+					<td>Parents autorisés</td>
+					<td>&lt;figure&gt;</td>
+				</tr>
+				<tr>
+					<td>Omission de balise</td>
+					<td>Les balises ouvrante et fermantes sont obligatoires</td>
+				</tr>
+				<tr>
+					<td>Style par défaut</td>
+					<td>figcaption {display:block;}</td>
+				</tr>
+			</tbody>
+		</table>
+	</article>
+</section>
