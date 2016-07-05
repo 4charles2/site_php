@@ -1,4 +1,4 @@
-        <section id="regex" >
+        <section id="top_page" >
             <h1><u>Voici une liste de REGEX prédéfinie :</u></h1>
             <p>Vous pouvez tester les codes grâces aux formulaires ! </p>
             <article>
@@ -18,7 +18,7 @@
             <h1><u>Les symbôles PCRE et méta-caractères</u></h1>
             <article id="metacaractere">
                 <table>
-                        <caption colspan="2">Les méta-caractère :</caption>
+					<caption colspan="2">Les méta-caractère :</caption>
                     <thead>
 						<tr>
 							<th>Les symbôles</th>

@@ -1,4 +1,4 @@
-            <section>
+            <section id="top_page">
                 <h1><u>Interface Graphique SDL</u></h1>
                 <article>
                    <ul> 

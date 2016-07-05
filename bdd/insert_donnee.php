@@ -6,7 +6,8 @@
 		  array('pseudo' => $peudo, 'message' => $message);
 		  if (isset($pseudo) AND (isset($message)))
 		  {
-			$req=mysql_query('INSERT INTO minichat VALUES(\'\',\''.date("Y-m-j").'\',\''.$pseudo.'\',\''.$message.'\')')or die("Impossible d'envoyez la requête : " . mysql_error());
+			$bdd->exec('INSERT INTO minichat VALUES(\'\',\''.$pseudo.'\',\''.$message.'\',\''.date("Y-m-j").'\')');
+			//or die("Impossible d'envoyez la requête : " . mysql_error());
 			#Voir cette ligne pas accès aux variable
 		  }
 		#Retour sur la page du site internet

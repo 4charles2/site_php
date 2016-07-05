@@ -1,4 +1,4 @@
-        <section>
+        <section id="parser_bbcode">
             <h1><u>Parser BBcode pour forum sur site internet :</u></h1>
             <article>
                 
@@ -48,24 +48,24 @@
             <br /><hr />
             <h1><u>Voici le code php qui permet cela :</u> </h1>
             <article>
-<p><pre><code>&lt?php 
+<p><pre><code>&lt;?php
 if(isset($_POST['texte']))
     {
     $texte = stripslashes($_POST['texte']);
 //On enlève les slashs qui se seraient ajoutés automatiquement
     $texte = htmlspecialchars($texte);
 //On rend inoffensives les balises HTML que le visiteur a pu rentrer
-    $texte = nl2br($texte);//On créer des &ltbr /&gt pour conserver les retours à la ligne
+    $texte = nl2br($texte);//On créer des &lt;br /&gt; pour conserver les retours à la ligne
 //Ont fait passer notre texte à la moulinette des regex
-    $texte = preg_replace('#\[b\](.+)\[/b\]#isU', '&ltstrong&gt$1&lt/strong&gt', $texte);
-    $texte = preg_replace('#\[i\](.+)\[/i\]#isU', '&ltem&gt$1&lt/em&gt', $texte);
+    $texte = preg_replace('#\[b\](.+)\[/b\]#isU', '&lt;strong&gt;$1&lt;/strong&gt;', $texte);
+    $texte = preg_replace('#\[i\](.+)\[/i\]#isU', '&lt;em&gt;$1&lt;/em&gt;', $texte);
     $texte = preg_replace('#\[color=(red|green|blue|yellow|purple|olive)\](.+)\[/color\]#isU', 
-                '&ltspan style="color:$1"&gt$2&lt/span&gt', $texte);
-    $texte = preg_replace('#\[u](.+)\[/u\]#isU', '&ltu&gt$1&lt/u&gt', $texte);
-    $texte = preg_replace('#\[img (.+) (.+)/\]#i', '&ltimg src="$1" alt="$2" /&gt', $texte); 
-    $texte = preg_replace('#http://[a-z0-9._/-]+#i', '&lta href="$0"&gt$0&lt/a&gt', $texte);
+                '&lt;span style="color:$1"&gt;$2&lt;/span&gt;', $texte);
+    $texte = preg_replace('#\[u](.+)\[/u\]#isU', '&lt;u&gt;$1&lt;/u&gt;', $texte);
+    $texte = preg_replace('#\[img (.+) (.+)/\]#i', '&lt;img src="$1" alt="$2" /&gt;', $texte); 
+    $texte = preg_replace('#http://[a-z0-9._/-]+#i', '&lt;a href="$0"&gt;$0&lt;/a&gt;', $texte);
         //Et ont affiche le résultat
         echo $texte.';
-}?&gt</code></pre></p>
+}?&gt;</code></pre></p>
             </article>
         </section>

@@ -1,4 +1,4 @@
-        <section>
+        <section id="pooPHP">
             <h1><u>Méthodes POO pour PHP</u></h1>
             <article>
                <p>Les Méthodes spécial pour php prennent un double _ underscore</p>  

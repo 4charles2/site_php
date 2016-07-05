@@ -1,4 +1,4 @@
-        <section>
+        <section id="top_page">
             <h1><u>Momento de VIM</u></h1>
             <article>
                 <ul>
@@ -18,8 +18,8 @@
             <article>
                 <p>Mon fichier vimrc</p>
                 <p><pre><code>
-" Maintainer:	Bram Moolenaar &lt;Bram@vim.org&gt;
-" Last change:	30 mars 2016
+" Maintainer:	Charles Tognol &lt;charles.tognol@gmail.com&gt;
+" Last change:	lundi 27 juin 2016, 18:13:12 (UTC+0200)
 "
 " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
@@ -27,6 +27,10 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "	    for OpenVMS:  sys$login:.vimrc
 
+"Theme de couleur . Dans le dossier /usr/share/vim/vim74/colors
+set t_Co=256
+"Active le coloration 256 couleur dans le terminal
+colorscheme molokai
 set nocompatible
 "encodage en utf-8
 scriptencoding utf-8
@@ -57,18 +61,6 @@ endif
 set mouse=a
 "Active les numéros de ligne
 set number
-set list
-"parametre des caractere non imprimable dans vim
-set listchars=nbsp:µ,tab:&gt;-,trail:~,eol:$
-"Mettre en surbrillance les caractères non-imprimables qui ne devraient pas
-"figurer dans le code source.
-"Les Espaces en fin de ligne :
-highlight NoSpacesEOL ctermbg=red ctermfg=white guibg=#592929
-match NoSpacesEOL / \+$/
-"Les tabulations en general elle sont interdites, on oblige d'utiliser des
-"expaces):
-highlight NoTabs ctermbg=red ctermfg=white guibg=#592929
-match NoTabs / \t/
 syntax on
 set smartindent
 "set showmatch		" Show matching brackets.
@@ -85,34 +77,77 @@ set showmode
 set showcmd		" display incomplete commands
 "La barre de status et l'avant dernier ligne
 set laststatus=2
-set statusline=%{strftime('%a\ %e\ %b\ %I:%M\ %p')}\ %-3.3n\ %t\ %h%m%r%w\[%{strlen(&amp;ft)?&amp;ft:'none'},%{&amp;encoding},%{&amp;fileformat}]\ %F%1*%*%10{getfsize(expand('%'))}\ %=%-14.(%l,%c%V%)\ %&lt;%P\
-" If using a dark background within the editing area and syntax highlighting
-" turn on this option as well
-set background=dark
+set statusline=%{strftime('%a\ %e\ %b\ %I:%M\ %p')}\ %-3.3n\ %t\ %h%m%r%w\[%{strlen(&amp;ft)?&amp;ft:'none'},%{&amp;encoding},
+%{&amp;fileformat}]\ %F%1*%*%10{getfsize(expand('%'))}\ %=%-14.(%l,%c%V%)\ %&lt;%P\
+
 set noswapfile
 "Raglage des tabulations ont prefere 4 espaces
 set ai "autoindent
-set expandtab
+"Remplace tab par espace
+"set expandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
+"Mettre en surbrillance les caractères non-imprimables qui ne devraient pas
+"figurer dans le code source.
+"Les Espaces en fin de ligne :
+highlight NoSpacesEOL ctermbg=red ctermfg=white guibg=#592929
+match NoSpacesEOL / \+$/
+" If using a dark background within the editing area and syntax highlighting
+" turn on this option as well
+set background=dark
+"Les tabulations en general elle sont interdites, on oblige d'utiliser des
+"expaces):
+highlight NoTabs ctermbg=red ctermfg=white guibg=#592929
+"Decommenter pour surligné les tabulation en rouge
+"match NoTabs /\t/
+
+"Mettre la ligne en cour d'edition en valeur via une couleur
 "La longueur maximal d'une ligne en general 80 caracteres ou 120 ligne ecran
 "16/9 Ces Deux ligne affiche sur fond rouge les caractere qui depassent
+set list
+"parametre des caractere non imprimable dans vim
+set listchars=nbsp:µ,tab:&gt;-,trail:~,eol:$
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-match OverLength /\%80v.*/
-"Theme de couleur . Dans le dossier /usr/share/vim/vim74/colors
-set t_Co=256
-"Active le coloration 256 couleur dans le terminal
-colorscheme molokai
-"Mettre la ligne en cour d'edition en valeur via une couleur
+"Decommenté pour surligné en rouge tout ce qui depasse les 80 caractères
+"match OverLength /\%80v.*/
 set cursorline
 set cursorcolumn
 hi cursorColumn guibg=#e196f6
 hi CursorLine guibg=#e196f6
 
 "Les abreviation vim
-ab html &lt;!DOCTYPE html&gt;&lt;CR&gt;&lt;html&gt;&lt;CR&gt;&lt;head&gt;&lt;CR&gt;&lt;/head&gt;&lt;CR&gt;&lt;body&gt;&lt;CR&gt;&lt;/body&gt;&lt;CR&gt;&lt;/html&gt;
+"Les abreviation HTML
+"structure de base HTML5
+iab htmli &lt;!DOCTYPE html&gt;&lt;CR&gt;&lt;html&gt;&lt;CR&gt;&lt;Tab&gt;&lt;head&gt;%&lt;CR&gt;&lt;/head&gt;&lt;CR&gt;&lt;body&gt;&lt;CR&gt;&lt;/body&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/html&gt;
+&lt;esc&gt;:call search('%')&lt;esc&gt;i&lt;esc&gt;cf%
+
+"liste ol
+iab oli &lt;ol&gt;&lt;CR&gt;&lt;Tab&gt;&lt;li&gt;!&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/ol&gt;&lt;esc&gt;:call search('!')
+
+#liste ul
+iab uli &lt;ul&gt;&lt;CR&gt;&lt;Tab&gt;&lt;li&gt;!&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/ul&gt;&lt;esc&gt;:call search('!')
+
+"tableau structure simple
+iab tablei &lt;table&gt;&lt;CR&gt;&lt;tab&gt;&lt;thead&gt;&lt;CR&gt;&lt;Tab&gt;&lt;tr&gt;&lt;CR&gt;&lt;Tab&gt;&lt;th&gt;!&lt;/th&gt;&lt;CR&gt;&lt;th&gt;&lt;/th&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tr&gt;&lt;CR&gt;
+&lt;backspace&gt;&lt;/thead&gt;&lt;CR&gt;&lt;tbody&gt;&lt;CR&gt;&lt;Tab&gt;&lt;tr&gt;&lt;CR&gt;&lt;Tab&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tr&gt;&lt;CR&gt;
+&lt;tr&gt;&lt;CR&gt;&lt;Tab&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tr&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tbody&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/table&gt;&lt;esc&gt;:call search('!')
+
+"balise image
+iab img &lt;Esc&gt;^d$i&lt;img src="%" alt="&lt;Esc&gt;pi" /&gt;&lt;Esc&gt;F%s&lt;c-o&gt;:call getchar()&lt;esc&gt;
+
+"Les abreviations du langace C
+#include stdio.h et stdlib.h et structure basique du main
+iab maini #include &lt;stdio.h&gt;&lt;CR&gt;#include &lt;stdlib.h&gt;&lt;CR&gt;&lt;cr&gt;int main (void)&lt;CR&gt;{&lt;CR&gt;&lt;tab&gt;w&lt;cr&gt;&lt;backspace&gt;
+return EXIT_SUCCESS;&lt;CR&gt;}&lt;esc&gt;:call search('w')&lt;esc&gt;i&lt;esc&gt;cfw
+iab fori &lt;Esc&gt;^d$ifor(int i=0; i&lt;&lt;Esc&gt;pi; i++)&lt;cr&gt;{&lt;CR&gt;%}&lt;esc&gt;:call search('%')&lt;esc&gt;i&lt;esc&gt;cf%
+
+"Les abreviations de script bash
+#shebang bash et deux saut de ligne pour un script
+iab #i #!/bin/bash&lt;cr&gt;&lt;cr&gt;&lt;esc&gt;i
+
+"Les abreviations tous types
                 </code></pre></p>
             </article>
             <h1 id="colorSyntax" ><u>Thème de coloration syntaxique</u></h1>

@@ -1,4 +1,4 @@
-        <section>
+        <section id="image_gd2_bib">
             <h1><u>Présentation de la bibliothèque GD2 : </u></h1>
             <h3>Cette bibliothèque permet de créer des images</h3>
             <p><strong><u>Pour activer la bibliothèque :</u></strong></p> 

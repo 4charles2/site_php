@@ -1,4 +1,4 @@
-        <section>
+        <section id="top_page">
             <h1><u>Construire un makefile :</u></h1>
             <article>
                 <p><a href="#makefile_type">Makefile type avancée</a></p>

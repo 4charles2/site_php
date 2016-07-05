@@ -1,4 +1,4 @@
-        <section>
+        <section id="top_page">
             <h1><u>Interface Graphique</u></h1>
             <article>
                 <ul>
@@ -42,7 +42,7 @@ re: fclean all</code></pre>
                 <p>Mon code primaire pour créer une fenetre</p>
                 <p><pre><code>
 #include &lt;stdlib.h&gt;
-#include &ltgtk/gtk.h&gt;
+#include &lt;gtk/gtk.h&gt;
 
 int main(int argc, char **argv)
 {

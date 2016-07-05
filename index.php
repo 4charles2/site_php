@@ -21,7 +21,7 @@ echo "
                 <li><a href=\"index.php?page=pages/script/script.php\">Script Shell</a></li>
                 <li><a href=\"index.php?page=pages/php/php.php\">php et MySql</a></li>
                 <li><a href=\"index.php?page=pages/POO/poo.php\">POO</a></li>
-                <li><a href=\"index.php?page=pages/php/regex.php\">REGEX</a></li>
+                <li><a href=\"index.php?page=pages/regex/regex.php\">REGEX</a></li>
                 <li><a href=\"index.php?page=pages/html/html.php\">html et css</a></li>
                 <li><a href=\"index.php?page=pages/javascript/javascript.php\">Javascript</a></li>
 				<li><a href=\"index.php?page=pages/AJAX/ajax.php\">AJAX</a></li>
@@ -32,7 +32,7 @@ echo "
                 <li><a href=\"index.php?page=pages/bashrc/bashrc.php\">bashrc</a></li>
                 <li><a href=\"index.php?page=pages/interface_GUI/gtk_GUI.php\">interface GUI gtk</a></li>
                 <li><a href=\"index.php?page=pages/interface_GUI/gui_sdl.php\">interface GUI SDL</a></li>
-		<lil><a href=\"index.php?page=pages/tcp_ip/tcp_osi_ip.php\">tcp_ip</a></li>
+				<li><a href=\"index.php?page=pages/tcp_ip/tcp_osi_ip.php\">tcp_ip</a></li>
             </ul>
         </nav>
     </header>
@@ -72,5 +72,4 @@ echo "
 		<script src=\"javascript/refresh.js\"></script>
 	 </body>
 </html>";
-mysql_close();
 ?>

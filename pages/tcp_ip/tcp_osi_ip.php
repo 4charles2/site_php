@@ -5,6 +5,7 @@
 		<ul>
 			<li><a href="#OSI">Modele OSI et TCP/IP (Les couches)</a></li>
 			<li><a href="#couche_1">La couche 1 brancher les machine</a></li>
+			<li><a href="#couche_2">La couche  2 faire communiquer les machines entre elle</a></li>
 		</ul>
 	</article>
 </section>
@@ -159,6 +160,7 @@
 <section id="couche_1">
 	<h1><u>La couche 1 brancher les machines</u></h1>
 	<article>
+		<a href="#topologie">Les diffèrentes topologie de réseau</a>
 		<p>Le rôle principal de la couche 1 est de fournir le support de transmission de la communication.</p>
 		<p>La couche 1 aura donc pour but d'acheminer des signaux électriques, des 0 et est des 1 soit par câble ethernet ou wiffi.</p>
 		<p>Les 0 et les 1 vont circuler grâce aux diffèrents support de transmission.</p>
@@ -170,7 +172,7 @@
 				<ul>
 					<li>Le 10 indique le débit en Mbps(mégabits par seconde);</li>
 					<li>Le B indique la façon de coder les 0 et les 1, soit ici la bande de Base;</li>
-					<li>Le dernier chiffre indique la taille maximale du réseau, exprimée en mètre et divisé par 100.</li>
+					<li>Le dernier chiffre indique la taille maximale du réseau, exprimée en mètre et divisé par 100.
 						<ul>
 							<li>Pour le câble coaxial 10B5 : <br />On utilisait une prise vampire pour se connecté<br /><img src="pages/tcp_ip/prise_vampire.gif" alt="prise vampire" /><br />Il ne fallait pas plier le câble sinon le câble de données à l'intérieur se coupait et patatra plus de connexion dans tous le réseau.</li>
 							<li>Le câble coaxial 10B2 : <br/>Il et plus fin. <br />Pour mettre en place un réseau en 10B2, il fallait : 
@@ -252,6 +254,64 @@
 				<p>La diffèrence entre les deux se situe sur le débit et la distance parcouru.
 					La fibre monomode est beaucoup plus performante sur ces deux points.</p>
 			</li>	
+			<p>De nos jours il existe également le câblage virtuel comme le wiffi.</p>
 		</ul>
+	</article>
+	<article id="topologie">
+		<h2><u>Les diffèrentes topologies réseau possible</u></h2>
+		<ol>
+			<h3>Il existe trois topologies principales : </h3>
+			<li>la topologie en bus</li>
+			<li>la topologie en anneau</li>
+			<li>la topologie en étoile</li>
+		</ol>
+		<figure>
+			<figcaption>Les voici représentées sur les figures suivantes, avec des ronds pour les machines et des trait pour les câbles</figcaption>
+			<img src="pages/tcp_ip/topologie_bus.png" alt="topologie en bus" />
+			<p>Dans la topologie en bus toutes les machines sont relié au même câble qui n'est pas bouclé cela se raporte au câble coaxial 10B2 et 10B5</p>
+			<img src="pages/tcp_ip/topologie_rond.png" alt="voici les topologie reseau rond" />
+			<p>Dans la topologie en rond (anneau) toutes les machines sont relié au même câble qui est bouclé</p>
+			<img src="pages/tcp_ip/topologie_etoile.png" alt="topologie en etoile" />
+			<p>Toutes les machines sont relié à une machine centrale.</p>
+		</figure>
+		<h5><u>Voici les diffèrentes caractéristique des topologies</u></h5>
+		<figure>	
+			<h5><em>Caractéristique de la topologie en bus : </em></h5>
+			<img src="pages/tcp_ip/topologie_bus.png" alt="topologie en bus" />
+			<p>Sur un bus une seule machine peu parler à la fois. On écoute si une machine parle si personne ne parle on peu envoyer notre message.</p>
+			<p>On ne peut pas brancher une infinite de machine car plus il y a de machine moins nous avons de chance pouvoir parler.
+				Le nombre maximum est d'environ 50 machines au dela les chances de parler en même temps qu'une autre machine et trop forte 
+				et le réseau ne fonctionnerait plus.</p>
+			<p>La taille du câble de liaison ne peut pas non plus être infinie car plus le câble et long plus l'information mais du temp pour se propager et donc 				il  y a plus de chance qu'une machine esseye de parler en même temps qu'une autre même si les machines sont peu nombreuse</p>
+		</figure>
+		<figure>
+			<h5><em>Caractéristique de la topologie en anneau : </em></h5>
+			<img src="pages/tcp_ip/topologie_rond.png" alt="voici les topologie reseau rond" />
+			<p>Le mode de communication sur un anneau utilise un jeton qui tourne en permanence et que les machines peuvent utiliser pour envoyé un message les autres machines regarde l'adresse de destination si elle corespond alors elle receptionne le message.</p>
+			<p>On ne peut n'y mettre une infinité de machine ni une longueur infinie pour les mêmes raison que la topologie en bus</p>
+		</figure>
+		<figure>
+			<h5><em>Caractéristique de la topolopgie en étoile</em></h5>
+			<img src="pages/tcp_ip/topologie_etoile.png" alt="topologie en etoile" />
+			<p>En étoile toutes les communications passe par le point central.</p>
+			<p>On lui envoie l'information avec l'adresse du destinataire, et le point centrale aiguille l'information vers la bonne machine.</p>
+			<p>La taille et le nombre de machine n'est limité que par la capacité du ou des points centraux. On peut relié plusieurs point centraux entre eux si le premier ne trouve pas le destinataire alors il envoie l'information au suivant. Jusqu' à trouver me destinataire</p>
+			<p>Avec la bonne configuration le réseau peut comporter un illimité de machine et peut avoir une taille infinie</p>
+		</figure>
+		<p>Les réseaux en bus ou en anneau sont en voix de disparition .</p>
+		<ol>
+			<li>Vous savez maintenant que le rôle principal de la couche 1 est d'offrir un support de transmission pour les communications</li>
+			<li>le câble le plus utilisé aujourd'hui et le câble torsadé muni d'une prise RJ45</li>
+			<li>le matériel utilisé et le hub ou le switch</li>
+			<li>Il existe plusieurs organisations pour brancher les machines, appelés topologies</li>
+			<li>la topologie la plus adapté est la topologie en étoile</li>
+			<li>sur une topologie en bus il peu y avoir des collisions</li>
+			<li>Le CSMA/CD permet d'instaurer des règles afin d'éviter les collisions</li>
+		</ol>
+	</article>
+</section>
+<section id="couche_2">
+	<h1><u>La couche 2 faire communiquer les machines entre elle</u></h1>
+	<article>
 	</article>
 </section>
