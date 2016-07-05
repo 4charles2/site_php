@@ -313,5 +313,21 @@
 <section id="couche_2">
 	<h1><u>La couche 2 faire communiquer les machines entre elle</u></h1>
 	<article>
+		<p><u>La couche de liaison : </u></p>
+		<p>Le rôle de la couche 2 est de connecté des machines sur un réseau local</p>
+		<p>La couche 2 à un également le rôle de détecter des erreurs de transmission. <em>(détection pas correction) !</em></p>
+		<p>Pour communiquer la couche deux utilise un identifiant l'adresse MAC . (L'adresse de la carte réseau).</p>
+		<h3><u>Notation de l'adresse MAC</u></h3>
+		<p>Pour comprendre la notation d'une adresse MAC il faut déjà faire des calculs binaire</p>
+		<p>Le binaire est un système de numératation en base 2. Globalement, cela signifie qu'on peut compter qu'avec des 1 et des 0.</p>
+		<p>La notation en binaire : <pre><code>
+0	1	10 11	100	101	110	111	1000
+		</code></pre></p>
+		<p>Correspond au nombre décimal : <pre><code>
+0	1	2	3	4	5	6	7	8
+		</code></pre></p>
+		<p>Les informations sont envoyées sous la forme de 0v ou 5v, qui correspond à 0 et 1.</p>
+		<p><u>Pour calculer en binaire : </u></p>
+		<p>Tout nombre décimal peut s'écrire en binaire.</p>
 	</article>
 </section>
