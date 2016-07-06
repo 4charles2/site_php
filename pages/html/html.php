@@ -86,40 +86,40 @@
 <section id="figure">
 	<h1><u>Utilisation de figure et figcaption</u></h1>
 	<article>
-		<p>Pour attribuer une legende ? une image on utilise les balises figure et figcaption</p>
-		<p>La balise figure pour former un bloc des elements auquel on souhaite d?finir une legende</p>
+		<p>Pour attribuer une legende à une image on utilise les balises figure et figcaption</p>
+		<p>La balise figure pour former un bloc des éléments auquel on souhaite définir une legende</p>
 		<p>Pour attribuer la legende c'est la balise figcaption qui n'est pas obligatoire</p>
-		<p>Cela peut servir pour diff?rents ?lements comme les img mais aussi les blocs de code ou encore des sch?ma et autre ...</p>
-		<p>La diff?rence entre aside et figure : </p>
-		<p>Ces deux ?lements sont des unit?s de contenu mais n'ont pas le m?me r?le s?mantique. Tandis qu'&lt;aside&gt; n'est pas essentiel pour la compr?hension de la plage (il ne doit ?tre qu'un apport tangentiel), &lt;figure&gt; est li? ? celle-ci : il transmet un contenu pertinent, li? au contenu principal, comme le serait une image classique.</p>
+		<p>Cela peut servir pour différents éléments comme les img mais aussi les blocs de code ou encore des schéma et autre ...</p>
+		<p>La différence entre aside et figure : </p>
+		<p>Ces deux éléments sont des unités de contenu mais n'ont pas le même rôle sémantique. Tandis qu'&lt;aside&gt; n'est pas essentiel pour la compréhension de la plage (il ne doit être qu'un apport tangentiel), &lt;figure&gt; est lié à celle-ci : il transmet un contenu pertinent, lié au contenu principal, comme le serait une image classique.</p>
 		<ul>
-			<h3>Nous pouvons donc r?sumer la chose comme suit : </h3>
-			<li>&lt;aside&gt; : son contenu est p?riph?rique ? la page, et son absence ne doit pas g?ner la compr?hension de celle-ci.</li>
-			<li>&lt;figure&gt; : son contenu contribue ? donner du sens et de la compr?hension ? la page, et son emplacement n'est pas d?terminant.</li>
+			<h3>Nous pouvons donc résumer la chose comme suit : </h3>
+			<li>&lt;aside&gt; : son contenu est périphèrique à la page, et son absence ne doit pas gêner la compréhension de celle-ci.</li>
+			<li>&lt;figure&gt; : son contenu contribue à donner du sens et de la compréhension à la page, et son emplacement n'est pas déterminant.</li>
 		</ul>
 		<table>
 			<caption>&lt;figure&gt;</caption>
 			<thead>
 				<tr>
-					<th>Propri?t?</th>
-					<th>D?tails</th>
+					<th>Propriété</th>
+					<th>Détails</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>Mod?les de contenu autoris?s</td>
-					<td>Un ?l?ment &lt;figcaption&gt; optionnel, suivi par du contenu de flux.</td>
+					<td>Modèles de contenu autorisés</td>
+					<td>Un élément &lt;figcaption&gt; optionnel, suivi par du contenu de flux.</td>
 				</tr>
 				<tr>
-					<td>Parents autoris?s</td>
-					<td>Tout ?l?ment pouvant contenir des ?l?ments du flux</td>
+					<td>Parents autorisés</td>
+					<td>Tout élément pouvant contenir des éléments du flux</td>
 				</tr>
 				<tr>
 					<td>Omission de balise</td>
 					<td>Les balises ouvrantes et fermantes sont obligatoires</td>
 				</tr>
 				<tr>
-					<td>Style par d?faut</td>
+					<td>Style par défaut</td>
 					<td>figcaption { display:bloc; margin:1em 40px; }</td>
 				</tr>
 			</tbody>
@@ -128,17 +128,17 @@
 			<caption>&lt;figcaption&gt;</caption>
 			<thead>
 				<tr>
-					<th>Propi?t?</th>
-					<th>D?tails</th>
+					<th>Propriété</th>
+					<th>Détails</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>Mod?les de contenu autoris?s</td>
+					<td>Modèles de contenu autorisés</td>
 					<td>Contenu de flux</td>
 				</tr>
 				<tr>
-					<td>Parents autoris?s</td>
+					<td>Parents autorisés</td>
 					<td>&lt;figure&gt;</td>
 				</tr>
 				<tr>
@@ -146,7 +146,7 @@
 					<td>Les balises ouvrante et fermantes sont obligatoires</td>
 				</tr>
 				<tr>
-					<td>Style par d?faut</td>
+					<td>Style par défaut</td>
 					<td>figcaption {display:block;}</td>
 				</tr>
 			</tbody>
