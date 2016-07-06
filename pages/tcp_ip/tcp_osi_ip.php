@@ -6,6 +6,7 @@
 			<li><a href="#OSI">Modele OSI et TCP/IP (Les couches)</a></li>
 			<li><a href="#couche_1">La couche 1 brancher les machine</a></li>
 			<li><a href="#couche_2">La couche  2 faire communiquer les machines entre elle</a></li>
+			<li><a href="#couche_3">La couche 3 La reseau communiquer entre réseau</a></li>
 		</ul>
 	</article>
 </section>
@@ -228,10 +229,10 @@
 				<ul>
 					<li>Le matériel de connexion : <br />
 					Les matériels de connexion sont ceux qui servent à connecter plusieurs machines entre elles, comme les hubs ou les switchs. Voici deux images qui les représentes.<br />
-					<figure><img src="pages/tcp_ip/hub.png" alt="un hub" /><figcaption>un Hub</figcaption></figure><br />
+					<figure><img src="pages/tcp_ip/hub.png" alt="un hub" /><figcaption>un Switch</figcaption></figure><br />
 					Un hub (concentrateur en français) envoye toutes les informations qu'il reçoit à toutes les machines connecté au hub<br />
 					C'est pas le top pour la confidentialité.<br />
-					<figure><img src="pages/tcp_ip/switch.png" alt="un switch" /><figcaption>un Switch</figcaption></figure><br />
+					<figure><img src="pages/tcp_ip/switch.png" alt="un switch" /><figcaption>un hub</figcaption></figure><br />
 					</li>
 					<li>Le matériel connecté.</li>
 					Il représente tous le reste : ordinteur, imprimante, routeur
@@ -328,6 +329,243 @@
 		</code></pre></p>
 		<p>Les informations sont envoyées sous la forme de 0v ou 5v, qui correspond à 0 et 1.</p>
 		<p><u>Pour calculer en binaire : </u></p>
-		<p>Tout nombre décimal peut s'écrire en binaire.</p>
+		<p>Tout nombre décimal peut s'écrire en binaire. (somme de puissance de 2.)</p>
+		<p>Prenons le nombre 45 par exemple :</p>
+		<p>Il peut s'écrire sous la forme 45=32+8+4+1 =(1x2^5)+(0x2^4)+(1x2^3)+(1x2^2)+(0x2^1)+(1x2^0)</p>
+		<p>Se qui donne en binaire : 101101</p>
+		<p>Pour mieu comprendre comment arriver à ce résultat : </p>
+		<p>Il faut prendre un tableau de puissance de 2</p>
+		<table>
+			<tr><td>2^7</td><td>2^6</td><td>2^5</td><td>2^4</td><td>2^3</td><td>2^2</td><td>2^1</td><td>2^0</td></tr>
+			<tr><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+			<tr><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+		</table>
+		<p>Pour notre nmbre 45 cela donne : </p>
+		<table>
+			<tr><td></td><td>2^7</td><td>2^6</td><td>2^5</td><td>2^4</td><td>2^3</td><td>2^2</td><td>2^1</td><td>2^0</td></tr>
+			<tr><td></td><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+			<tr><td>45</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+		</table>
+		<p>Soit le nombre binaire 101101</p>
+		<p>Il faut commencer par regarder la plus grande puissance de 2 qui peut être contenue dans notre nombre, et recommencer avec la puissance de 2 suivante. Si la somme du résultat de la puissance de 2  peut être contenu dans notre nombre alors c'est égal à 1 sinon 0.</p>
+		<p>Un autre exemple pour la valeur 109.</p>
+		<table>
+			<tr><td></td><td>2^7</td><td>2^6</td><td>2^5</td><td>2^4</td><td>2^3</td><td>2^2</td><td>2^1</td><td>2^0</td></tr>
+			<tr><td></td><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+			<tr><td>109</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+		</table>
+		<p>Soit pour le nombre 109 sa donne en binaire : 1101101</p>
+		<p>Pour gagner du temps on aurait pu après avoir tourvé comme reste 45 ajouté le nombre binaire à la suite de ceux trouvé avant d'avoir le reste 45 pour le nombre 109</p>
+		<p>Maintenant que le calcul d'un nombre binaire est bien compris on va pouvoir s'attaquer au calcul d'une adresse MAC. C'est le même principe mais en hexadecimal (log16) qui correspopndent aux nombre 1 2 3 4 5 6 7 8 9 A B C D E F</p>
+		<p>A = 10; B = 11; C = 12; D = 13; E = 14; F = 15</p>
+		<p>Tous nombre décimal peut s'écrire comme la somme de puissance de 16</p>
+		<p>Voici un exemple d'une adresse MAC : 00:23:5e:bf:45:6a</p>
+		<p>L'adresse MAC est codée sur 6 octets.</p>
+		<p>Un octet est une unité informatique indiquant une quantité de données.</p>
+		<p>Un octet représente 8 bits. Un bit est une valeur binaire.</p>
+		<p>La valeur d'un bit peut être de 0 ou 1. Se qui pour 1 octet une possibilité de 2^8 = 256 valeur possible. un nombre binaire qui aura comme taille maximun 00000000 8 bits un octet et donc une valeur entre 0 et 255 (256 valeur). Puisque l'on commence à 0.</p>
+		<p>Une adresse MAC et coder sur 6 octets soit 6x8 = 48 bits et peut donc prendre 2^48 =  281 474 976 710 656 valeurs possibles(adresses MAC possibles)0.</p>
+		<p>Une astuce pour calculer une grande puissance de 2. Comme dans notre exemple avec 2^48. <em>2^48=2^10x2^10x2^10x2^10x2^8 soit 2^48 = 1000 x 1000 x 1000 x 1000 x 256</em>
+		<p>Chaque adresse MAC va être unique au monde.</p>
+		<p>Chaque carte réseau a donc sa propre adresse MAC. Unique au minde.</p>
+		<p>Pour que cela soit possible le constructeur qui fabrique des cartes réseau va ahceter des morceauw d'adresse MAC.</p>
+		<p>Les trois premier octets de l'adresse représentent le constructeur.</p>
+		<p>Ainsi le constructeur change les 3 octets de fin en fesant attention de ne jamais donner les mêmes.</p>
+		<p><strong>Il existe Une adresse MAC spéciale</strong> Une adresse appelé broadcast dans laquel tous les bits ont la valeur 1. Ce qui donne comme adresse ff:ff:ff:ff:ff:ff . Elle est universelle et identifie n'importe quel carte réseau. Elle permet ainsi d'envoyer un message à toutes les carte réseaux des machines présentes sur mon réseau, en une seul fois.</p>
+		<p><em>Toute machine qui reçoit une trame qui a, comme adresse MAC de destination, l'adresse broadcast, considère que la trame lui est destiné.</em></p>
+		<h3><u>Un protocole, Ethernet : </u></h3>
+		<figure>
+			<figcaption>Le langage de couche 2, c'est quoi ?</figcaption>	
+			<p>Ethernet et le protocole le plus utilisé de la couche 2 n'est pas le seul.</p>
+			<p>Le protocole utilisé va définir dans quel ordre on envoye les informations et quel information. </p>
+			<p>Dans un message nous allons envoyé au minimum : </p>
+			<ul>
+				<li>l'adress de l'émetteur</li>
+				<li>l'adresse du destinataire</li>
+				<li>le message proprement dit</li>
+			</ul>
+			<p>Ainsi, nous pouvons très bien dire que les 48 premiers caractères que nous allons recevoir représentent l'adresse MAC de l'émetteur, les 48 suivant l'adresse du recepteur, puis enfin le message.</p>
+			<p><strong>Le protocole va donc définir le format des messages envoyés sur le réseau.</strong></p>
+			<p>Plus exactement, nous allons appeler ce message une trame. Une trame est le message envoyé sur le réseau, en couche 2.</p>
+			<h3>Format d'une trame Ethernet</h3>
+			<p>La trame complète donne : </p>
+			<table>
+				<tr><td>Adresse MAC DST (destinataire)</td><td>Adresse MAC SRC (source)</td><td>Protocole de couche 3 utilisé</td><td>données à envoyées</td><td>CRC</td></tr>
+			</table>
+			<p>La couche 3 va indiquer le protocole utilisé.</p>
+			<p>Le CRC est une valeur arithmétique calculer en fonction du contenu du message. La machine A calcul le CRC le renseigne en fin de trame  la machine B reçoit le message calcul de son coté le CRC en fonction du contenu du message quelle à reçu puis le compare au crc reçu si égalité par d'erreur sinon c'est qu'il sait produit une erreur.</p>
+			<h3>Quel taille pour une trame ethernet.</h3>
+			<p>Il y a des élements qui ne varient jamais d'une trame à l'autre. L'enssemble de ces élements est appelé en-tête ou, dans le cas de la couche 2, en-tête Ethernet. Il sont indiqués ici en<strong> gras.</strong></p>
+			<p><strong>Adresse MAC DST Adresse MAC SRC Protocole de la couche 3</strong>Donnée envoyé <strong>CRC</strong></p>
+			<p>Cet en-tête ne variant pas, nous pouvons définir sa taille : </p>
+			<ul>
+				<li>Les adresses MAC font chacune 6 octets</li>
+				<li>Le protocole de couche 3 est codé sur 2 octets</li>
+				<li>le CRC est codé sru 4 octets</li>		
+			</ul>
+			<p>Ce qui nous donne un total de 18 octets pour l'en-tête Ethernet.</p>
+			<p><strong>Il y a une taille minimum de 64 octets, pour une trame</strong></p>
+			<p><strong>Il y a aussi une taille maximum qui est de 1518 octets. Pour une trame Ethernet.</strong></p>
+		</figure>
+		<figure>
+			<figcaption><u>Le Matériel de couche 2, Le commutateur (Switch) !</u></figcaption>
+			<p>Le commutateur est un boîtier sur lequel sont présentes plusieurs prises RJ45 femelle (ou que deux dans le cas d'un pont (bridge)) permettant de brancher dessus des machines à l'aide de câbles à paires torsadées. </p>
+			<p>Voici un switch (commutateur) en image : </p>
+			<img src="pages/tcp_ip/hub.png" alt="photo d'un Switch" />
+			<p>Voici un réseau relié grâce à des commutateurs : </p>
+			<img src="pages/tcp_ip/sheme_reseau_commutateur.jpg" alt="shema de reseau avec commutateur" />
+			<p>L'aiguillage des trames : </p>
+			<p>Pour envoyer la trame vers la bonne machine, le switch se sert de l'adresse MAC de destination contenue dans l'en-tête de la trame.</p>
+			<p>Il se réfère à sa table CAM qui fait l'association entre une adresse MAC et un port RJ45 .</p>
+			<p>Prenons un exemple avec le shéma suivant : </p>
+			<img src="pages/tcp_ip/shema_switch_CAM.png" alt="shema ilustrant table CAM"/>
+			<table>
+				<caption>La table CAM de notre switch sera la suivante :</caption>
+				<thead>
+					<tr><th>Port</th><th>@MAC</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>1</td><td>@MAC23</td></tr>
+					<tr><td>2</td><td>@MAC24</td></tr>
+					<tr><td>3</td><td>@MAC25</td></tr>
+				</tbody>
+			</table>
+			<p>Quand  la machine 23 vaudra envoyer une trame à la machine 25, le switch lira l'adresse de destination et saura alors vers quel port renvoyer la trame.</p>
+		<table><tr><td>Adresse MAC 25 (destination)</td><td>Adresse MAC 23 (source)</td><td>Protocole de couche 3</td><td>Données envoyées</td><td>CRC</td></tr></table>	
+		<p>Le switch va donc envoyer la trame sur le port 3, et elle arrivera bien à la machine 25 qui est branché sur ce port et à elle seule !</p>
+		<p>La table CAM du switch va être fabriquée de façon dynamique. Cela veut dire que le switch va apprendre, au fur et à mesure qu'il voit passer des trames, quelle machine est branchée à quel port</p>
+		<img src="pages/tcp_ip/shema_switch_CAM.png" alt="shema illustrant table CAM" />
+		<p>Imaginons maintenant que la table CAM du switch est vide et que 'on vient de brancher les machines</p>
+		<table><caption>Table CAM vide</caption><tr><td></td></tr></table>
+		<p>Maintenant la machine 23 envoie une trame à la machine 25</p>
+		<ul>
+			<li>La trame arrive au switch.</li>
+			<li>Il lit l'adresse MAC source et voit l'adresse MAC de la machine 23.</li>
+			<li>Vu que la trame vient du port 1, il met en relation le port 1 et l'adresse MAC  de la machine 23 dans sa table CAM.</li>
+			<li>Il met à jour sa table CAM.</li>
+		</ul>
+		<table><caption>Table CAM Mise à jour :</caption><tr><td>1</td><td>@MAC 23</td></tr></table>
+			<p>Par contre comme il ne connait pas l'adresse de destination, il va envoyer la trame sur tous les ports actifs</p>	
+			<p>La machine 25 va donc recevoir la trame et va pouvoir répondre.</p>
+			<p>Le switch va recevoir la réponse de la machine 25 pour  la machine 23. Il va lire l'adresse source et mettre à jour sa table CAM. </p>
+		<table><caption>Table CAM Mise à jour :</caption><tr><td>1</td><td>@MAC 23</td><td>3</td><td>@MAC 25</td></tr></table>
+			<p>Et ainsi de suite à chaque fois qu'il voit passer une trame : </p>
+			<ul><li>Le Switch met à jour sa table CAM quand il voit passer une trame</li>
+			<li>Le switch envoie une trame à tout le monde s'il n'a pas l'adresse MAC de destination dans sa table CAM.</li>
+			</ul>
+			<p>Les données dans la table CAM reste le temps de la TTL ( qui signifie Time To Live en anglais, Durée de Vie.)</p>
+			<p>La table CAM se présente donc sous la forme : </p>
+			<table>
+				<tr><td>Port</td><td>@MAC</td><td>TTL</td></tr>
+				<tr><td>1</td><td>@MAC23</td><td>90s</td></tr>
+				<tr><td>3</td><td>@MAC25</td><td>120s</td></tr>
+			</table>
+			<p>Si une machine envoie une trame la TTL et remise à zéro enfin à son maximum.</p>
+			<p>Le switch ne possède pas d'adresse MAC.</p>
+			<p>Sauf dans le cas d'un switch administrable ou l'on peut se connecté dessus pour le configurer. </p>
+			<p>Voici un exemple réel de table CAM</p>
+			<img src="pages/tcp_ip/table_CAM.png" alt="table CAM" />
+			<p>On remarque que aux moins 6 machines sont connécté sur le même port. Cela signifie tout simplement que c'est un autre switch qui et brancher sur ce port</p>
+		<h3>Truc et astuce de vilain : </h3>
+		<p>
+		Connaissant maintenant le fonctionnement d'un switch, comment pensez-vous qu'on puisse faire pour gêner son fonctionnement s'il nous en prend l'envie ? Il y a plusieurs façons de le faire.
+
+		Méthode 1, saturation par envoi massif intelligent.
+		Si l'on envoie des tonnes de trames vers des adresses MAC inexistantes, que se passe-t-il ?
+
+		Le switch ne sachant pas vers quel port les envoyer, il va les envoyer vers tous les ports actifs... et va donc vite saturer !
+
+		Méthode 2, saturation de la table CAM.
+		Si l'on envoie des tonnes de trames en utilisant à chaque fois une adresse MAC de source différente, que se passe-t-il ?
+
+		La table CAM du switch va se remplir progressivement. Plus elle sera remplie, plus sa lecture par le switch sera longue, et plus cela induira des temps de latence importants... jusqu'à provoquer l'écroulement du switch. Quand il sera saturé et n'aura plus le temps de lire sa table CAM, il enverra directement les trames sur tous les ports. Ceci permettrait à un pirate de voir tout le trafic du switch...
+		Cependant, nous verrons par la suite qu'il existe des méthodes bien plus puissantes pour voir le trafic circulant sur un switch.</p>
+		<p>Avec un switch il n'y a pas besoin de CSMA/CD (écouter le réseau) pour envoyer une trame car si une machine reçoit deux trames en même temps alors le switch garde une trame en mémoire puis envoie la premier suivie de ma deuxieme. On dit que la carte réseau fonctionne en <strong>FULL DUPLEX</strong></p>
+		<p>A l'inverse quand on fait du CSMA/CD sur un hub ou câble coaxial, la carte réseau fonctionne en <strong>half duplex</strong></p>
+		<p><strong>Il faut faire très attention que la carte réseau de chaque machine doit être en half duplex sur un réseaux en bus ou/et branché sur un hub sinon la carte réseau en all duplex empechera les autres machine de parler</strong></p>
+		<p>En générale les carte réseau sont intelligente et se règle automatiquement en half duplex ou full duplex</p>
+		<p>Si on branche un hub sur switch que se passe t'il ?</p>
+		<p>Et bien le port du switch sur lequel et branché le hub passera en half duplex et les autres ports resterons en all duplex comme montré sur la figure suivante : </p>
+		<img src="pages/tcp_ip/regle_switch_connect_hub.png" alt="table de regle du switch connecte a un hub"/>
+		<p>On y voit que le port 21 du switch fonctionne en 100Mbps et le FC indique full duplex</p>
+		<p>Il peut arriver que la négociation de duplex ne fonctionne pas et qu'un port soit en half duplex sur un port qui devrait être en all duplex il faudra alors corrigé se problème manuelement</p>
+		<h3><u>Les gain que cela à apporté : </u></h3>
+		<ul>
+			<li>Les conversations sont isolées, ce qui apporte un gain en sécurité</li>
+			<li>On peut recevoir en même temps que l'on envoie des données, ce qui double théoriquement le débit.</li>
+			<li>Chaque machine peut parler quand elle le souahite et n'a pas à attendre que le réseau soit libre, on gagne encore en débit.</li>
+		</ul>
+		</figure>
+		<figure>
+			<figcaption><u>Le VLANs fonction avancée du commutateur</u></figcaption>
+			<p>LAN signifie local area Network et VLANs signifie Virtual local area network</p>
+			<p>Cela permet de créer plusieurs réseaux local sur un switch. Autrement dit d'isoler un groupe de machine d'un autre</p>
+			<p>Voici un shema representant un VLANs : </p>
+			<img src="pages/tcp_ip/switch_VLANs.png" alt="shema de VLANs" />
+			<p>Nous avons un switch de 10 ports sur lequel sont branchées six machines.</p>
+			<p>On veut créer deux VLANs de trois machines Le premier groupe ne pourra pas parler avec le deuxieme.</p>
+			<p>On va donc couper notre switch en deux comme si il y en avait deux physiquement. qui ne sont pas relié entre eux. </p>
+			<p>Voici le résultat sur la figure suivante : </p>
+			<img src="pages/tcp_ip/VLANs_reseau.png" alt="VLANs shema" />
+			<p>Nous voyons en vert et en rouge les deux VLANs diffèrent. les machines en vert ne pourrons pas communiquer avec les machines rouges</p>
+			<p>Cela revient au même que si le réseau se trouvait dans la configuration suivante : </p>
+			<img src="pages/tcp_ip/deux_switch.png" alt="VLANs "/>
+			<p><u>Quel est l'intérêt des VLANs ?</u></p>
+			<p>Dans l'exemple que nous avons choisi, l'intérêt n'est pas flagrant, mais imaginons que nous ayons à gérer une école, avec une administration, 100 enseignants et 1000 élèves. Nous avons alors plusieurs switch répartis dans l'école. Des gros switchs de 256 ports ! ( on appelle cela souvent des châsssis.)</p>
+			<p>Il est intérassant de pouvoir segmenter ces switchs pour séparer les trois populations, pour que les élèves n'aient pas accès au réseau administratif ou à celui des enseignants, et que les enseignants n'aient pas accès au réseau administratif (pour changer leur fiche de paye par exemple). Plutôt que d'acheter 25 petits switch de 48 ports, on en achète 5 gros de 256 ports.</p>
+			<p>En plus d'apporter de la sécurité, cela apporte de la facilité de configuration. Si je veux qu'un port passe d'un VLAN à un autre, il me suffit de le configurer sur le switch.</p>
+			<p>Je peux faire tous sa sens bouger de mon bureau d'administrateur réseau à travers une interface web d'administration du switch, comme vous pouvez le voir sur la figure suivante.</p>
+			<img style="width:750px" src="pages/tcp_ip/admin_switch.png" alt="admin interface web switch" />
+			<p>On voit ici que le port 1 est dans le VLAN 1 alors que le port 5 est dans le VLAN 2. </p>
+			<p>Il n'est pas impossible mais presque de se connecté à un autre VLAN . Cela s'appelle du VLAN hopping. Mais cette faille à été corigé. </p>
+		</figure>
+	</article>
+</section>
+<section id="couche_3">
+	<h1><u>La couche 3 protocole ip interconnexion entre réseau</u></h1>
+	<article>
+		<p>La couche 3 va donc me permettre de joindre n'importe quel réseau sur internet, en passant à travers d'autres réseaux. Ma connexion à une machine sur un autre réseau se fera à travers des réseaux, de proche en proche.</p>
+		<p><strong><u>Nous pouvons illustrer ceci en utilisant la commande traceroute sous LINUX (ou tracert sous windows).</u></strong></p>
+		<p><em>La commande traceroute permet d'indiquer par qu'elles machines nous passons pour aller d'un point à un autre sur internet.</em></p>
+		<figure>
+			<figcaption>Résultat possible avec la commande traceroute</figcaption>
+			<pre><code># traceroute www.siteduzero.com
+traceroute to www.siteduzero.com (92.243.25.239), 30 hops max, 40 byte packets
+ 1  labo.itinet.fr (10.8.97.1)  1.090 ms  1.502 ms  2.058 ms
+ 2  neufbox (192.168.1.1)  9.893 ms  10.259 ms  10.696 ms
+ 3  ivr94-1.dslam.club-internet.fr (195.36.217.50)  43.065 ms  43.966 ms  46.406 ms
+ 4  V87.MSY1.club-internet.fr (195.36.217.126)  42.037 ms  43.442 ms  45.091 ms
+ 5  TenGEC6-10G.core02-t2.club-internet.fr (62.34.0.109)  47.919 ms  48.333 ms  49.712 ms
+ 6  gandi.panap.fr (62.35.254.6)  52.160 ms  51.409 ms  52.336 ms
+ 7  po88-jd4.core4-d.paris.gandi.net (217.70.176.226)  54.591 ms  36.772 ms  36.333 ms
+ 8  vl9.dist1-d.paris.gandi.net (217.70.176.113)  39.009 ms  40.223 ms  40.575 ms
+ 9  lisa.simple-it.fr (92.243.25.239)  41.847 ms  44.139 ms  44.490 ms</code></pre>
+		<p>Chacune des lignes correspond à une machine que nous avons rencontrée sur internet.</p>
+		<p>A la ligne 1 : labo.itinet.fr (10.8.97.1) 1.090 ms 1.502 ms 2.058 ms nous avons rencontré la machine labo.itinet.fr en à peu près 2 millisecondes (rapide non !)</p>
+		<p>Puis on voit à la ligne 2 que nous passons par une neufbox, et aux lignes 3, 4 et 5 par club-internet (Ce qui est normal puisqu'il s'agit de mon hebergeur).</p>
+		<p>Nous voyons ensuite que nous passons par un certain gandi.net. C'est un registraire et hébergeur connu. Et d'après la ligne 8, on dirait bien que le site du Zéro est hébergé chez gandi.net, car c'est la dernière  étape 	jsute avant d'arriver au site du zéro qui est hébergé sur la machine lisa.simple-it.fr.</p>
+		<p>Nous passons par beaucoup de machines avant d'atteindre le sit du zéro. Chacune de ces machines étant sur un réseau différent, nous passons par de nombreux réseau. Plus exactement, nous sommes passés par 9 réseaux pour rejoindre le site du zéro.</p>
+		</figure>
+		<h3><u>Pour communiquer entre réseau une adresse l'adresse IP :</u></h3>
+		<p>Une adresse IP est codée sur 32 bits (soit 4 octets, car vous vous rappelez qu'un octet vaut 8 bits).</p>
+		<blockquote cite="http://www.openclassroom.com">afin de simplifier la lecture d'adresse IP pour les humains, nous avons choisi d'écrire les adresses  avec notation en decimal pointée. Cette dernière sépare les 4 octets sous forme de 4 chiffres déciamaux allant de 0 à 255. Cela donne par exemple : 192.168.0.1</blockquote>
+		<p><strong>Mais attention au niveau des ordinateurs et des diffèrents matériels réseau manipulant les adresse IP, ces dernières sont manipulées en binaire(base 2).</strong></p>
+		<p>Pour plus d'information <br />
+		<a href="https://openclassrooms.com/courses/du-decimal-au-binaire">Tuto du decimal au binaire</a><br />
+		<a href="https://openclassrooms.com/courses/les-calculs-en-binaire">Les calculs en binaire</a></p>
+		<p>Une adresse IP représente l'adresse de la machine qui seras transmise à  la couche deux et l'adresse du réseau</p>
+		<p>Afin de savoir qu'elle partie représente quoi il regarder le masque sous réseau.<strong>Le masque sous réseau et l'adresse IP sont indissociable</strong></p>
+		<h4><strong>Définition : Les bits à 1 dans le masque représentent la partie réseau de l'adresse IP et les bits à 0 représentent la partie machine de l'adresse.</strong></h4>
+		<p>Prenons un exemple : on associe l'adresse IP 192.168.0.1 au masque 255.255.0.0</p>
+		<figure>
+			<figcaption>Pour trouver quel partie represente le reseau et quel partie represente la machine on développe en binaire</figcaption>
+			<blockquote>
+				255.255.0.0-&gt;11111111.11111111.00000000.00000000<br />
+				192.168.0.1-&gt;11000000.10101000.00000000.00000001
+			</blockquote>
+			<p>Il nous dit aussi que les bits à 0 représentent la partie machine de l'adresse. Donc 192.168, et la partie machine est 0.1. </p>
+			<p>Cette exemple est très simple car la coupure se situe entre 2 octets. Or il arrive très souvent que la coupure se fasse en plein milieu d'un octet.</p>
+		<figure>
+
 	</article>
 </section>
