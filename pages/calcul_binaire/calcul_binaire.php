@@ -10,7 +10,7 @@
 			<article>
 				<ul>
 					<li><a href="#notion_chiffre">La notion de chiffre</a></li>
-					<li></li>
+					<li><a href="#decimal_binaire">calcul binaire decimal</a></li>
 				</ul>
 			</article>
 		</section>
@@ -64,13 +64,13 @@ int nombre(char ch)
 				<h3><u>Approche mathématique : </u></h3>
 				<p>Pour calculer l'entier représenter par une telle écriture, plaçons nous en base b : nous avons b chiffres représentant chacun un nombre entre 0 et b-1. La notation $n = (c_p...c_0)_b$ où les $c_i$ sont des chiffres est en fait un raccourci signifiant $n = n_pb^p + ... + n_2b^2 + n_1b + n_0 = \sum^p_{i=0} n_ib^i$ où $n_i$ est le nombre représenté par le chiffre $c_i$</p>
 				<p>Pour mieux comprendre, revenons au nombre quarante-deux. Pour utiliser l'écriture binaire, nous allons avoir besoin des puissances de deux : </p>
-				<blockquote>$\begin{matrix} 2^0=1 & 2^1=2 & 2^2=4 & 2^3=8 & 2^4=16 & 2^5=32 & 2^6=64 & 2^7=128 & 2^8=256 & \dots \end{matrix}$</blockquote>
+				<blockquote class="citation">$\begin{matrix} 2^0=1 & 2^1=2 & 2^2=4 & 2^3=8 & 2^4=16 & 2^5=32 & 2^6=64 & 2^7=128 & 2^8=256 & \dots \end{matrix}$</blockquote>
 				<p>Vérifions que $101010_2=52_8=42_10=2A_{16}$ : </p>
 				<ul>
 					<li>$42_{10}=4\times10+2=42$ Donc 42 est bien l'écriture (42 en décimale) de quarante-deux</li>
 					<li>$52_8=5\times8+2=42$ 52 en octal est bien égale à $42_{10}$ (42 en décimale)</li>
 					<li>$2A_{16}=2\times16+10=42$ 2A héxadécimal est bien égale à $42_{10}$ (42 en décimale)</li>
-					<li>$101010_2=1\times2^5+0\times2^4+1\times2^3+0\times2^2+1\times2+0=32+8+2=42$ en binaire 101010 est bien égale à $42_{10}$ (42 en décimale)</p>
+					<li>$101010_2=1\times2^5+0\times2^4+1\times2^3+0\times2^2+1\times2+0=32+8+2=42$ en binaire 101010 est bien égale à $42_{10}$ (42 en décimale)</li>
 				</ul>
 				<p>Voici une application algorithmique : </p>
 				<pre><code>
@@ -130,7 +130,7 @@ int nombre(char ch)
 				<p>Par exemple : $101010_2 = ((((1 \times 2 + 0) \times 2 + 1) \times 2 + 0) \times 2 + 1) \times 2 + 0 = 42$ avec un simple calcul mental</p>
 				<p>En algorithme : </p>
 				<pre><code>
-#include &l;stdio.h&gt;
+#include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
 
 //Permet de convertir un nombre des base b &lt;= 36
@@ -174,7 +174,7 @@ int nombre(char ch)
 			</code></pre>
 			<h3><u>Représentation en base b</u></h3>
 			<p>Le résultat mathématique fondmental qui permet de justifier notre écriture est le suivant : </p>
-			<blockquote>
+			<blockquote class="citation">
 				<p>Fixons un nombre entier $b\ge2$ qu'on appellera base (b=2,8,10 ou 16 en pratique).</p>
 				<p>Alors tout nombre entier n&gt;0 peut se décomposer dans cette base</p>
 				<p>Il existe une unique famille de nombres entier $n_0,\dots,n_p$ tels que $n=n_pb^p+\dots+n_2b^2+n_1b+n_0=\sum^p_{i=0}n_ib^i$ avec $0\le n_i\le b-1$ pour tout i et $n_p \ne0$.</p>
@@ -197,7 +197,7 @@ int nombre(char ch)
 				<p>Tout le problème est maintenant de savoir comment caculer les $n_i$ à partir du nombre n pour en déduire les $c_i$. Comme il y a uncité de la décomposition, il suffit d'en trouver une qui convient. Nous verrons deux méthodes pratiques pour y arriver.</p>
 				<h3>Nombre de nombres à q chiffres</h3>
 				<p>Un autre résultat intéressant est le suivant : </p>
-				<blockquote>
+				<blockquote class="citation">
 					<p>On peut écrire $b^q$ nombre à q chiffres en base b, les chiffres de poids fort étant éventuellement nuls. Ce sont les nombres de 0 à b^q-1.</p>
 				</blockquote>
 				<p>Autrement dit en base 2 : </p>
@@ -210,7 +210,7 @@ int nombre(char ch)
 				<h4>Approche mathématique</h4>
 				<p>Pour cette méthode, nous allons utiliser la division euclidienne.</p>
 				<cite>Division euclidienne de a par b</cite>
-				<blockquote>
+				<blockquote class="citation">
 					<p>Soit $a\ge0$ et $b\gt 0$. Alors il existe  un unique quotient $q\ge0$ et un unique reste $r\ge0$ avec $r\lt b$ tel que $a=b_q+r$.</p>
 				</blockquote>
 				<p>Trois choses importantes cette fois : l'existence, l'unicité et le fait que r soit strictement inférieur à b.</p>
@@ -295,7 +295,7 @@ int nombre(char ch)
 					<figcaption>Pour bien comprendre voici le schema de calcul : </figcaption>
 					<img src="pages/calcul_binaire/division_calcule_binaire.png" alt="schema calcule division binaire"/>
 				</figure>
-				<blockquote>
+				<blockquote class="citation">
 					<p>Cette méthode a l'avantage d'être simple, puisque la division par deux est facile à réaliser, mais elle necessite de nombreux calculs car les plus petits nombres s'écrivent déjà avec beaucoup de chiffres en binaire. C'est pourquoi il peut être plus avantageux de commencer par écrire le nombre en héxadécimal ou en octal puis d'en déduire l'écriture binaire, ce qui se fait très simplement comme nous le verrons plus loin.</p>
 				</blockquote>
 				<h5>Application algorithmique</h5>
@@ -425,7 +425,7 @@ int nombre(char ch)
 				<p>On peut maintenant regrouper les chiffres binaires par groupes de 4 bits consécutifs. Chaque groupe correspond à un nombre entre 0 et 15, donc à un chiffre hexadecimal. SI on remplace chacun de ces groupes par l'écriture hexadecimal du nombre correspondant, on obtient l'écriture en base 16 du nombre binaire.</p>
 				<p>Revenons par exemple au nombre quarante-deux, qui s'écrit $101010-2$ en binaire. En complétant par des zéros à gauche, on obtient $00101010_2$. On voit apparaître deux groupes de 4 bits consécutifs : $0010_2=2_16$ et $1010_2=A_16$. En remplaçant chaque groupe par le chiffre hexadecimal correspondant, on obtient $2A_{16}$ et $1010_2=A_{16}$ qui est l'écriture hexadecimal de quarante-deux.</p>
 				<p>Réciproquement, considérons un nombre écrit en héxadecimal $n=(c_p\dots c_0)_16$. On obtient son écriture en base 2 en remplaçant chaque chiffre hexadecimal par le nombre écrit sur quatre bits correspondant.</p>
-				<blockquote>
+				<blockquote class="citation">
 					<p>Si le nombre correspondant à un chiffre héxadécimal tient sur un, deux ou trois bits, il faut quand même le remplacer par une écriture sur quatre bits en rajoutant des zéros à gauche.</p>
 				</blockquote>
 				<p>Ainsi en remplaçant $2_{16} par $0010_2$ et $A_{16}$ par $1010_2$ dans $2A_{16}$, on obtient $00101010_2$ et on peut retirer les zéros inutiles à gauche pour obtenir l'écriture binaire de quarante-deux.</p>
@@ -446,3 +446,4 @@ int nombre(char ch)
 				<p>1111<br />+1<br />====<br />0000</p>
 			</article>
 		</section>
+		<?php include('calcul_binaire_suite.php');?>

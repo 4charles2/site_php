@@ -42,7 +42,7 @@ pre code{
 	color: white;
 }
 .citation{
-	border-right: 4px solid #c7c8c8
+	border-left: 4px solid #c7c8c8
 }
 #image{
 	height: 400px;
@@ -52,10 +52,16 @@ pre code{
 	border: 2px solid black;
 	border-radius: 20px;
 }
+legend{
+	text-align: center;
+}
 img{
     border-radius: 20px;
 	margin: 20px;
 	z-index: 1;
+}
+.operation{
+	border-radius: 0px;
 }
 body{
     background-color: rgba(55, 50, 55, 0.5);
@@ -120,6 +126,9 @@ li{
 }
 ol p{
     color: rgb(230, 230, 255);
+}
+table{
+	text-align: center;
 }
 table, td, th{
     border: 1px solid black;
