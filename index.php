@@ -34,6 +34,7 @@ echo "
                 <li><a href=\"index.php?page=pages/interface_GUI/gui_sdl.php\">interface GUI SDL</a></li>
 				<li><a href=\"index.php?page=pages/tcp_ip/tcp_osi_ip.php\">tcp_ip</a></li>
 				<li><a href=\"index.php?page=pages/calcul_binaire/calcul_binaire.php\">Calcul binaire</a></li>
+				<li><a href=\"index.php?page=pages/ssh/ssh.php\">Manipulation SSH</a></li>
             </ul>
         </nav>
     </header>
