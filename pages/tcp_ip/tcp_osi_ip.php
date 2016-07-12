@@ -525,6 +525,14 @@
 	<h1><u>La couche 3 protocole ip interconnexion entre réseau</u></h1>
 	<article>
 		<p>La couche 3 va donc me permettre de joindre n'importe quel réseau sur internet, en passant à travers d'autres réseaux. Ma connexion à une machine sur un autre réseau se fera à travers des réseaux, de proche en proche.</p>
+		<p>Une adresse ip est codé sur 32 bits. Pour Calculer le nombre d'adresse possible dans une plage : $2^{Nbde0dans le masque}$ </p>
+		<p>La toute première adresse de la plage est réservé pour le réseau lui-même et la toute dernière adresse qui correspond à (255.255.255.255) et réservé pour le broadcast (adresse pour toutes les machines sur le réseau)</p>
+		<blockquote class="important_definition">
+			<p>Pour calculer un masque de réseau On la premiere puissance de 2 supérieur.</p>
+			<p>Si il me faut 550 adresse. La premiere puissance de 2 supérieur et $2^10$ qui fait 1024 adresse réservé car $2^9$ fait 512 adresse ce qui sera trop petit. </p>
+			<p>Ensuite pour trouver la première et la dernière adresse de la plage on peut parmis tant d'autre utilisé la formule : </p>
+			<p>On prend le premier octet du masque réseau différent de 255 et on pose 256-Le premier octet diffèrent . Le multiple de ce résultat supérieur à l'octet correspond sur l'adresse ip - 1 sera la derniere adresse (brodcast de la plage.</p>
+		</blockquote>
 		<p><strong><u>Nous pouvons illustrer ceci en utilisant la commande traceroute sous LINUX (ou tracert sous windows).</u></strong></p>
 		<p><em>La commande traceroute permet d'indiquer par qu'elles machines nous passons pour aller d'un point à un autre sur internet.</em></p>
 		<figure>

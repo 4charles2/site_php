@@ -44,6 +44,14 @@ pre code{
 .citation{
 	border-left: 4px solid #c7c8c8
 }
+.important_definition{
+	-moz-box-shadow: 10px 10px 5px 0px #656565;
+	-webkit-box-shadow: 10px 10px 5px 0px #656565;
+	-o-box-shadow: 10px 10px 5px 0px #656565;
+	box-shadow: 10px 10px 5px 0px #656565;V
+	background-color: #80ff80;
+	border: 1px dashed white;
+}
 #image{
 	height: 400px;
 	width: 280px;
