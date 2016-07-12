@@ -566,6 +566,6 @@ traceroute to www.siteduzero.com (92.243.25.239), 30 hops max, 40 byte packets
 			<p>Il nous dit aussi que les bits à 0 représentent la partie machine de l'adresse. Donc 192.168, et la partie machine est 0.1. </p>
 			<p>Cette exemple est très simple car la coupure se situe entre 2 octets. Or il arrive très souvent que la coupure se fasse en plein milieu d'un octet.</p>
 		<figure>
-
+		
 	</article>
 </section>
