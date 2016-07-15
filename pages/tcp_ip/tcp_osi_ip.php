@@ -7,6 +7,7 @@
 			<li><a href="#couche_1">La couche 1 brancher les machine</a></li>
 			<li><a href="#couche_2">La couche  2 faire communiquer les machines entre elle</a></li>
 			<li><a href="#couche_3">La couche 3 La reseau communiquer entre réseau</a></li>
+			<li><a href="#routage">Le routage </a></li>
 		</ul>
 	</article>
 </section>
@@ -574,6 +575,63 @@ traceroute to www.siteduzero.com (92.243.25.239), 30 hops max, 40 byte packets
 			<p>Il nous dit aussi que les bits à 0 représentent la partie machine de l'adresse. Donc 192.168, et la partie machine est 0.1. </p>
 			<p>Cette exemple est très simple car la coupure se situe entre 2 octets. Or il arrive très souvent que la coupure se fasse en plein milieu d'un octet.</p>
 		<figure>
-		
+	</article>
+</section>
+<section id="routage">
+	<h1><u>Le routage </u></h1>
+	<article>
+		<p>Nous verrons notament : </p>
+		<ul>
+			<li>comment sont organisées les données au niveau de la couche 3.</li>
+			<li>quel matériel est necessaire pour communiquer d'un réseau à un autre</li>
+			<li>comment les machines dialoguent d'un réseau à un autre</li>
+		</ul>
+		<h3>Un protocol IP</h3>
+		<p>Ainsi nous savons maintenant dialoguer sur notre réseau local grâce à la couche 2.</p>
+		<blockquote class="important_definition">
+			<p>Pour Rappel, un protocol est un langage. Il permet aux machines qui dialoguent enssemble de se comprendre.</p>
+		</blockquote>
+		<p>Pour la couche 3 du modèle OSI, c'est le protocol IP, ou Internet Protocol.</p>
+		<p>Comme pour la couche 2, nous allons devoir définir de quelles informations nous allons avoir besoin, et dans quel ordre les placer.</p>
+		<p>Déjàn nous pouvons nous douter que nous allons avoir l'adresse IP de l'émetteur ainsi que celle du récepteur.</p>
+		<p>Néanmoins, il va y avoir beaucoup d'autres informations.</p>
+		<p>Dans un premier temps, nous n'allons voir que celles qui nous interessent, et nous ajouterons petit à petit les autres éléments de l'en-tête IP.</p>
+		<ul>
+			<p>Nous avons donc : </p>
+			<li>adresse IP émetteur.</li>
+			<li>adresse IP destinataire.</li>
+		</ul>
+		<blockquote class="question">
+			<p>Toutefois, nous avons dit que l'adresse IP devait toujours être accompagnée du masque; Va-t-on avoir le masque aussi dans l'en-tête IP ?</p>
+		</blockquote>
+		<p>La question à laquelle il va falloir répondre est surtout : est-il nécessaire de connaître le masque d'une machine pour lui envoyer un message?</p>
+		<p>Pour y répondre, mettons-nous dans la peau d'une machine qui veut envoyer un message à une autre.</p>
+		<p>Nous sommes la machine A qui a pour adresse 192.168.0.1/24 et nous souhaitons envoyer un message à une machine B d'adresse 192.168.1.1/24.</p>
+		<p>Ce qui est important pour moi, en tant que machineA, c'est de savoir si la machine B est sur mon réseau. En effet, si elle est sur mon réseau, je lui parlerai grâce à la couche 2. Si elle est sur un autre réseau, il faudra que je fasse appel à la couche 3.</p>
+		<p>Pour savoir si la machine B est sur mon réseau. Je regarde la plage d'adresse de mon réseau, et si l'adresse de la machine B appartient à cette plage.</p>
+		<p>Pour l'exemple ma plage d'adresse va de 192.168.0.0 à 192.168.0.255. Elle ne contient donc pas l'adresse de la machine B (192.168.1.1).</p>
+		<p>Il va donc falloir utiliser la couche 3 pour communiquer avec la machine B.</p>
+		<p>Nous allons donc avoir, comme pour la trame de couche 2, un format de message défini par le protocole IP.</p>
+		<p>Pour le protocole IP, le message s'appelle un datagramme ou un paquet.</p>
+		<h4>Le datagramme</h4>
+		<p>Voici la forme qu'il va prendre : </p>
+		<table><tr><td>???</td><td>Adresse IP SRC(source)</td><td>Adresse IP DEST(destination)</td><td>Données à envoyer</td></tr></tbody></table>
+		<p>Datagramme IP : </p>
+		<p>Nous voyons ici que le format général est  proche de celui de la trame Ethernet, mais que les informations contenues sont diffèrentes et dans un ordre diffèrent.</p>
+		<p>Si les données ne sont pas dans le même ordre notamment l'addresse source et l'adresse de destination que dans la couche 2 c'est tous simplement que la couche 2 sera lu avant la couche 3 et que dans ce cas l'ordre des données n'a plus la même importance.</p>
+		<p>On appelle cela <strong>L'encapsulation</strong></p>
+		<p>Pour bien comprendre revoici la schéma du modèle OSI : </p>
+		<img src="pages/tcp_ip/shemeOSI.png" alt="shema OSI" style="border-radius: 0px; margin-left: 47%"/>
+		<p>Plus précisément, la figure suivante illustre l'envoi ou la réception d'une information.</p>
+		<img src="pages/tcp_ip/shemeOSI2.png" alt="schema envoie donne OSI" style="border-radius: 0px; margin-left: 35%"/>
+		<p>Comme nous le voyons, un message est envoyé depuis la couche 7 du modèle OSI, et il traverse toutes les couches jusqu'à arriver à la couche 1 pour être envoyé sur le réseau.</p>
+		<p>Un en-tête va être ajouté à chaque passage par une couche. On va ainsi accumuler les en-têtes des différentes couches(voir la figure suivante).</p>
+		<img src="pages/tcp_ip/shemeOSI3.png" alt="shema encapsulation OSI" style="border-radius: 0px; margin-left: 25%"/>
+		<p>Au passage par la couche 4, on ajoutera l'en-tête de couche 4, puis celui de couche 3 en passant par la couhe 3, etc...</p>
+		<p>Nous voyons clairement qu'au final, ce qui va circuler sur le réseau est une trame de couche 2, qui contient le datagramme de couche 3 (qui lui-même contiendra l'élément de couche 4).</p>
+		<table><tr><td>Adresse MAC DST</td><td>Adresse MAC SRC</td><td>Protocole de la couche 3</td><td>Données à envoyer</td><td>CRC</td></table>
+		<p>Je nous avait pas dit que dans les données à envoyer, il y avait en fait l'en-tête de couche 3, l'en-tête de couche 4, puis enfin, les données à envoyer.</p>
+		<table><tr><td>Adresse MAC DST</td><td>Adresse MAC SRC</td><td>Protocole de couche 3</td><td>en-tête de couche 3</td><td>en-tête de couche 4</td><td>Données à envoyer</td><td>CRC</td></tr></table>
+		<p>Pour illustrer les exemples suivants c'est <a href="https://www.wireshark.org/" class="infobull">le logiciel wireshark<span >Télécharger le logiciel</span></a></p>
 	</article>
 </section>

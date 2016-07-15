@@ -20,6 +20,20 @@ nav{
 u{
     color: #61380B;
 }
+a.infobull span{
+	display: none;/*Je masque l'infobule*/
+}
+a.infobull:hover span{
+	display: inline;/*On affiche l'info bulle*/
+	position: absolute;
+	white-space: nowrap;
+	background: black;
+	color: white;
+	padding: 3px;
+	border: 1px solid green;
+	border-left: 4px solid green;
+	cursor: help; /*On change le curseur par défaut par un curseur d'aide.*/
+}
 article{
     padding: 10px;
     margin: 2px;
