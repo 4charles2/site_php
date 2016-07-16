@@ -18,6 +18,7 @@
             <article>
                 <p>Mon fichier vimrc</p>
                 <p><pre><code>
+
 " Maintainer:	Charles Tognol &lt;charles.tognol@gmail.com&gt;
 " Last change:	lundi 27 juin 2016, 18:13:12 (UTC+0200)
 "
@@ -27,7 +28,7 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "	    for OpenVMS:  sys$login:.vimrc
 
-"Theme de couleur . Dans le dossier /usr/share/vim/vim74/colors
+"Thème de couleur . Dans le dossier /usr/share/vim/vim74/colors
 set t_Co=256
 "Active le coloration 256 couleur dans le terminal
 colorscheme molokai
@@ -38,7 +39,7 @@ set encoding=utf-8
 set fileencoding=utf-8
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
-"fichier temporaire ne fonctionne plus. (Question de sécurite)
+"fichier temporaire ne fonctionne plus. (Question de sécurité)
 set nobackup " do not keep a backup file, use versions instead
 set history=50		" keep 50 lines of command line history
 set incsearch		" do incremental searching
@@ -70,18 +71,18 @@ set smartindent
 "set autowrite		" Automatically save before commands like :next and :make
 "set hidden		" Hide buffers when they are abandoned
 "Configurer la ligne des status
-"affiche la position du cursor numero de ligne et caractere
+"affiche la position du cursor numero de ligne et caractère
 set ruler "show the cursor position all the time
 "affiche les touche entrer en mode commande
 set showmode
 set showcmd		" display incomplete commands
 "La barre de status et l'avant dernier ligne
 set laststatus=2
-set statusline=%{strftime('%a\ %e\ %b\ %I:%M\ %p')}\ %-3.3n\ %t\ %h%m%r%w\[%{strlen(&amp;ft)?&amp;ft:'none'},%{&amp;encoding},
-%{&amp;fileformat}]\ %F%1*%*%10{getfsize(expand('%'))}\ %=%-14.(%l,%c%V%)\ %&lt;%P\
+set statusline=%{strftime('%a\ %e\ %b\ %I:%M\ %p')}\ %-3.3n\ %t\ %h%m%r%w\[%{strlen(&amp;ft)?&amp;ft:'none'},
+%{&amp;encoding},%{&amp;fileformat}]\ %F%1*%*%10{getfsize(expand('%'))}\ %=%-14.(%l,%c%V%)\ %&lt;%P\
 
 set noswapfile
-"Raglage des tabulations ont prefere 4 espaces
+"Réglage des tabulations ont préfère 4 espaces
 set ai "autoindent
 "Remplace tab par espace
 "set expandtab
@@ -89,7 +90,7 @@ set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
-"Mettre en surbrillance les caractères non-imprimables qui ne devraient pas
+"Mettre en surbrillance les caractères non imprimables qui ne devraient pas
 "figurer dans le code source.
 "Les Espaces en fin de ligne :
 highlight NoSpacesEOL ctermbg=red ctermfg=white guibg=#592929
@@ -97,57 +98,45 @@ match NoSpacesEOL / \+$/
 " If using a dark background within the editing area and syntax highlighting
 " turn on this option as well
 set background=dark
-"Les tabulations en general elle sont interdites, on oblige d'utiliser des
-"expaces):
+"Les tabulations en général elle sont interdites, on oblige d'utiliser des
+"espaces):
 highlight NoTabs ctermbg=red ctermfg=white guibg=#592929
-"Decommenter pour surligné les tabulation en rouge
+"Dé commenter pour surligné les tabulation en rouge
 "match NoTabs /\t/
 
-"Mettre la ligne en cour d'edition en valeur via une couleur
-"La longueur maximal d'une ligne en general 80 caracteres ou 120 ligne ecran
-"16/9 Ces Deux ligne affiche sur fond rouge les caractere qui depassent
+"Mettre la ligne en cour d'édition en valeur via une couleur
+"La longueur maximal d'une ligne en général 80 caractères ou 120 ligne écran
+"16/9 Ces Deux ligne affiche sur fond rouge les caractère qui dépassent
 set list
-"parametre des caractere non imprimable dans vim
+"paramètre des caractère non imprimable dans vim
 set listchars=nbsp:µ,tab:&gt;-,trail:~,eol:$
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-"Decommenté pour surligné en rouge tout ce qui depasse les 80 caractères
+"Dé commenté pour surligné en rouge tout ce qui dépasse les 80 caractères
 "match OverLength /\%80v.*/
 set cursorline
 set cursorcolumn
 hi cursorColumn guibg=#e196f6
 hi CursorLine guibg=#e196f6
 
-"Les abreviation vim
-"Les abreviation HTML
-"structure de base HTML5
-iab htmli &lt;!DOCTYPE html&gt;&lt;CR&gt;&lt;html&gt;&lt;CR&gt;&lt;Tab&gt;&lt;head&gt;%&lt;CR&gt;&lt;/head&gt;&lt;CR&gt;&lt;body&gt;&lt;CR&gt;&lt;/body&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/html&gt;
-&lt;esc&gt;:call search('%')&lt;esc&gt;i&lt;esc&gt;cf%
+"Activer la correction orthographique en français
+set spelllang=fr spell
 
-"liste ol
-iab oli &lt;ol&gt;&lt;CR&gt;&lt;Tab&gt;&lt;li&gt;!&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/ol&gt;&lt;esc&gt;:call search('!')
+"Les abréviation vim
+"Les abréviation HTML
+iab htmli &lt;!DOCTYPE html&gt;&lt;CR&gt;&lt;html&gt;&lt;CR&gt;&lt;Tab&gt;&lt;head&gt;%&lt;CR&gt;&lt;/head&gt;&lt;CR&gt;&lt;body&gt;&lt;CR&gt;&lt;/body&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/html&gt;&lt;esc&gt;:call search('%')&lt;esc&gt;i&lt;esc&gt;cf%
+iab oli &lt;ol&gt;&lt;CR&gt;&lt;Tab&gt;&lt;li&gt;!!&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/ol&gt;&lt;esc&gt;:call search('!!')
+iab uli &lt;ul&gt;&lt;CR&gt;&lt;Tab&gt;&lt;li&gt;!!&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/ul&gt;&lt;esc&gt;:call search('!!')
+iab tablei &lt;table&gt;&lt;CR&gt;&lt;tab&gt;&lt;thead&gt;&lt;CR&gt;&lt;Tab&gt;&lt;tr&gt;&lt;CR&gt;&lt;Tab&gt;&lt;th&gt;!!&lt;/th&gt;&lt;CR&gt;&lt;th&gt;&lt;/th&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tr&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/thead&gt;
+&lt;CR&gt;&lt;tbody&gt;&lt;CR&gt;&lt;Tab&gt;&lt;tr&gt;&lt;CR&gt;&lt;Tab&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tr&gt;&lt;CR&gt;&lt;tr&gt;&lt;CR&gt;&lt;Tab&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tr&gt;
+&lt;CR&gt;&lt;backspace&gt;&lt;/tbody&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/table&gt;&lt;esc&gt;:call search('!!')
+iab img &lt;Esc&gt;^d$i&lt;img src="!!" alt="&lt;Esc&gt;pi" /&gt;&lt;Esc&gt;F!!s&lt;c-o&gt;:call getchar()&lt;esc&gt;
 
-#liste ul
-iab uli &lt;ul&gt;&lt;CR&gt;&lt;Tab&gt;&lt;li&gt;!&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;li&gt;&lt;/li&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/ul&gt;&lt;esc&gt;:call search('!')
-
-"tableau structure simple
-iab tablei &lt;table&gt;&lt;CR&gt;&lt;tab&gt;&lt;thead&gt;&lt;CR&gt;&lt;Tab&gt;&lt;tr&gt;&lt;CR&gt;&lt;Tab&gt;&lt;th&gt;!&lt;/th&gt;&lt;CR&gt;&lt;th&gt;&lt;/th&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tr&gt;&lt;CR&gt;
-&lt;backspace&gt;&lt;/thead&gt;&lt;CR&gt;&lt;tbody&gt;&lt;CR&gt;&lt;Tab&gt;&lt;tr&gt;&lt;CR&gt;&lt;Tab&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tr&gt;&lt;CR&gt;
-&lt;tr&gt;&lt;CR&gt;&lt;Tab&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;td&gt;&lt;/td&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tr&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/tbody&gt;&lt;CR&gt;&lt;backspace&gt;&lt;/table&gt;&lt;esc&gt;:call search('!')
-
-"balise image
-iab img &lt;Esc&gt;^d$i&lt;img src="%" alt="&lt;Esc&gt;pi" /&gt;&lt;Esc&gt;F%s&lt;c-o&gt;:call getchar()&lt;esc&gt;
-
-"Les abreviations du langace C
-#include stdio.h et stdlib.h et structure basique du main
-iab maini #include &lt;stdio.h&gt;&lt;CR&gt;#include &lt;stdlib.h&gt;&lt;CR&gt;&lt;cr&gt;int main (void)&lt;CR&gt;{&lt;CR&gt;&lt;tab&gt;w&lt;cr&gt;&lt;backspace&gt;
-return EXIT_SUCCESS;&lt;CR&gt;}&lt;esc&gt;:call search('w')&lt;esc&gt;i&lt;esc&gt;cfw
+"Les abréviations du langage C
+iab maini #include &lt;stdio.h&gt;&lt;CR&gt;#include &lt;stdlib.h&gt;&lt;CR&gt;&lt;cr&gt;int main (void)&lt;CR&gt;{&lt;CR&gt;&lt;tab&gt;w&lt;cr&gt;&lt;backspace&gt;return EXIT_SUCCESS;&lt;CR&gt;}&lt;esc&gt;:call search('w')&lt;esc&gt;i&lt;esc&gt;cfw
 iab fori &lt;Esc&gt;^d$ifor(int i=0; i&lt;&lt;Esc&gt;pi; i++)&lt;cr&gt;{&lt;CR&gt;%}&lt;esc&gt;:call search('%')&lt;esc&gt;i&lt;esc&gt;cf%
 
-"Les abreviations de script bash
-#shebang bash et deux saut de ligne pour un script
+"Les abréviations de script bash
 iab #i #!/bin/bash&lt;cr&gt;&lt;cr&gt;&lt;esc&gt;i
-
-"Les abreviations tous types
                 </code></pre></p>
             </article>
             <h1 id="colorSyntax" ><u>Thème de coloration syntaxique</u></h1>
