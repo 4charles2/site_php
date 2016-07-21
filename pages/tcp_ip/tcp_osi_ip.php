@@ -10,8 +10,11 @@
 			<li><a href="#OSI">Modèle OSI et TCP/IP (Les couches)</a></li>
 			<li><a href="#couche_1">La couche 1 brancher les machine</a></li>
 			<li><a href="#couche_2">La couche  2 faire communiquer les machines entre elle</a></li>
-			<li><a href="#couche_3">La couche 3 La réseau communiquer entre réseau</a></li>
-			<li><a href="#routage">Le routage </a></li>
+			<li><a href="#couche_3">La couche 3 La réseau communiquer entre réseau</a>
+				<ul>
+					<li><a href="#decoupage_plage">Découpage d'une plage d'adresses</a></li>
+					<li><a href="#routage">Le routage </a></li>
+				</ul>
 		</ul>
 	</article>
 </section>
@@ -618,7 +621,119 @@ traceroute to www.siteduzero.com (92.243.25.239), 30 hops max, 40 byte packets
 		<p><u>Pour calculer le nombre d'adresse que cela représente</u></p>
 		<p>Pour faire ce calcul on va prendre le nombre de bit de la partie machine soit dans exemple : 12 puisque la partie machine représente les zéro du masque 255.255.240.000 soit 1111 1111.1111 1111.1111 0000.0000 0000</p>
 		<p>Il y a douze 0 en sachant qu'il y à deux possibilité par bit on fait l'opération $2^{12}$ </p>
+		<p>Ce qui nous donne un total d'adresse possible sur ce réseau de 4096 adresse.</p>
 		<p><strong>Voici la formule $2^{nb de 0 dans le masque}$ et égale au nombre d'adresse possible</strong></p>
+		<p><u>Adresse de réseau, adresse de brodcast</u></p>
+		<p>Parmi la plage d'adresse définie par une adresse IP et un masque, deux adresses sont particulières, la première et la dernière.</p>
+		<p><strong>La première adresse d'une plage est l'adresse du réseau lui-même.</strong></p>
+		<p>Cette adresse ne pourra donc pas être utilisée pour une machine</p>
+		<p><strong>La dernière adresse d'une plage est une adresse spéciale, l'adresse de broadcast.</strong></p>
+		<p>Cette adresse ne peut pas non plus être utilisée pour une machine. Elle est en fait utilisée pour identifier toutes les machines de mon réseau.</p>
+		<p>Quand nous envoyons un message à l'adresse de brodcast, ce message va être reçu par toutes les machines de notre réseau.</p>
+		<p>Nous remarquons par la même occasion que dans un réseau ayant 16 adresses disponibles, seules 14 adresses seront utilisables par les machines du réseau, car la première et la dernière seront réservées pour le réseau et le broadcast. Et cela est vrai pour tout réseau. Pour chaque réseau, il y a deux adresses non utilisables pour les machines.</p>
+		<p>Nous savons donc maintenant, à partir d'une adresse et du masque associé : </p>
+		<ul>
+			<li>déterminer la première et la dernière adresse de la plage.</li>
+			<li>Connaître le nombre d'adresse de cette plage.</li>
+		</ul>
+		<blockquote class="important_definition">
+			<p><strong>Attention !</strong></p>
+			<ul>
+				<li>Une adresse qui finit en 255 n'est pas obligatoirement une adresse de broadcast.</li>
+				<li>Une adresse qui finit en 0 n'est pas obligatoirement une adresse de réseau.</li>
+			</ul>
+			<p>Par ailleurs, nous avons aussi vu un point commun entre toutes les adresses de broadcast : elles sont impaires !</p>
+			<p>Ceci est normal. Vu qu'elles n'ont que des 1 dans la partie machine de l'adresse, elles finissent obligatoirement par 1 et sont impaires. De même, les adresses de réseau seront toujours paire !</p>
+		</blockquote>
+		<h3>Les RFC (Des adresses particulières)</h3>
+		<p>Toutes les adresses n'ont pas la même signification, notamment, certaines adresses ont été réservées pour ne pas pouvoir être utilisées sur internet. Ces adresses sont définies dans la RFC 1918.</p>
+		<cite class="important_definition">Une RFC est un document qui propose et présente une technologie que l'on souhaite voir utiliser sur internet.</cite>
+		<p>Par exemple, si je veux créer un nouveau protocole qui va révolutionner Internet, je vais le présenter dans une RFC qui pourra être lus, puis soumise à proposition, et enfin acceptée comme standart d'internet.</p>
+		<p>Par exemple il existe une RFC qui décrit le protocole IP, la RFC 791.</p>
+		<p><strong>La RFC 1918</strong></p>
+		<p>Cette RFC précise des plages d'adresses, soit des réseaux, qui ont une utilité particulière.</p>
+		<p>En effet, ces plages d'adresses sont réservées pour une utilisation privée. Cela veut dire que si vous en faites un réseau chez vous, ou dans une entreprise, il vous faudra obligatoirement utiliser ces adresses.</p>
+		<p><strong>On ne peut pas choisir librement les adresses que je veux utiliser chez moi</strong></p>
+		<p>Et il y a une raison à cela : imaginons que j'installe mon réseau chez moi et que je n'ai pas connaissance de la RFC 1918.</p>
+		<p>Exemple : Je choisi un réseau au hasard 92.243.25.0/255.255.255.0</p>
+		<p>Mais malheureusement, cette plage réseau appartient à quelqu'un sur internet. On pourrait penser que ce n'est pas grave, car toute façon, mon réseau est privé et ne dérangera personne sur internet. En fait, je vais avoir des problèmes ...</p>
+		<p>Par exemple j'essaye d'aller sur mon site préféré, le Site du zéro. Et badaboum, cela ne marche pas !</p>
+		<p>En effet, l'adresse du site du zéro est 92.243.25.239, qui est une adresse qui appartient à la plage réseau que j'ai choisie.</p>
+		<p>Ainsi, quand ma machine essaye de joindre cette adresse, elle pense que la machine se situe sur son propre réseau, d'après son adresse, et donc elle n'arrive pas à la joindre. Je ne pourrai donc jamais aller sur le Site du zéro.</p>
+		<blockquote class="important_definition">
+			<p>C'est simple, il suffit de choisir sa plage d'adresses dans les plages réservées à cet effet dans la RFC 1918.</p>
+			<p>Les plages définies sont : </p>
+			<ul>
+				<li>10.0.0.0/255.0.0.0</li>
+				<li>172.16.0.0/255.240.0.0</li>
+				<li>192.168.0.0/255.255.0.0</li>
+			</ul>
+		</blockquote>
+		<p>Je peux donc choisir un réseau dans cette liste puisque ces adresses n'appartienne à personne sur internet</p>
+		<p>C'est pour cette raison que très souvent les adresses qui sont données par les opérateurs sont dans ces plages.</p>
+	</article>
+</section>
+<section id="decoupage_plage">
+	<h1><u>Découpage d'une plage d'adresses réseau</u></h1>
+	<article>
+		<p>Le découpage d'une plage d'adresses fait partie intégrante du métier d'administrateur réseau.</p>
+		<p>Il faut parfaitement maîtriser le découpage et être à l'aise pour savoir rapidement identifier un réseau de manière correcte.</p>
+		<h3>Découpage avec la méthode basique</h3>
+		<blockquote class="important_definition">
+			<p>Pour bien comprendre le découpage d'un plage d'adresses.</p>
+			<p>Prenons un exemple : Le réseau d'une école informatique. Les machines ont été configuré pour appartenir à un même grand réseau 10.0.0.0/255.255.0.0</p>
+			<p>Sur ce même réseau il y a les profs, les élèves, et l'administration</p>
+			<p>Des petits malins ont réussi à changer leur note au dernier examen en accédant à la machine de leur prof préféré.</p>
+			<p>Que faire ?</p>
+			<p>Eh bien nous allons découper la grande plage d'adresses qui nous a été fournie en plusieurs sous-réseaux plus petits. Nous pourrons alors mettre les élèves dans un sous réseau, et les profs dans un autre. Et même l'administration dans un autre.</p>
+			<p>On découpe une grande plage d'adresse réseau en plusieurs plus petites pour séparer les différentes populations.</p>
+		</blockquote>
+		<p><u>La méthode la plus simple : </u></p>
+		<p>Il existe une écriture rapide pour écrire des masque. Il s'agit de <strong>L'écriture CIDR.</strong></p>
+		<p>Nous allons utiliser l'écriture des masques CIDR. Un masque s'écrit sur 32 bits. Sur ces 32 bits, nous en avons un certain nombre à 1 et le reste à 0.</p>
+		<p>Vu que les 1 et les 0 ne sont pas mélangés (grâce à la contiguïté des bits), Il suffit de connaître le nombre de 1 dans un masque pour le connaître complètement.</p>
+		<p>On pourra donc simplement écrire le nombre de 1 dans un masque pour le connaître.</p>
+		<p>On pourra ainsi écrire le masque 255.255.255.0 de la façon suivante /24, qui indique qu'il y a 24 bits à 1 dans le masque.</p>
+		<p>Au lieu d'écrire 192.168.0.1/255.255.255.0, on pourra écrire 192.168.0.1/24.</p>
+		<p>Quand on écrit beaucoup de masque , ça va plus vite</p>
+		<p>Désormais, on pourra donc écrire /20 au lieu de 255.255.240.0.</p>
+		<figure>
+			<figcaption><u>Un exemple de découpage : </u></figcaption>
+			<p>Prenons une entreprise possédant la plage 10.0.0.0/16. Nous allons essayer de découper cette plage.</p>
+			<p>L'entreprise compte 1000 techniciens, 200 commerciaux et 20 directeurs. Il va falloir définir trois petites plages au sein de notre grande plage d'origine.</p>
+			<p>Dans un premier temps, nous allons regarder si notre plage de départ contient assez d'adresses pour nos 1220 employés (1000 + 200 + 20).</p>
+			<p>Le masque contient 16 bits à 1, donc 16 bits à 0 (puisqu'il contient au total 32 bits).</p>
+			<p>Or, nous connaissons une formule qui nous permet de connaître le nombre d'adresses dans un réseau en fonction du nombre de bits à 0 dans le masque</p>
+			<p>Nous allons donc avoir $2^{16}$ soit 65 536 adresses dans notre plage ! On a largement plus que les 1220 nécessaires.</p>
+			<p><u>Calcul des masques</u></p>
+			<p>Nous savons combien nous voulons d'adresses dans les plages à découper, et nous avons la formule précédente qui nous donne la relation entre le nombre d'adresses et le nombre de 0 dans le masque. Nous devrions donc pouvoir déduire le nombre de 0 nécessaires dans chacun des masques, et donc les masques eux-mêmes.</p>
+			<p>Par exemple pour les techniciens qui sont 1000, il me faudra un réseau avec au moins 1000 adresses + 2.</p>
+			<p>En prenant $2^{10}=1024$ c'est bien plus grand que 1000. Donc si nous mettons 10 bits à 0 dans le masque, nous devrions pouvoir identifier 1000 machines (nous pourrons même avoir 1024 adresses !) Si on a 10 bits à 0 dans le masque, on obtient le masque suivant : </p>
+			<p>$11111111.11111111.11111100.00000000$ soit $255.255.252.0$ ou /22</p>
+			<p>Pour le réseau de nos techniciens, nous pouvons choisir le masque 255.255.252.0 pour avoir 1024 adresses dans le réseau et donc avoir assez d'adresses pour les 1000 techniciens.</p>
+			<p>Nous pouvons faire le même calcul pour les 200 commerciaux : </p>
+			<p>En prenant $2^8=256$ c'est bien plus grand que 200. Donc si nous mettons 8 bits à zéro dans le masque on auras suffisamment d'adresse pour nos commerciaux</p>
+			<p>Le masque pour nos commerciaux sera donc 255.255.255.0</p>
+			<p>Nous allons maintenant faire nos 20 directeurs : </p>
+			<p>Si nous prenons $2^5=32$ c'est bien plus grand que 20 donc notre masque sera composé de 5 zéro soit 255.255.255.224</p>
+			<p>Maintenant que nous avons nos masques, il va falloir trouver les plages d'adresses associées, et pour cela nous avons beaucoup de choix parmi la grande plage que l'on nous a fournie.</p>
+			<p><u>Le choix des plages d'adresses</u></p>
+			<p>Nous avons donc la grande plage 10.0.0.0/16 de 65536 adresses à notre disposition, et nous souhaitons trouver une plage de 1024 adresses pour nos techniciens parmi ces 65536 adresses.</p>
+			<p>Le choix le plus simple qui s'offre à nous est de commencer à l'adresse la plus basse, même si ce n'est pas le seul.</p>
+			<p>Donc nous choisissons de commencer notre plage d'adresses pour les techniciens à l'adresse 10.0.0.0</p>
+			<p>Nous pouvons d'ores et déjà identifier le réseau des techniciens par le couple 10.0.0.0/255.255.252.0</p>
+			<p>Mais il serait bien aussi de connaître la dernière adresse de cette plage, car la donnée du couple adresse/masque ne nous donne pas une indication très précise.</p>
+			<p>Commençons nos calculs habituels ... en essayant un peu de nous améliorer.</p>
+			<p>D'habitude, on transforme complètement l'adresse et le masque en binaire. Mais y réfléchissant un peu, on se rend compte que seul un des 4 octets du masque nous intéresse, celui où se passe la coupure entre les 1 et les 0. Ici c'est le troisième, 252.</p>
+			<p>Donc au lieu de calculer en binaire toutes l'adresse, nous n'allons travailler que sur le troisième octet.</p>
+			<p>Masque : 252 -&gt; 11111100</p>
+			<p>Adresse : 0 -&gt; 00000000</p>
+			<p>Ainsi d'après le masque, toutes les adresses des machines de mon réseau commenceront par 000000 sur le troisième octet.</p>
+			<p>La dernière adresse sera donc celle où tous les bits de la partie machine sont à 1, soit 00000011 sur le troisième octet (3 en décimal), et 11111111 sur le quatrième octet qu'il ne faut pas oublier ! (255 en décimal).</p>
+			<p>La dernière adresse de la plage des techniciens est donc 10.0.3.255</p>
+			<p>Nous avons donc choisi une plage d'adresse adéquate pour les techniciens parmi notre grande plage de départ.</p>
+			<p></p>
+		</figure>
 	</article>
 </section>
 <section id="routage">
